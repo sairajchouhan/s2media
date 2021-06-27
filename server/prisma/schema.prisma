@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["selectRelationCount"]
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  username   String   @unique
+  password  String   
+  profile   Profile?
+  post Post[]
+  like Like[]
+  followers Follow[] @relation("followed")
+  following Follow[] @relation("follower")
+  comment Comment[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Profile {
+  id Int @id @default(autoincrement())
+  bio String?
+  displayName String?
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Post{
+  id Int @id @default(autoincrement())
+  url String 
+  caption String?
+  like Like[]
+  comment Comment[]
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Like {
+  id Int @id @default(autoincrement())
+  userId Int
+  postId Int
+  user User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+  @@unique([userId, postId])
+}
+
+model Comment {
+  id Int @id @default(autoincrement())
+  body String
+  userId Int
+  postId Int
+  user User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Follow {
+  id Int @id @default(autoincrement())
+  followedId Int
+  followerId Int
+  followed User @relation(name: "followed",fields: [followedId], references: [id])
+  follower User @relation(name: "follower", fields: [followerId], references: [id])
+  createdAt DateTime @default(now())
+  @@unique([followedId, followerId])
+}
