@@ -1,3 +1,3 @@
-export default function Home() {
-  return <div>index page</div>
+export default function Landing() {
+  return <div>landing page</div>
 }
