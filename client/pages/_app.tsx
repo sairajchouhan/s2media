@@ -1,7 +1,7 @@
-import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import AuthenticatedLayout from '../components/layouts/AuthenticatedLayout'
 import UnAuthenticatedLayout from '../components/layouts/UnAuthenticatedLayout'
+import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const isAuthenticated = true

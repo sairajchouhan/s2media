@@ -1,9 +1,9 @@
-import Saved from '../assets/svgs/saved.svg'
-import Profile from '../assets/svgs/profile.svg'
-import Settings from '../assets/svgs/settings.svg'
+import { useRouter } from 'next/router'
 import Home from '../assets/svgs/home.svg'
 import Message from '../assets/svgs/message.svg'
-import { useRouter } from 'next/router'
+import Profile from '../assets/svgs/profile.svg'
+import Saved from '../assets/svgs/saved.svg'
+import Settings from '../assets/svgs/settings.svg'
 
 const LeftNav = () => {
   const { push } = useRouter()
