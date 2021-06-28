@@ -1,6 +1,14 @@
 {
   "extends": "next",
   "rules": {
-    "no-unused-vars": "warn"
+    "no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "args": "after-used",
+        "ignoreRestSiblings": false,
+        "argsIgnorePattern": "^_"
+      }
+    ]
   }
 }

@@ -9,8 +9,7 @@
     "build": "rimraf ./dist && tsc",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
-    "prettify": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "prepare": "husky install"
+    "prettify": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },
   "keywords": [],
   "author": "",
