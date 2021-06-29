@@ -1,3 +1,14 @@
+import { useSession } from 'next-auth/client'
+import { useRouter } from 'next/router'
+
 export default function Landing() {
-  return <div>landing page</div>
+  const [session] = useSession()
+  const { back } = useRouter()
+
+  if (session) {
+    back()
+    return null
+  }
+
+  return <> bro this is index page</>
 }

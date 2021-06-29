@@ -1,5 +1,7 @@
+import { signOut, useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import Home from '../assets/svgs/home.svg'
+import Logout from '../assets/svgs/logout.svg'
 import Message from '../assets/svgs/message.svg'
 import Profile from '../assets/svgs/profile.svg'
 import Saved from '../assets/svgs/saved.svg'
@@ -7,11 +9,13 @@ import Settings from '../assets/svgs/settings.svg'
 
 const LeftNav = () => {
   const { push } = useRouter()
+  const [session] = useSession()
   return (
     <nav className="flex flex-col h-screen max-h-screen bg-red-50 w-60">
       <div
         onClick={() => {
-          push('/')
+          if (session) push('/home')
+          else push('/')
         }}
         className="flex items-center px-8 my-6 text-2xl font-bold text-purple-600 cursor-pointer group"
       >
@@ -52,6 +56,17 @@ const LeftNav = () => {
           <Saved className="w-4 h-4 mr-2 text-lg text-gray-600 fas fa-home group-hover:text-purple-500" />
           Saved
         </li>
+        <li
+          onClick={async () => {
+            const data = await signOut({ redirect: false, callbackUrl: '/' })
+            push(data.url)
+          }}
+          className="flex items-center px-8 py-4 font-semibold text-gray-600 transition cursor-pointer hover:shadow-md hover:text-gray-800 group"
+        >
+          <Logout className="w-4 h-4 mt-1 mr-2 text-lg text-gray-600 fas fa-home group-hover:text-purple-500" />
+          Logout
+        </li>
+
         <li className="flex items-center px-8 py-4 mt-auto font-semibold text-gray-600 transition cursor-pointer hover:shadow-md hover:text-gray-800 group">
           <Settings className="w-4 h-4 mr-2 text-lg text-gray-600 fas fa-home group-hover:text-purple-500" />
           Settings
