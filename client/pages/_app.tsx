@@ -1,15 +1,15 @@
+import { Provider } from 'next-auth/client'
 import type { AppProps } from 'next/app'
-import AuthenticatedLayout from '../components/layouts/AuthenticatedLayout'
-import UnAuthenticatedLayout from '../components/layouts/UnAuthenticatedLayout'
+import Layout from '../components/layouts/Layout'
 import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const isAuthenticated = false
-  const Layout = isAuthenticated ? AuthenticatedLayout : UnAuthenticatedLayout
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <Provider session={pageProps.session}>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </Provider>
   )
 }
 export default MyApp
