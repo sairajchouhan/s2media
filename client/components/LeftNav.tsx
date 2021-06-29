@@ -1,4 +1,4 @@
-import { signOut } from 'next-auth/client'
+import { signOut, useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import Home from '../assets/svgs/home.svg'
 import Logout from '../assets/svgs/logout.svg'
@@ -9,11 +9,13 @@ import Settings from '../assets/svgs/settings.svg'
 
 const LeftNav = () => {
   const { push } = useRouter()
+  const [session] = useSession()
   return (
     <nav className="flex flex-col h-screen max-h-screen bg-red-50 w-60">
       <div
         onClick={() => {
-          push('/')
+          if (session) push('/home')
+          else push('/')
         }}
         className="flex items-center px-8 my-6 text-2xl font-bold text-purple-600 cursor-pointer group"
       >
