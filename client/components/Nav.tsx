@@ -37,9 +37,7 @@ const Nav = (_props: NavProps) => {
                 onClick={() => signIn()}
                 className="px-5 py-2 text-white transition bg-purple-600 rounded-lg cursor-pointer hover:bg-purple-500"
               >
-                <Link href="/api/auth/signin">
-                  <a className="">Login</a>
-                </Link>
+                <a className="">Login</a>
               </li>
             </>
           )}

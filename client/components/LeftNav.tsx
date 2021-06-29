@@ -1,6 +1,7 @@
 import { signOut } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import Home from '../assets/svgs/home.svg'
+import Logout from '../assets/svgs/logout.svg'
 import Message from '../assets/svgs/message.svg'
 import Profile from '../assets/svgs/profile.svg'
 import Saved from '../assets/svgs/saved.svg'
@@ -60,7 +61,7 @@ const LeftNav = () => {
           }}
           className="flex items-center px-8 py-4 font-semibold text-gray-600 transition cursor-pointer hover:shadow-md hover:text-gray-800 group"
         >
-          <Saved className="w-4 h-4 mr-2 text-lg text-gray-600 fas fa-home group-hover:text-purple-500" />
+          <Logout className="w-4 h-4 mt-1 mr-2 text-lg text-gray-600 fas fa-home group-hover:text-purple-500" />
           Logout
         </li>
 
