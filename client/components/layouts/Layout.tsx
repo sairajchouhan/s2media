@@ -4,7 +4,8 @@ import AuthenticatedLayout from './AuthenticatedLayout'
 import UnAuthenticatedLayout from './UnAuthenticatedLayout'
 
 const Layout = ({ children }: { session?: any; children: React.ReactNode }) => {
-  const [session] = useSession()
+  const [session, loading] = useSession()
+  if (loading) return null
   return (
     <>
       {session ? (

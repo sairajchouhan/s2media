@@ -1,9 +1,11 @@
-import { getSession, signIn, signOut, useSession } from 'next-auth/client'
+import { signIn, signOut, useSession } from 'next-auth/client'
+import { useRouter } from 'next/router'
 
 export default function Landing() {
   const [session, loading] = useSession()
+  const { push } = useRouter()
 
-  console.log(session)
+  if (loading) return null
 
   return (
     <>
@@ -18,19 +20,17 @@ export default function Landing() {
       {session && (
         <>
           Signed in as {session.user?.email} <br />
-          <button className="px-5 py-2 bg-indigo-500" onClick={() => signOut()}>
+          <button
+            className="px-5 py-2 text-white bg-indigo-500"
+            onClick={async () => {
+              const data = await signOut({ redirect: false, callbackUrl: '/' })
+              push(data.url)
+            }}
+          >
             Sign out
           </button>
         </>
       )}
     </>
   )
-}
-
-export async function getServerSideProps(context: any) {
-  return {
-    props: {
-      session: await getSession(context),
-    },
-  }
 }
