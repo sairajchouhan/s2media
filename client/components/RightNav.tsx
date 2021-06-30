@@ -1,5 +1,5 @@
 const RightNav = () => {
-  return <div className="right-0 h-screen max-h-screen bg-yellow-100 w-80">placeholder</div>
+  return <div className="right-0 h-screen max-h-screen bg-white w-80">placeholder</div>
 }
 
 export default RightNav

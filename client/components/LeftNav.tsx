@@ -11,7 +11,7 @@ const LeftNav = () => {
   const { push } = useRouter()
   const [session] = useSession()
   return (
-    <nav className="flex flex-col h-screen max-h-screen bg-red-50 w-60">
+    <nav className="flex flex-col h-screen max-h-screen bg-white w-60">
       <div
         onClick={() => {
           if (session) push('/home')
