@@ -9,7 +9,7 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
   if (loading) return null
 
   if (!loading && !session) {
-    push('/auth/login')
+    push('/')
     return null
   }
   return <>{children}</>

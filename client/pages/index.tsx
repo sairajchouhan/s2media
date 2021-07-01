@@ -3,10 +3,10 @@ import { useRouter } from 'next/router'
 
 export default function Landing() {
   const [session] = useSession()
-  const { back } = useRouter()
+  const { push } = useRouter()
 
   if (session) {
-    back()
+    push('/home')
     return null
   }
 

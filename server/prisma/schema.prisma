@@ -12,10 +12,11 @@ generator client {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String      @id @default(cuid())
   email     String   @unique
-  username   String   @unique
-  password  String   
+  username  String   @unique
+  avatar    String?   
+  provider  String   @default("google")
   profile   Profile?
   post Post[]
   like Like[]
@@ -27,10 +28,10 @@ model User {
 }
 
 model Profile {
-  id Int @id @default(autoincrement())
+  id String @id @default(cuid())
   bio String?
   displayName String?
-  userId Int
+  userId String
   user User @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -38,21 +39,21 @@ model Profile {
 
 
 model Post{
-  id Int @id @default(autoincrement())
+  id String @id @default(cuid())
   url String 
   caption String?
   like Like[]
   comment Comment[]
-  userId Int
+  userId String
   user User @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Like {
-  id Int @id @default(autoincrement())
-  userId Int
-  postId Int
+  id String @id @default(cuid())
+  userId String
+  postId String
   user User @relation(fields: [userId], references: [id])
   post Post @relation(fields: [postId], references: [id])
   createdAt DateTime @default(now())
@@ -60,10 +61,10 @@ model Like {
 }
 
 model Comment {
-  id Int @id @default(autoincrement())
+  id String @id @default(cuid())
   body String
-  userId Int
-  postId Int
+  userId String
+  postId String
   user User @relation(fields: [userId], references: [id])
   post Post @relation(fields: [postId], references: [id])
   createdAt DateTime @default(now())
@@ -71,9 +72,9 @@ model Comment {
 }
 
 model Follow {
-  id Int @id @default(autoincrement())
-  followedId Int
-  followerId Int
+  id String @id @default(cuid())
+  followedId String
+  followerId String
   followed User @relation(name: "followed",fields: [followedId], references: [id])
   follower User @relation(name: "follower", fields: [followerId], references: [id])
   createdAt DateTime @default(now())

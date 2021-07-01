@@ -1,8 +1,13 @@
+import { useSession } from 'next-auth/client'
 import PrivateRoute from '../../components/PrivateRoute'
 import Stories from '../../components/Stories'
 const Home = () => {
+  const [session, loading] = useSession()
+  console.log(session)
+
   return (
     <PrivateRoute>
+      {JSON.stringify(session)}
       <section>
         <Stories />
         <main className="grid grid-cols-2 px-2">
