@@ -10,8 +10,8 @@ const Home = () => {
       <div className="border border-gray-200">
         <Stories />
         <main className="px-6 ">
-          {new Array(9).fill('-').map((_) => (
-            <div key={_}>
+          {new Array(9).fill('-').map((_, i) => (
+            <div key={i}>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam voluptas consequatur
               accusamus exercitationem et veritatis, error tenetur optio quia quaerat quibusdam
               saepe sed aliquid repudiandae fugit! Quia eos assumenda, in quae a ipsam recusandae

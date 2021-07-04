@@ -8,6 +8,6 @@ module.exports = {
     return config
   },
   images: {
-    domains: ['source.unsplash.com'],
+    domains: ['source.unsplash.com', 'lh3.googleusercontent.com'],
   },
 }
