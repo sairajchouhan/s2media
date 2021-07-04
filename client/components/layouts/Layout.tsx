@@ -1,6 +1,6 @@
 import { useSession } from 'next-auth/client'
 import React from 'react'
-import AuthenticatedLayout from './AuthenticatedLayout'
+import AuthenticatedLayout from './TwitterLayout'
 import UnAuthenticatedLayout from './UnAuthenticatedLayout'
 
 const Layout = ({ children }: { session?: any; children: React.ReactNode }) => {

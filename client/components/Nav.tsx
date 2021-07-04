@@ -28,11 +28,6 @@ const Nav = (_props: NavProps) => {
             </>
           ) : (
             <>
-              <li className="cursor-pointer">
-                <Link href="/signup">
-                  <a className="mr-6">Signup</a>
-                </Link>
-              </li>
               <li
                 onClick={() => {
                   signIn('google', { callbackUrl: 'http://localhost:3000/home' })

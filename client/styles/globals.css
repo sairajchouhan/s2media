@@ -1,3 +1,45 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .grid-cols-24 {
+    grid-template-columns: repeat(24, minmax(0, 1fr));
+  }
+  .col-span-13 {
+    grid-column: span 13 / span 13;
+  }
+  .col-span-14 {
+    grid-column: span 14 / span 14;
+  }
+  .col-span-15 {
+    grid-column: span 15 / span 15;
+  }
+  .col-span-16 {
+    grid-column: span 16 / span 16;
+  }
+  .col-span-17 {
+    grid-column: span 17 / span 17;
+  }
+  .col-span-18 {
+    grid-column: span 18 / span 18;
+  }
+  .col-span-19 {
+    grid-column: span 19 / span 19;
+  }
+  .col-span-20 {
+    grid-column: span 20 / span 20;
+  }
+  .col-span-21 {
+    grid-column: span 21 / span 21;
+  }
+  .col-span-22 {
+    grid-column: span 22 / span 22;
+  }
+  .col-span-23 {
+    grid-column: span 23 / span 23;
+  }
+  .col-span-24 {
+    grid-column: span 24 / span 24;
+  }
+}
