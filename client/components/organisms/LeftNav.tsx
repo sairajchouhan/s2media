@@ -8,6 +8,7 @@ import Saved from '../../assets/svgs/saved.svg'
 import Settings from '../../assets/svgs/settings.svg'
 import LeftNavBrand from '../atoms/LeftNavBrand/left-nav-brand'
 import LeftNavLink from '../atoms/LeftNavLink/left-nav-link'
+import LeftNavPostBtn from '../molecules/LeftNavPostBtn'
 import LeftNavUser from '../molecules/LeftNavUser'
 
 const LeftNav = () => {
@@ -62,9 +63,8 @@ const LeftNav = () => {
           Settings
         </LeftNavLink>
 
-        <li className="flex items-center px-8 py-4 mt-auto mb-3 rounded-lg cursor-pointer select-none hover:bg-indigo-50">
-          <LeftNavUser src={session.avatar} />
-        </li>
+        <LeftNavPostBtn />
+        <LeftNavUser src={session.avatar} />
       </ul>
     </nav>
   )
