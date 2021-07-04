@@ -5,7 +5,7 @@ import RightNav from '../RightNav'
 const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="w-full ">
-      <div className="container flex mx-auto">
+      <div className="flex w-4/5 mx-auto">
         <header className="relative z-10 flex flex-col items-end flex-shrink">
           <div className="relative flex flex-col items-end flex-shrink-0 w-72">
             <div className="fixed top-0 z-0 flex flex-col items-stretch flex-shrink-0 h-full">
@@ -14,7 +14,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
           </div>
         </header>
         <div className="grid w-full grid-cols-12 gap-6">
-          <div className="col-span-8 ml-6 bg-indigo-100">{children}</div>
+          <div className="col-span-8 ml-6 bg-indigo-50">{children}</div>
           <div className="col-span-4 ">
             <RightNav />
           </div>
