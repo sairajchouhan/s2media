@@ -17,12 +17,14 @@ const options: NextAuthOptions = {
   session: {
     jwt: true,
   },
+  debug: true,
   callbacks: {
     async signIn(user: any, account: any, profile: any) {
       const myUser = {
         username: profile.name,
         email: profile.email,
         avatar: profile.picture,
+        // provider: account.provider,
       } as any
 
       const rawResponse = await fetch('http://localhost:5000/api/v1/auth/gettoken', {

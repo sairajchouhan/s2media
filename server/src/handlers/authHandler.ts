@@ -99,7 +99,7 @@ export const getToken = async (req: Request, res: Response) => {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
     return res.status(400).json({
-      errors: [{ msg: 'invalid credentials' }],
+      errors: [errors.array()],
     })
   }
   const { email, username, avatar } = req.body
@@ -129,5 +129,6 @@ export const getToken = async (req: Request, res: Response) => {
     avatar: user.avatar,
   }
   const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '30d' })
+  console.log('about to end')
   return res.json({ ...user, token })
 }
