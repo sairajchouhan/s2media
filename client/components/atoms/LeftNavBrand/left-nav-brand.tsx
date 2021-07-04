@@ -4,7 +4,7 @@ export type LeftNavBrandProps = {
   onClick: () => void
 }
 
-export const LeftNavBrand = ({ onClick, ...props }: LeftNavBrandProps) => {
+const LeftNavBrand = ({ onClick, ...props }: LeftNavBrandProps) => {
   return (
     <div
       {...props}

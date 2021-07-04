@@ -6,55 +6,63 @@ import Message from '../assets/svgs/message.svg'
 import Profile from '../assets/svgs/profile.svg'
 import Saved from '../assets/svgs/saved.svg'
 import Settings from '../assets/svgs/settings.svg'
-import BrandLogo from './atoms/LeftNavBrand/left-nav-brand'
+import LeftNavBrand from './atoms/LeftNavBrand/left-nav-brand'
+import LeftNavLink from './atoms/LeftNavLink/left-nav-link'
 
 const LeftNav = () => {
-  const { push } = useRouter()
+  const { push, pathname } = useRouter()
+  console.log(pathname)
   const [session] = useSession()
+
+  const handleLogout = async () => {
+    const data = await signOut({ redirect: false, callbackUrl: '/' })
+    push(data.url)
+  }
 
   return (
     <nav className="flex flex-col h-screen max-h-screen bg-white w-72">
-      <BrandLogo
+      <LeftNavBrand
         onClick={() => {
           if (session) push('/home')
           else push('/')
         }}
       />
       <ul className="flex flex-col w-full h-full">
-        <li
-          onClick={() => push('/home')}
-          className="flex items-center px-8 py-4 font-semibold text-gray-600 transition cursor-pointer hover:shadow-md hover:text-gray-800 group"
-        >
-          <Home className="w-5 h-5 mr-2 text-lg text-gray-600 fas fa-home group-hover:text-indigo-500" />
+        <LeftNavLink active={pathname === '/home'} icon={Home} onClick={() => push('/home')}>
           Home
-        </li>
-        <li className="flex items-center px-8 py-4 font-semibold text-gray-600 transition cursor-pointer hover:shadow-md hover:text-gray-800 group">
-          <Message className="w-4 h-4 mt-px mr-2 text-lg text-gray-600 fas fa-home group-hover:text-purple-500" />
-          Messages
-        </li>
-        <li className="flex items-center px-8 py-4 font-semibold text-gray-600 transition cursor-pointer hover:shadow-md hover:text-gray-800 group">
-          <Profile className="w-4 h-4 mr-2 text-lg text-gray-600 fas fa-home group-hover:text-purple-500" />
-          Profile
-        </li>
-        <li className="flex items-center px-8 py-4 font-semibold text-gray-600 transition cursor-pointer hover:shadow-md hover:text-gray-800 group">
-          <Saved className="w-4 h-4 mr-2 text-lg text-gray-600 fas fa-home group-hover:text-purple-500" />
-          Saved
-        </li>
-        <li
-          onClick={async () => {
-            const data = await signOut({ redirect: false, callbackUrl: '/' })
-            push(data.url)
-          }}
-          className="flex items-center px-8 py-4 font-semibold text-gray-600 transition cursor-pointer hover:shadow-md hover:text-gray-800 group"
+        </LeftNavLink>
+        <LeftNavLink
+          active={pathname === '/messages'}
+          icon={Message}
+          onClick={() => push('/messages')}
         >
-          <Logout className="w-4 h-4 mt-1 mr-2 text-lg text-gray-600 fas fa-home group-hover:text-purple-500" />
+          Messages
+        </LeftNavLink>
+        <LeftNavLink
+          active={pathname === '/profile'}
+          icon={Profile}
+          onClick={() => push('/profile')}
+        >
+          Profile
+        </LeftNavLink>
+        <LeftNavLink active={pathname === '/saved'} icon={Saved} onClick={() => push('/saved')}>
+          Saved
+        </LeftNavLink>
+        <LeftNavLink active={pathname === '/logout'} icon={Logout} onClick={() => handleLogout()}>
           Logout
-        </li>
+        </LeftNavLink>
+        <LeftNavLink
+          active={pathname === '/settings'}
+          icon={Settings}
+          onClick={() => push('/settings')}
+        >
+          Settings
+        </LeftNavLink>
 
-        <li className="flex items-center px-8 py-4 mt-auto font-semibold text-gray-600 transition cursor-pointer hover:shadow-md hover:text-gray-800 group">
+        {/* <li className="flex items-center px-8 py-4 mt-auto font-semibold text-gray-600 transition cursor-pointer hover:shadow-md hover:text-gray-800 group">
           <Settings className="w-4 h-4 mr-2 text-lg text-gray-600 fas fa-home group-hover:text-purple-500" />
           Settings
-        </li>
+        </li> */}
       </ul>
     </nav>
   )

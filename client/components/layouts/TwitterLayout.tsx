@@ -35,15 +35,15 @@ const TwitterLayout = ({ children }: { children: React.ReactNode }) => {
     // </div>
     <div className="w-full ">
       <div className="flex w-11/12 mx-auto">
-        <header className="relative z-10 flex flex-col items-end flex-grow flex-shrink">
-          <div className="relative flex flex-col items-end flex-grow flex-shrink-0 w-72">
+        <header className="relative z-10 flex flex-col items-end flex-shrink">
+          <div className="relative flex flex-col items-end flex-shrink-0 w-72">
             <div className="fixed top-0 z-0 flex flex-col items-stretch flex-shrink-0 h-full">
               <LeftNav />
             </div>
           </div>
         </header>
-        <div className="grid grid-cols-12 gap-6">
-          <div className="col-span-8 ml-6 ">{children}</div>
+        <div className="grid w-full grid-cols-12 gap-6">
+          <div className="col-span-8 ml-6 bg-indigo-100">{children}</div>
           <div className="col-span-4 ">
             <RightNav />
           </div>
