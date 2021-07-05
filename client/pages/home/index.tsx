@@ -8,10 +8,9 @@ const Home = () => {
 
   return (
     <PrivateRoute>
-      <div className="border border-gray-200">
+      <div className="h-full">
         <Stories />
-
-        <main className="px-6">
+        <main className="mt-6">
           <Post />
         </main>
       </div>

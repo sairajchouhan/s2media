@@ -1,17 +1,17 @@
-import Image from 'next/image'
 import React from 'react'
+import { NextImage } from '../Image'
 
 interface AvatarProps {
   src: string
   alt: string
-  w: number
-  h: number
+  w: string
+  h: string
 }
 
 export const Avatar = ({ src, alt, w, h }: AvatarProps) => {
   return (
-    <div className="grid place-items-center">
-      <Image className="rounded-full" src={src} alt={alt} width={w} height={h} />
+    <div className={`${w} ${h}`}>
+      <NextImage roundedFull={true} src={src} alt={alt} />
     </div>
   )
 }
