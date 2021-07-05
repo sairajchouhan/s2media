@@ -1,10 +1,15 @@
 import { useSession } from 'next-auth/client'
+import { SessionUser } from '../types/user'
 
 export const useUser = () => {
   const [session] = useSession()
   if (!session) return null
-  else
-    return {
-      ...session,
-    }
+  const sessionUser: SessionUser = {
+    accessToken: session.accessToken,
+    avatar: session.avatar,
+    email: session.email,
+    id: session.id,
+    username: session.username,
+  }
+  return sessionUser
 }
