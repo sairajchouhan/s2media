@@ -6,10 +6,10 @@ import Message from '../../assets/svgs/message.svg'
 import Profile from '../../assets/svgs/profile.svg'
 import Saved from '../../assets/svgs/saved.svg'
 import Settings from '../../assets/svgs/settings.svg'
-import LeftNavBrand from '../atoms/LeftNavBrand/left-nav-brand'
-import LeftNavLink from '../atoms/LeftNavLink/left-nav-link'
-import LeftNavPostBtn from '../molecules/LeftNavPostBtn'
-import LeftNavUser from '../molecules/LeftNavUser'
+import { LeftNavPostBtn } from '../atoms/LeftNavPostBtn/'
+import { LeftNavBrand } from '../molecules/LeftNavBrand/'
+import { LeftNavLink } from '../molecules/LeftNavLink/'
+import { LeftNavUser } from '../molecules/LeftNavUser/'
 
 const LeftNav = () => {
   const { push, pathname } = useRouter()

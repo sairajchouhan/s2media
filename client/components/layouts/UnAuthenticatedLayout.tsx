@@ -1,5 +1,5 @@
 import React from 'react'
-import Nav from '../Nav'
+import Nav from '../organisms/Nav'
 
 const UnAuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   return (

@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/client'
-import { Post } from '../../components/Post'
+import { Post } from '../../components/organisms/Post'
+import Stories from '../../components/organisms/Stories'
 import PrivateRoute from '../../components/PrivateRoute'
-import Stories from '../../components/Stories'
 const Home = () => {
   const [session] = useSession()
   console.log(session)

@@ -1,6 +1,6 @@
 import React from 'react'
 import LeftNav from '../organisms/LeftNav'
-import RightNav from '../RightNav'
+import RightNav from '../organisms/RightNav'
 
 const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   return (

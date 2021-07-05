@@ -7,7 +7,7 @@ export type LeftNavLinkProps = {
   children: React.ReactNode
 }
 
-const LeftNavLink = ({ active, icon: Icon, onClick, children }: LeftNavLinkProps) => {
+export const LeftNavLink = ({ active, icon: Icon, onClick, children }: LeftNavLinkProps) => {
   return (
     <li
       onClick={onClick}
@@ -28,5 +28,3 @@ const LeftNavLink = ({ active, icon: Icon, onClick, children }: LeftNavLinkProps
     </li>
   )
 }
-
-export default LeftNavLink

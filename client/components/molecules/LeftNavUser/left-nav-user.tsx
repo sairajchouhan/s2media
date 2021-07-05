@@ -1,14 +1,14 @@
 import React from 'react'
-import MoreHorizontal from '../../assets/svgs/moreh.svg'
-import { Avatar } from '../atoms/Avatar/avatar'
+import MoreHorizontal from '../../../assets/svgs/moreh.svg'
+import { Avatar } from '../../atoms/Avatar'
 
-interface LeftNavUserProps {
+export interface LeftNavUserProps {
   src: string
   username?: string
   displayName?: string
 }
 
-const LeftNavUser = ({ src }: LeftNavUserProps) => {
+export const LeftNavUser = ({ src }: LeftNavUserProps) => {
   return (
     <li className="flex items-center px-8 py-4 mt-auto mb-3 rounded-lg cursor-pointer select-none hover:bg-indigo-50">
       <div className="flex items-center w-full ">
@@ -28,5 +28,3 @@ const LeftNavUser = ({ src }: LeftNavUserProps) => {
     </li>
   )
 }
-
-export default LeftNavUser

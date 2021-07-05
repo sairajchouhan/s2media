@@ -4,7 +4,7 @@ export type LeftNavBrandProps = {
   onClick: () => void
 }
 
-const LeftNavBrand = ({ onClick, ...props }: LeftNavBrandProps) => {
+export const LeftNavBrand = ({ onClick, ...props }: LeftNavBrandProps) => {
   return (
     <div
       {...props}
@@ -29,5 +29,3 @@ const LeftNavBrand = ({ onClick, ...props }: LeftNavBrandProps) => {
     </div>
   )
 }
-
-export default LeftNavBrand

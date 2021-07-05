@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
-import { NextImage } from './atoms/Image/Image'
+import { NextImage } from '../atoms/Image'
 // import Image from 'next/image'
 
 export const Post = () => {
