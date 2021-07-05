@@ -24,7 +24,7 @@ const LeftNav = () => {
   if (!session) return null
 
   return (
-    <nav className="flex flex-col h-screen max-h-screen bg-white w-72">
+    <nav className="flex flex-col h-screen max-h-screen w-72">
       <LeftNavBrand
         onClick={() => {
           if (session) push('/home')
