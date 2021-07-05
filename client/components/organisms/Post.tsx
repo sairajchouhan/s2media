@@ -10,16 +10,20 @@ import { NextImage } from '../atoms/Image'
 import { PostFoot } from '../molecules/PostFoot'
 import { PostHead } from '../molecules/PostHead'
 
-export const Post = () => {
+export interface PostProps {
+  url: string
+}
+
+export const Post = ({ url }: PostProps) => {
   const user = useUser()
   if (!user) return null
 
   return (
-    <div className="overflow-hidden transition-all border rounded-lg shadow-sm border-opacity-80 hover:bg-gray-50">
+    <div className="mt-6 overflow-hidden transition-all border rounded-lg shadow-sm border-opacity-80 hover:bg-gray-50">
       <PostHead user={user} moreIcon={MoreHorizontal} />
       <main className="">
         <div className="">
-          <NextImage src="https://images.unsplash.com/photo-1625312815354-538eaa7ceced?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" />
+          <NextImage src={url} />
         </div>
       </main>
       <PostFoot icon1={HeartOutline} icon2={CommentPost} icon3={Saved} />
