@@ -6,7 +6,7 @@ import Message from '../../assets/svgs/message.svg'
 import Profile from '../../assets/svgs/profile.svg'
 import Saved from '../../assets/svgs/saved.svg'
 import Settings from '../../assets/svgs/settings.svg'
-import { LeftNavPostBtn } from '../atoms/LeftNavPostBtn/'
+import { LeftNavPostBtn } from '../atoms/LeftNavPostBtn/LeftNavPostBtn'
 import { LeftNavBrand } from '../molecules/LeftNavBrand/'
 import { LeftNavLink } from '../molecules/LeftNavLink/'
 import { LeftNavUser } from '../molecules/LeftNavUser/'
@@ -24,14 +24,14 @@ const LeftNav = () => {
   if (!session) return null
 
   return (
-    <nav className="flex flex-col h-screen max-h-screen w-72">
+    <nav className="flex flex-col w-64 h-screen max-h-screen">
       <LeftNavBrand
         onClick={() => {
           if (session) push('/home')
           else push('/')
         }}
       />
-      <ul className="flex flex-col w-full h-full">
+      <ul className="flex flex-col items-start w-full h-full space-y-2">
         <LeftNavLink active={pathname === '/home'} icon={Home} onClick={() => push('/home')}>
           Home
         </LeftNavLink>
@@ -62,10 +62,9 @@ const LeftNav = () => {
         >
           Settings
         </LeftNavLink>
-
         <LeftNavPostBtn />
-        <LeftNavUser src={session.avatar} />
       </ul>
+      <LeftNavUser src={session.avatar} />
     </nav>
   )
 }
