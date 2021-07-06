@@ -20,7 +20,7 @@ const Home = () => {
     <PrivateRoute>
       <div className="h-full">
         <Stories />
-        <main className="mt-6">
+        <main>
           {urls.map((url) => (
             <React.Fragment key={url}>
               <Post url={url} />

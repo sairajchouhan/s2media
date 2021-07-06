@@ -4,13 +4,13 @@ import { NextImage } from '../Image'
 interface AvatarProps {
   src: string
   alt: string
-  w: string
-  h: string
+  w?: string
+  h?: string
 }
 
-export const Avatar = ({ src, alt, w, h }: AvatarProps) => {
+export const Avatar = ({ src, alt, w = 'w-6', h = 'h-6' }: AvatarProps) => {
   return (
-    <div className={`${w} ${h}`}>
+    <div className={`${w} ${h} inline-block`}>
       <NextImage roundedFull={true} src={src} alt={alt} />
     </div>
   )

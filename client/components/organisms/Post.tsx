@@ -22,9 +22,7 @@ export const Post = ({ url }: PostProps) => {
     <div className="mt-6 overflow-hidden transition-all border rounded-lg shadow-sm border-opacity-80 hover:bg-gray-50">
       <PostHead user={user} moreIcon={MoreHorizontal} />
       <main className="">
-        <div className="">
-          <NextImage src={url} />
-        </div>
+        <NextImage src={url} />
       </main>
       <PostFoot icon1={HeartOutline} icon2={CommentPost} icon3={Saved} />
     </div>
