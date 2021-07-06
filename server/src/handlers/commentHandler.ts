@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { validationResult } from 'express-validator'
-import prisma from '../../prisma'
 import createError from 'http-errors'
+import prisma from '../../prisma'
 
 export const createComment = async (req: Request, res: Response) => {
   const errors = validationResult(req)
@@ -11,7 +11,7 @@ export const createComment = async (req: Request, res: Response) => {
     })
   }
   const { body } = req.body
-  const postId = parseInt(req.params.postId)
+  const postId = req.params.postId
   const userId = req.user.id
 
   const comment = await prisma.comment.create({
@@ -34,8 +34,8 @@ export const editComment = async (req: Request, res: Response) => {
     })
   }
 
-  const postId = parseInt(req.params.postId)
-  const commentId = parseInt(req.params.commentId)
+  const postId = req.params.postId
+  const commentId = req.params.commentId
   const userId = req.user.id
   const { body } = req.body
 
@@ -73,8 +73,8 @@ export const deleteComment = async (req: Request, res: Response) => {
     })
   }
 
-  const postId = parseInt(req.params.postId)
-  const commentId = parseInt(req.params.commentId)
+  const postId = req.params.postId
+  const commentId = req.params.commentId
   const userId = req.user.id
 
   const post = await prisma.post.findUnique({

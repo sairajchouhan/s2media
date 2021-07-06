@@ -1,8 +1,7 @@
 import { Request, Response } from 'express'
 import { validationResult } from 'express-validator'
-
-import prisma from '../../prisma'
 import createError from 'http-errors'
+import prisma from '../../prisma'
 
 export const likeAndUnlikePost = async (req: Request, res: Response) => {
   const errors = validationResult(req)
@@ -12,7 +11,7 @@ export const likeAndUnlikePost = async (req: Request, res: Response) => {
     })
   }
 
-  const postId: number = req.params.postId as never
+  const postId = req.params.postId
   const userId = req.user.id
 
   const post = await prisma.post.findUnique({

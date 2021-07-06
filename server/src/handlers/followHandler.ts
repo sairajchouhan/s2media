@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { validationResult } from 'express-validator'
-import prisma from '../../prisma'
 import createError from 'http-errors'
+import prisma from '../../prisma'
 
 export const followUser = async (req: Request, res: Response) => {
   const errors = validationResult(req)
@@ -11,7 +11,7 @@ export const followUser = async (req: Request, res: Response) => {
     })
   }
 
-  const userId = parseInt(req.params.userId)
+  const userId = req.params.userId
 
   if (req.user.id === userId) throw createError(400, 'Cannot follow yourself')
 

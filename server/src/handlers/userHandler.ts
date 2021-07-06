@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import { validationResult } from 'express-validator'
 import createError from 'http-errors'
-
 import prisma from '../../prisma'
 
 export const getAllUsers = async (_req: Request, res: Response) => {
@@ -93,7 +92,7 @@ export const getUserInfo = async (req: Request, res: Response) => {
       errors: errors.array(),
     })
   }
-  const id = parseInt(req.params.userId)
+  const id = req.params.userId
 
   const user = await prisma.user.findUnique({
     where: {
