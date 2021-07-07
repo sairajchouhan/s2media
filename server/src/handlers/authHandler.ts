@@ -2,6 +2,7 @@ import { User } from '@prisma/client'
 import { Request, Response } from 'express'
 import { validationResult } from 'express-validator'
 // import createError from 'http-errors'
+import createError from 'http-errors'
 // import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import prisma from '../../prisma'
@@ -102,22 +103,61 @@ export const getToken = async (req: Request, res: Response) => {
       errors: [errors.array()],
     })
   }
-  const { email, username, avatar } = req.body
+  const {
+    email,
+    username,
+    avatar,
+    displayName,
+  }: {
+    email: string
+    username: string
+    avatar: string
+    displayName: string
+  } = req.body
 
   let user: User | null
 
-  user = await prisma.user.findUnique({
+  user = await prisma.user.findFirst({
     where: {
-      email,
+      OR: [
+        {
+          username: {
+            equals: username,
+          },
+        },
+        {
+          email: {
+            equals: email,
+          },
+        },
+      ],
+    },
+    include: {
+      profile: true,
     },
   })
 
+  if (user && (user.username !== username || user.email !== email)) {
+    throw createError(400, 'dont mess with me')
+  }
+
   if (!user) {
+    const cleanUsername = username.toLowerCase()
+    cleanUsername.replace(/\s/g, '')
     user = await prisma.user.create({
       data: {
         email,
-        username,
+        username: cleanUsername,
         avatar,
+        profile: {
+          create: {
+            bio: null,
+            displayName: displayName,
+          },
+        },
+      },
+      include: {
+        profile: true,
       },
     })
   }
@@ -128,7 +168,7 @@ export const getToken = async (req: Request, res: Response) => {
     email: user.email,
     avatar: user.avatar,
   }
+
   const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '30d' })
-  console.log('about to end')
   return res.json({ ...user, token })
 }
