@@ -13,7 +13,6 @@ import { LeftNavUser } from '../molecules/LeftNavUser/'
 
 const LeftNav = () => {
   const { push, pathname } = useRouter()
-  console.log(pathname)
   const [session] = useSession()
 
   const handleLogout = async () => {

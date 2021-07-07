@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    overflow-y: scroll;
-  }
-}
-
 @layer utilities {
   .imageContainer {
     width: 100%;

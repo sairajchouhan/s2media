@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build && node dist/server.js",
     "dev": "nodemon",
+    "start": "npm run build && node dist/server.js",
     "build": "rimraf ./dist && tsc",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
-    "prettify": "prettier --config .prettierrc 'src/**/*.ts' --write"
+    "prettify": "prettier --config .prettierrc 'src/**/*.ts' --write",
+    "studio": "npx prisma studio"
   },
   "keywords": [],
   "author": "",
