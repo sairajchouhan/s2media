@@ -11,7 +11,7 @@ export const LeftNavLink = ({ active, icon: Icon, onClick, children }: LeftNavLi
   return (
     <li
       onClick={onClick}
-      className="flex items-center justify-start w-full text-gray-800 cursor-pointer select-none group"
+      className="flex items-center justify-start w-full text-gray-600 cursor-pointer select-none group"
     >
       <div className="flex items-center px-6 py-2 rounded-full group-hover:bg-indigo-50 ">
         <Icon
@@ -21,7 +21,7 @@ export const LeftNavLink = ({ active, icon: Icon, onClick, children }: LeftNavLi
         />
         <p
           className={`text-lg font-bold group-hover:text-indigo-500 ${
-            active ? 'text-indigo-600' : 'text-gray-800'
+            active ? 'text-indigo-600' : 'text-gray-600'
           }`}
         >
           {children}
