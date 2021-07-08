@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
-import React, { Dispatch, Fragment, MutableRefObject, SetStateAction } from 'react'
+import React, { Dispatch, Fragment, MutableRefObject, SetStateAction, useState } from 'react'
 import Cross from '../../assets/svgs/cross.svg'
 import { useUser } from '../../hooks/useUser'
 import { AutoGrowTextArea } from '../atoms/AutoGrowTextArea'
@@ -14,7 +14,33 @@ export interface PostCreateInterface {
 
 export const PostCreate = ({ initialFocusRef, open, setOpen }: PostCreateInterface) => {
   const user = useUser()
+  const [selectedImage, setSelectedImage] = useState<File | null>()
+
   if (!user) return null
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setSelectedImage(e.target.files[0])
+    }
+  }
+  const handleImageUpload = async () => {
+    if (!selectedImage) {
+      return
+    }
+    const formData = new FormData()
+    formData.append('image', selectedImage)
+    try {
+      const res = await fetch('http://localhost:5000/api/v1/post/upload', {
+        method: 'post',
+        body: formData,
+      })
+      console.log('sussess')
+      console.log(res)
+    } catch (err) {
+      console.log('error ')
+      console.log(err)
+    }
+  }
 
   return (
     <>
@@ -56,7 +82,13 @@ export const PostCreate = ({ initialFocusRef, open, setOpen }: PostCreateInterfa
                   <Dialog.Title as="h3" className="text-xl font-medium leading-6 text-gray-700">
                     Create post
                   </Dialog.Title>
-                  <IconButton icon={Cross} textColour="text-indigo-500" hoverBgColor="bg-blue-50" />
+                  <div onClick={() => setOpen((open) => !open)}>
+                    <IconButton
+                      icon={Cross}
+                      textColour="text-indigo-500"
+                      hoverBgColor="bg-blue-50"
+                    />
+                  </div>
                 </div>
                 <span className="block w-full h-px my-2 bg-gray-200"></span>
                 <div className="mt-4">
@@ -69,7 +101,26 @@ export const PostCreate = ({ initialFocusRef, open, setOpen }: PostCreateInterfa
                     </div>
                   </div>
                 </div>
+                {/*! ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */}
+                <div>
+                  <input
+                    onChange={handleImageChange}
+                    accept=".jpg, .png, .jpeg"
+                    className="mb-2 fileInput"
+                    type="file"
+                  ></input>
+                  <div>
+                    <button
+                      onClick={handleImageUpload}
+                      disabled={!selectedImage}
+                      className="mb-2 btn btn-primary"
+                    >
+                      Upload
+                    </button>
+                  </div>
+                </div>
 
+                {/*! ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */}
                 <div className="flex items-center justify-end mt-4">
                   <button
                     type="button"
