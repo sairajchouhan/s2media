@@ -19,7 +19,7 @@ export const IconButton = ({
   return (
     <button className={`p-2 rounded-full cursor-pointer hover:${hoverBgColor}`} {...props}>
       <div className={`${w} ${h} ${textColour} flex justify-center items-center`}>
-        <Icon />
+        <Icon fill="#00ff00" />
       </div>
     </button>
   )
