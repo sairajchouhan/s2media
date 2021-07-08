@@ -1,8 +1,10 @@
 import { Dialog, Transition } from '@headlessui/react'
 import React, { Dispatch, Fragment, MutableRefObject, SetStateAction } from 'react'
+import Cross from '../../assets/svgs/cross.svg'
 import { useUser } from '../../hooks/useUser'
 import { AutoGrowTextArea } from '../atoms/AutoGrowTextArea'
 import { Avatar } from '../atoms/Avatar'
+import { IconButton } from '../atoms/IconButton'
 
 export interface PostCreateInterface {
   initialFocusRef: MutableRefObject<null>
@@ -49,15 +51,15 @@ export const PostCreate = ({ initialFocusRef, open, setOpen }: PostCreateInterfa
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-full max-w-xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+              <div className="inline-block w-full max-w-xl px-6 py-4 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
                 <div className="flex items-center justify-between">
-                  <Dialog.Title as="h3" className="text-xl font-medium leading-6 text-gray-900">
+                  <Dialog.Title as="h3" className="text-xl font-medium leading-6 text-gray-700">
                     Create post
                   </Dialog.Title>
-                  <button className="rounded-full bg-blue-50">X</button>
+                  <IconButton icon={Cross} textColour="text-indigo-500" hoverBgColor="bg-blue-50" />
                 </div>
-                <span className="block w-full h-px my-3 bg-gray-200"></span>
-                <div className="mt-2">
+                <span className="block w-full h-px my-2 bg-gray-200"></span>
+                <div className="mt-4">
                   <div className="flex items-start h-full space-x-4">
                     <div className="h-full">
                       <Avatar src={user.avatar} w="w-10" h="h-10" alt="authenticated user avatar" />
@@ -66,18 +68,15 @@ export const PostCreate = ({ initialFocusRef, open, setOpen }: PostCreateInterfa
                       <AutoGrowTextArea initialFocusRef={initialFocusRef} />
                     </div>
                   </div>
-                  {/* <div className="mt-2 overflow-hidden rounded-lg">
-                    <NextImage src="https://images.unsplash.com/photo-1625320014712-cc333e4e93a5?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" />
-                  </div> */}
                 </div>
 
                 <div className="flex items-center justify-end mt-4">
                   <button
                     type="button"
-                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                    className="inline-flex justify-center px-4 py-1 font-medium text-indigo-600 transition-all border border-transparent rounded-md text-md bg-blue-50 hover:bg-blue-100"
                     onClick={() => setOpen((open) => !open)}
                   >
-                    Post
+                    Upload
                   </button>
                 </div>
               </div>
