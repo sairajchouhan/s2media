@@ -1,18 +1,13 @@
 import { Router } from 'express'
-import { createPost, allPosts, updatePost, deletePost } from '../handlers/postHandler'
 import ash from 'express-async-handler'
 import { body, param } from 'express-validator'
-
+import { allPosts, createPost, deletePost, updatePost } from '../handlers/postHandler'
 import auth from '../middlewares/auth'
+import { singleImageUploadMiddleware } from '../middlewares/singleImageUpload'
 
 const router = Router()
 
-router.post(
-  '/',
-  auth,
-  [body('url', 'url is required').not().isEmpty().trim(), body('caption').optional().trim().escape()],
-  ash(createPost)
-)
+router.post('/', auth, singleImageUploadMiddleware, [body('caption').optional().trim().escape()], ash(createPost))
 router.get('/', ash(allPosts))
 router.put(
   '/:postId',
