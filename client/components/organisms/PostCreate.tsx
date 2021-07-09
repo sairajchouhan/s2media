@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Dialog, Transition } from '@headlessui/react'
+import axios from 'axios'
 import React, { Dispatch, Fragment, SetStateAction, useEffect, useRef, useState } from 'react'
 import Cancel from '../../assets/svgs/cancel.svg'
 import CancelWhite from '../../assets/svgs/cancelwhite.svg'
@@ -7,7 +8,6 @@ import { useUser } from '../../hooks/useUser'
 import { AutoGrowTextArea } from '../atoms/AutoGrowTextArea'
 import { Avatar } from '../atoms/Avatar'
 import { IconButton } from '../atoms/IconButton'
-
 export interface PostCreateInterface {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
@@ -19,9 +19,6 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
-  console.log(selectedFile)
-  console.log(previewUrl)
-
   useEffect(() => {
     if (selectedFile) {
       setPreviewUrl(URL.createObjectURL(selectedFile))
@@ -29,6 +26,7 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
   }, [selectedFile])
 
   // const validateInputFile = () => {}
+  if (!user) return null
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
@@ -51,9 +49,26 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
     }, 200)
   }
 
-  const handleCreatePost = () => {}
+  const handleCreatePost = async () => {
+    const formData = new FormData()
+    if (selectedFile) {
+      formData.append('image', selectedFile)
+      formData.append('token', user.accessToken)
+    }
 
-  if (!user) return null
+    try {
+      const res = await axios.post('http://localhost:5000/api/v1/post/123/upload', formData)
+      setOpen((open) => !open)
+      setSelectedFile(null)
+      setPreviewUrl(null)
+
+      console.log(res)
+    } catch (err) {
+      console.log('err ra babu')
+      console.log(err)
+    }
+  }
+
   return (
     <>
       <Transition appear show={open} as={Fragment}>

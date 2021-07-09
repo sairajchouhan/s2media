@@ -1,13 +1,13 @@
+import cors from 'cors'
 import express from 'express'
 import morgan from 'morgan'
-
+import errorMiddleware from './middlewares/error'
 import authRoutes from './routes/authRoutes'
-import userRoutes from './routes/userRoutes'
-import postRoutes from './routes/postRoutes'
-import likeRoutes from './routes/likeRoutes'
 import commentRoutes from './routes/commentRoutes'
 import followRoutes from './routes/followRoutes'
-import errorMiddleware from './middlewares/error'
+import likeRoutes from './routes/likeRoutes'
+import postRoutes from './routes/postRoutes'
+import userRoutes from './routes/userRoutes'
 
 const app = express()
 
@@ -15,6 +15,11 @@ const app = express()
 app.use(morgan('dev'))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+  })
+)
 
 // Routes
 app.use('/api/v1/auth', authRoutes)
