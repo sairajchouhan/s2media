@@ -4,6 +4,7 @@ import axios from 'axios'
 import React, { Dispatch, Fragment, SetStateAction, useEffect, useRef, useState } from 'react'
 import Cancel from '../../assets/svgs/cancel.svg'
 import CancelWhite from '../../assets/svgs/cancelwhite.svg'
+import useLoading from '../../hooks/useLoading'
 import { useUser } from '../../hooks/useUser'
 import { AutoGrowTextArea } from '../atoms/AutoGrowTextArea'
 import { Avatar } from '../atoms/Avatar'
@@ -15,9 +16,12 @@ export interface PostCreateInterface {
 
 export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
   const user = useUser()
-  const textareaRef = useRef(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [selectedFile, setSelectedFile] = useState<Blob | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [loading, setLoading] = useLoading()
+  const [caption, setCaption] = useState('')
+  console.log(loading)
 
   useEffect(() => {
     if (selectedFile) {
@@ -52,18 +56,38 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
     }, 200)
   }
 
+  const validatePostData = () => {
+    let res: boolean
+    if (!selectedFile) res = false
+    else res = true
+    return res
+  }
+
+  console.log(textareaRef.current?.value)
+
   const handleCreatePost = async () => {
+    const isValid = validatePostData()
+
+    if (!isValid) {
+      console.log('data is not validated')
+      return
+    }
+
     const formData = new FormData()
     formData.append('image', selectedFile as Blob)
-    formData.append('token', user.accessToken)
-
+    if (textareaRef.current?.value !== '' && textareaRef.current?.value) {
+      formData.append('caption', textareaRef.current?.value as string)
+    }
     try {
       console.log(formData)
-      const res = await axios.post('http://localhost:5000/api/v1/post/123/upload', formData)
+      const res = await axios.post('http://localhost:5000/api/v1/post', formData, {
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      })
       setOpen((open) => !open)
       setSelectedFile(null)
       setPreviewUrl(null)
-
       console.log(res)
     } catch (err) {
       console.log('err ra babu')

@@ -2,6 +2,8 @@ import { Request, Response } from 'express'
 import { validationResult } from 'express-validator'
 import createError from 'http-errors'
 import prisma from '../../prisma/'
+import { cloudinaryPostImageUpload } from '../config/cloudinary'
+import { formatBufferTo64 } from '../config/data-uri'
 
 export const createPost = async (req: Request, res: Response) => {
   const errors = validationResult(req)
@@ -11,10 +13,18 @@ export const createPost = async (req: Request, res: Response) => {
     })
   }
 
-  const { url, caption } = req.body
+  const { caption }: { caption: string } = req.body
+
+  if (!req.file) {
+    throw createError(404, 'Post does not exist')
+  }
+
+  const base64file = formatBufferTo64(req.file)
+  const imageUploadRes = await cloudinaryPostImageUpload(base64file.content as string)
+
   const createdPost = await prisma.post.create({
     data: {
-      url: url,
+      url: imageUploadRes.secure_url,
       caption: caption,
       userId: req.user.id,
     },

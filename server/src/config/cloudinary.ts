@@ -6,7 +6,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 })
 
-export const cloudinaryUpload = (file: string, folder: string = 's2media/posts') =>
+export const cloudinaryPostImageUpload = (file: string, folder: string = 's2media/posts') =>
   cloudinary.uploader.upload(file, {
     folder,
   })
