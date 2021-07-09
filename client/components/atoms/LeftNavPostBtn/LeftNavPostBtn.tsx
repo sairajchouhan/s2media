@@ -1,8 +1,7 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import PostCreate from '../../organisms/PostCreate'
 
 export const LeftNavPostBtn = () => {
-  const initialFocusRef = useRef(null)
   const [openPostCreateModel, setOpenPostCreateModel] = useState(false)
   return (
     <>
@@ -16,11 +15,7 @@ export const LeftNavPostBtn = () => {
           Post
         </button>
       </li>
-      <PostCreate
-        open={openPostCreateModel}
-        setOpen={setOpenPostCreateModel}
-        initialFocusRef={initialFocusRef}
-      />
+      <PostCreate open={openPostCreateModel} setOpen={setOpenPostCreateModel} />
     </>
   )
 }

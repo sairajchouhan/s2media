@@ -1,24 +1,64 @@
+/* eslint-disable @next/next/no-img-element */
 import { Dialog, Transition } from '@headlessui/react'
-import React, { Dispatch, Fragment, MutableRefObject, SetStateAction } from 'react'
+import React, { Dispatch, Fragment, SetStateAction, useEffect, useRef, useState } from 'react'
+import Cancel from '../../assets/svgs/cancel.svg'
+import CancelWhite from '../../assets/svgs/cancelwhite.svg'
 import { useUser } from '../../hooks/useUser'
 import { AutoGrowTextArea } from '../atoms/AutoGrowTextArea'
 import { Avatar } from '../atoms/Avatar'
+import { IconButton } from '../atoms/IconButton'
 
 export interface PostCreateInterface {
-  initialFocusRef: MutableRefObject<null>
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export const PostCreate = ({ initialFocusRef, open, setOpen }: PostCreateInterface) => {
+export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
   const user = useUser()
-  if (!user) return null
+  const textareaRef = useRef(null)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
+  console.log(selectedFile)
+  console.log(previewUrl)
+
+  useEffect(() => {
+    if (selectedFile) {
+      setPreviewUrl(URL.createObjectURL(selectedFile))
+    }
+  }, [selectedFile])
+
+  // const validateInputFile = () => {}
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (files) {
+      setSelectedFile(files[0])
+    }
+  }
+
+  const handleRemoveSelectedImage = () => {
+    console.log('I will remove')
+    setSelectedFile(null)
+    setPreviewUrl(null)
+  }
+
+  const handlePostCancel = () => {
+    setOpen((open) => !open)
+    setTimeout(() => {
+      setSelectedFile(null)
+      setPreviewUrl(null)
+    }, 200)
+  }
+
+  const handleCreatePost = () => {}
+
+  if (!user) return null
   return (
     <>
       <Transition appear show={open} as={Fragment}>
         <Dialog
-          initialFocus={initialFocusRef}
+          initialFocus={textareaRef}
           as="div"
           className="fixed inset-0 z-10 overflow-y-auto"
           onClose={setOpen}
@@ -49,33 +89,65 @@ export const PostCreate = ({ initialFocusRef, open, setOpen }: PostCreateInterfa
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-full max-w-xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+              <div className="inline-block w-full max-w-xl px-4 py-4 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
                 <div className="flex items-center justify-between">
                   <Dialog.Title as="h3" className="text-xl font-medium leading-6 text-gray-900">
                     Create post
                   </Dialog.Title>
-                  <button className="rounded-full bg-blue-50">X</button>
+                  <IconButton onClick={handlePostCancel} icon={Cancel} hoverBgColor="bg-blue-50" />
                 </div>
-                <span className="block w-full h-px my-3 bg-gray-200"></span>
-                <div className="mt-2">
+                <span className="block w-full h-px my-2 bg-gray-200"></span>
+                <div className="mt-4">
                   <div className="flex items-start h-full space-x-4">
                     <div className="h-full">
                       <Avatar src={user.avatar} w="w-10" h="h-10" alt="authenticated user avatar" />
                     </div>
                     <div className="flex items-center flex-1 h-full">
-                      <AutoGrowTextArea initialFocusRef={initialFocusRef} />
+                      <AutoGrowTextArea initialFocusRef={textareaRef} />
                     </div>
                   </div>
-                  {/* <div className="mt-2 overflow-hidden rounded-lg">
-                    <NextImage src="https://images.unsplash.com/photo-1625320014712-cc333e4e93a5?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" />
-                  </div> */}
+                  <div className="mt-3">
+                    {previewUrl && (
+                      <div className="relative flex justify-center w-full h-auto">
+                        <div className="overflow-hidden rounded-lg">
+                          <img src={previewUrl} className="block" alt="preview url" />
+                        </div>
+                        <div className="absolute top-3 right-3">
+                          <IconButton
+                            icon={CancelWhite}
+                            w="w-4"
+                            h="h-4"
+                            p="p-1"
+                            hoverBgColor="bg-black bg-opacity-60"
+                            textColour="text-white"
+                            bgColor="bg-black bg-opacity-50"
+                            onClick={handleRemoveSelectedImage}
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
-                <div className="flex items-center justify-end mt-4">
+                <div className="flex items-center justify-between mt-6">
+                  <div>
+                    <label
+                      className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md cursor-pointer hover:bg-blue-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                      htmlFor="postfile"
+                    >
+                      Upload image
+                    </label>
+                    <input
+                      onChange={handleFileChange}
+                      id="postfile"
+                      type="file"
+                      className="hidden"
+                    />
+                  </div>
                   <button
                     type="button"
-                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                    onClick={() => setOpen((open) => !open)}
+                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                    onClick={handleCreatePost}
                   >
                     Post
                   </button>
