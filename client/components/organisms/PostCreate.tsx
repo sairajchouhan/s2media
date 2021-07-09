@@ -16,7 +16,7 @@ export interface PostCreateInterface {
 export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
   const user = useUser()
   const textareaRef = useRef(null)
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [selectedFile, setSelectedFile] = useState<Blob | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
   useEffect(() => {
@@ -30,10 +30,13 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
+
     if (files) {
       setSelectedFile(files[0])
     }
   }
+
+  console.log(selectedFile)
 
   const handleRemoveSelectedImage = () => {
     console.log('I will remove')
@@ -51,12 +54,11 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
 
   const handleCreatePost = async () => {
     const formData = new FormData()
-    if (selectedFile) {
-      formData.append('image', selectedFile)
-      formData.append('token', user.accessToken)
-    }
+    formData.append('image', selectedFile as Blob)
+    formData.append('token', user.accessToken)
 
     try {
+      console.log(formData)
       const res = await axios.post('http://localhost:5000/api/v1/post/123/upload', formData)
       setOpen((open) => !open)
       setSelectedFile(null)
