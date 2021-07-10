@@ -1,5 +1,6 @@
+import axios from 'axios'
 import { useSession } from 'next-auth/client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Post } from '../../components/organisms/Post'
 import Stories from '../../components/organisms/Stories'
 import PrivateRoute from '../../components/PrivateRoute'
@@ -15,15 +16,27 @@ const urls = [
 const Home = () => {
   const [session] = useSession()
   console.log(session)
+  const [posts, setPosts] = useState<any>([])
+
+  useEffect(() => {
+    ;(async () => {
+      const res = await axios.get('http://localhost:5000/api/v1/post')
+      setPosts(res.data)
+      console.log(res)
+    })()
+  }, [])
+
+  if (!session) return null
+  if (posts.length === 0) return <h1>Loading...</h1>
 
   return (
     <PrivateRoute>
       <div className="h-full">
         <Stories />
         <main>
-          {urls.map((url) => (
-            <React.Fragment key={url}>
-              <Post url={url} />
+          {posts.map((post: any) => (
+            <React.Fragment key={post.id}>
+              <Post url={post.url} caption={post.caption} />
             </React.Fragment>
           ))}
         </main>

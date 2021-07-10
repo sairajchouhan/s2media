@@ -14,6 +14,7 @@ module.exports = {
       'picsum.photos',
       'images.unsplash.com',
       'placekitten.com',
+      'res.cloudinary.com',
     ],
   },
 }

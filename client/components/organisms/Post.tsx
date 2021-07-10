@@ -12,15 +12,16 @@ import { PostHead } from '../molecules/PostHead'
 
 export interface PostProps {
   url: string
+  caption?: string
 }
 
-export const Post = ({ url }: PostProps) => {
+export const Post = ({ url, caption }: PostProps) => {
   const user = useUser()
   if (!user) return null
 
   return (
     <div className="mt-6 overflow-hidden transition-all border rounded-lg shadow-sm border-opacity-80 hover:bg-gray-50">
-      <PostHead user={user} moreIcon={MoreHorizontal} />
+      <PostHead caption={caption} user={user} moreIcon={MoreHorizontal} />
       <main className="">
         <NextImage src={url} />
       </main>
