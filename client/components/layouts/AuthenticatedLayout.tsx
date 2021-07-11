@@ -13,9 +13,9 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
             </div>
           </div>
         </header>
-        <div className="grid w-full grid-cols-[24] gap-10">
-          <div className="min-h-screen col-span-[12]">{children}</div>
-          <div className="col-span-2 bg-gray-50">
+        <div className="grid w-full grid-cols-12 gap-10">
+          <div className="min-h-screen col-span-8">{children}</div>
+          <div className="col-span-4 bg-gray-50">
             <RightNav />
           </div>
         </div>

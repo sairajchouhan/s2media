@@ -142,8 +142,9 @@ export const getToken = async (req: Request, res: Response) => {
   }
 
   if (!user) {
-    const cleanUsername = username.toLowerCase()
-    cleanUsername.replace(/\s/g, '')
+    let cleanUsername = username.toLowerCase()
+    cleanUsername = cleanUsername.split(' ').join('')
+    console.log(cleanUsername)
     user = await prisma.user.create({
       data: {
         email,
