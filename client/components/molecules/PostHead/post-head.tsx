@@ -1,17 +1,15 @@
 import Link from 'next/link'
 import React from 'react'
-import { SessionUser } from '../../../types/user'
+import { PostWithUser } from '../../../types/post'
 import { Avatar } from '../../atoms/Avatar'
 import { IconButton } from '../../atoms/IconButton'
 
 export interface PostHeadProps {
-  user: SessionUser
   moreIcon: typeof React.Component
-  id: string
-  caption?: string
+  post: PostWithUser
 }
 
-export const PostHead = ({ user, id, moreIcon, caption }: PostHeadProps) => {
+export const PostHead = ({ post: { user, caption, createdAt }, moreIcon }: PostHeadProps) => {
   return (
     <div>
       <div className="flex items-center justify-between px-2 py-2 border-b border-opacity-80">
@@ -26,14 +24,15 @@ export const PostHead = ({ user, id, moreIcon, caption }: PostHeadProps) => {
               <a>
                 <div className="flex items-center">
                   <a className="font-semibold leading-4 text-gray-800 cursor-pointer text-md hover:underline">
-                    {user.displayName}
+                    {user.profile.displayName}
+                    {/* {user.displayName} */}
                   </a>
                   <div className="mx-1 text-base font-normal text-gray-600">·</div>
                   <a className="text-sm leading-5 text-gray-500 text-md">@{user.username}</a>
                 </div>
               </a>
             </Link>
-            <p className="text-xs leading-4 text-gray-500">2 min ago</p>
+            <p className="text-xs leading-4 text-gray-500">{JSON.stringify(createdAt)}</p>
           </div>
         </div>
         <div className="z-10">

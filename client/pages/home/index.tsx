@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { Post } from '../../components/organisms/Post'
 import Stories from '../../components/organisms/Stories'
 import PrivateRoute from '../../components/PrivateRoute'
+import { PostWithUser } from '../../types/post'
 
 const Home = () => {
   const [session] = useSession()
@@ -18,7 +19,7 @@ const Home = () => {
     })()
   }, [])
 
-  console.log(posts[0])
+  console.log(posts)
 
   if (!session) return null
 
@@ -30,9 +31,9 @@ const Home = () => {
           {l ? (
             <h1>Loading...</h1>
           ) : (
-            posts.map((post: any) => (
+            posts.map((post: PostWithUser) => (
               <React.Fragment key={post.id}>
-                <Post id={post.id} url={post.url} caption={post.caption} />
+                <Post post={post} />
               </React.Fragment>
             ))
           )}
