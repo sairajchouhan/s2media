@@ -12,7 +12,7 @@ export interface PostHeadProps {
 export const PostHead = ({ post: { user, caption, createdAt }, moreIcon }: PostHeadProps) => {
   return (
     <div>
-      <div className="flex items-center justify-between px-2 py-2 border-b border-opacity-80">
+      <div className="flex items-center justify-between px-2 py-2 ">
         <div className="z-20 flex items-center">
           <Link href="/profile">
             <a className="flex items-center">

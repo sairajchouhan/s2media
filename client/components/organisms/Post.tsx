@@ -22,7 +22,7 @@ export const Post = ({ post }: PostProps) => {
   if (!user) return null
 
   return (
-    <div className="mt-6 overflow-hidden transition-all border rounded-lg shadow-sm border-opacity-80 hover:bg-gray-50">
+    <div className="mt-6 overflow-hidden transition-all border rounded-sm shadow-sm border-opacity-80 hover:bg-gray-50">
       <PostHead post={post} moreIcon={MoreHorizontal} />
       <main className="cursor-pointer" onClick={() => push(`/post/${post.id}`)}>
         <NextImage src={post.url} />

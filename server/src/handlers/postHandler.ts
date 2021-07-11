@@ -95,7 +95,7 @@ export const deletePost = async (req: Request, res: Response) => {
     })
   }
 
-  const postId = req.params.postId as never
+  const postId = req.params.postId
 
   const post = await prisma.post.findUnique({
     where: {
@@ -118,4 +118,31 @@ export const deletePost = async (req: Request, res: Response) => {
   })
 
   return res.json({ message: 'Post deleted successfully' })
+}
+
+export const getPostById = async (req: Request, res: Response) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      errors: errors.array(),
+    })
+  }
+  const postId = req.params.postId
+  const post = await prisma.post.findUnique({
+    where: {
+      id: postId,
+    },
+    include: {
+      user: {
+        include: {
+          profile: true,
+        },
+      },
+    },
+  })
+  if (!post) {
+    throw createError(400, 'Post not found')
+  }
+
+  return res.json(post)
 }
