@@ -1,25 +1,19 @@
 import axios from 'axios'
 import { useSession } from 'next-auth/client'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useQuery } from 'react-query'
 import { Post } from '../../components/organisms/Post'
 import Stories from '../../components/organisms/Stories'
 import PrivateRoute from '../../components/PrivateRoute'
-import { PostWithUser } from '../../types/post'
+import { PostWithUserAndProfile } from '../../types/post'
 
 const Home = () => {
   const [session] = useSession()
-  const [posts, setPosts] = useState<any>([])
-  const [l, setL] = useState(true)
 
-  useEffect(() => {
-    ;(async () => {
-      const res = await axios.get('http://localhost:5000/api/v1/post')
-      setPosts(res.data)
-      setL(false)
-    })()
-  }, [])
-
-  console.log(posts)
+  const { data: posts, isLoading } = useQuery('posts', async () => {
+    const posts = await axios.get('http://localhost:5000/api/v1/post')
+    return posts.data
+  })
 
   if (!session) return null
 
@@ -28,10 +22,10 @@ const Home = () => {
       <div className="h-full">
         <Stories />
         <main>
-          {l ? (
+          {isLoading ? (
             <h1>Loading...</h1>
           ) : (
-            posts.map((post: PostWithUser) => (
+            posts.map((post: PostWithUserAndProfile) => (
               <React.Fragment key={post.id}>
                 <Post post={post} />
               </React.Fragment>

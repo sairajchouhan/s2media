@@ -1,12 +1,12 @@
 import Link from 'next/link'
 import React from 'react'
-import { PostWithUser } from '../../../types/post'
+import { PostWithUserAndProfile } from '../../../types/post'
 import { Avatar } from '../../atoms/Avatar'
 import { IconButton } from '../../atoms/IconButton'
 
 export interface PostHeadProps {
   moreIcon: typeof React.Component
-  post: PostWithUser
+  post: PostWithUserAndProfile
 }
 
 export const PostHead = ({ post: { user, caption, createdAt }, moreIcon }: PostHeadProps) => {

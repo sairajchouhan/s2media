@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useQuery } from 'react-query'
 import CommentPost from '../../assets/svgs/commentpost.svg'
 import HeartOutline from '../../assets/svgs/heartout.svg'
 import MoreHorizontal from '../../assets/svgs/moreh.svg'
@@ -10,26 +11,18 @@ import { PageNav } from '../../components/molecules/PageNav/page-nav'
 import { PostFoot } from '../../components/molecules/PostFoot/post-foot'
 import { PostHead } from '../../components/molecules/PostHead/post-head'
 import PrivateRoute from '../../components/PrivateRoute'
-import { PostWithUser } from '../../types/post'
 
 const EachPost = () => {
   const router = useRouter()
   const params = router.query
-  const [post, setPost] = useState<PostWithUser | null>(null)
 
-  useEffect(() => {
-    ;(async () => {
-      try {
-        const post = await axios.get('http://localhost:5000/api/v1/post/' + params.postId)
-        setPost(post.data)
-      } catch (err) {
-        console.log(err)
-      }
-    })()
-  }, [params.postId])
+  const { isLoading, data: post, isError } = useQuery(['post', params.postId], async () => {
+    const post = await axios.get('http://localhost:5000/api/v1/post/' + params.postId)
+    return post.data
+  })
 
-  console.log(post)
-  if (!post) return null
+  if (isLoading) return <h1>Loading...</h1>
+  if (isError) return <h1>Something went wrong</h1>
 
   return (
     <PrivateRoute>

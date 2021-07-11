@@ -7,13 +7,13 @@ import HeartOutline from '../../assets/svgs/heartout.svg'
 import MoreHorizontal from '../../assets/svgs/moreh.svg'
 import Saved from '../../assets/svgs/savedoutline.svg'
 import { useUser } from '../../hooks/useUser'
-import { PostWithUser } from '../../types/post'
+import { PostWithUserAndProfile } from '../../types/post'
 import { NextImage } from '../atoms/Image'
 import { PostFoot } from '../molecules/PostFoot'
 import { PostHead } from '../molecules/PostHead'
 
 export interface PostProps {
-  post: PostWithUser
+  post: PostWithUserAndProfile
 }
 
 export const Post = ({ post }: PostProps) => {

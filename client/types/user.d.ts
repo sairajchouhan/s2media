@@ -17,10 +17,6 @@ export interface User {
   updatedAt: string
 }
 
-export interface UserWithProfile extends User {
-  profile: Profile
-}
-
 export interface Profile {
   id: string
   bio?: string | null
@@ -28,4 +24,8 @@ export interface Profile {
   userId: string
   updatedAt: string
   createdAt: string
+}
+
+export interface UserWithProfile extends User {
+  profile: Profile
 }
