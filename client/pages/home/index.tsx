@@ -31,7 +31,7 @@ const Home = () => {
           ) : (
             posts.map((post: any) => (
               <React.Fragment key={post.id}>
-                <Post url={post.url} caption={post.caption} />
+                <Post id={post.id} url={post.url} caption={post.caption} />
               </React.Fragment>
             ))
           )}

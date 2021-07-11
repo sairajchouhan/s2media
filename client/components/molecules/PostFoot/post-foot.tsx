@@ -5,9 +5,10 @@ export interface PostFootInterface {
   icon1: typeof React.Component
   icon2: typeof React.Component
   icon3: typeof React.Component
+  id: string
 }
 
-export const PostFoot = ({ icon1, icon2, icon3 }: PostFootInterface) => {
+export const PostFoot = ({ icon1, icon2, icon3, id }: PostFootInterface) => {
   return (
     <div className="flex items-center justify-between px-3 py-2">
       <div className="flex">
