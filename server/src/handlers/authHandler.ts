@@ -153,7 +153,7 @@ export const getToken = async (req: Request, res: Response) => {
         profile: {
           create: {
             bio: null,
-            displayName: displayName,
+            displayName,
           },
         },
       },

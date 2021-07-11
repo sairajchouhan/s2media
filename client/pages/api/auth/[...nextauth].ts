@@ -20,10 +20,12 @@ const options: NextAuthOptions = {
   debug: true,
   callbacks: {
     async signIn(user: any, account: any, profile: any) {
+      console.log(profile)
       const myUser = {
         username: profile.name,
         email: profile.email,
         avatar: profile.picture,
+        displayName: profile.name,
         // provider: account.provider,
       } as any
 
@@ -36,7 +38,9 @@ const options: NextAuthOptions = {
         body: JSON.stringify(myUser),
       })
       const response = await rawResponse.json()
-      if (Object.keys(response).includes('errors')) return false
+      console.log(response)
+      if (Object.keys(response).includes('errors')) return '/'
+      if (response.status === 400) return '/'
       else user.accessToken = response.token
       return true
     },
