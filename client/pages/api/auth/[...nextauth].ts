@@ -22,7 +22,7 @@ const options: NextAuthOptions = {
     async signIn(user: any, account: any, profile: any) {
       console.log(profile)
       const myUser = {
-        username: profile.name,
+        username: (profile.name as string).toLowerCase().split(' ').join(''),
         email: profile.email,
         avatar: profile.picture,
         displayName: profile.name,

@@ -12,5 +12,6 @@ declare module 'next-auth' {
     iat: number
     id: string
     username: string
+    displayName: string
   }
 }

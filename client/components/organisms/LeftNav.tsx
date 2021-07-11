@@ -1,4 +1,4 @@
-import { signOut, useSession } from 'next-auth/client'
+import { signOut } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import Home from '../../assets/svgs/home.svg'
 import Logout from '../../assets/svgs/logout.svg'
@@ -6,6 +6,7 @@ import Message from '../../assets/svgs/message.svg'
 import Profile from '../../assets/svgs/profile.svg'
 import Saved from '../../assets/svgs/saved.svg'
 import Settings from '../../assets/svgs/settings.svg'
+import { useUser } from '../../hooks/useUser'
 import { LeftNavPostBtn } from '../atoms/LeftNavPostBtn/LeftNavPostBtn'
 import { LeftNavBrand } from '../molecules/LeftNavBrand/'
 import { LeftNavLink } from '../molecules/LeftNavLink/'
@@ -13,20 +14,20 @@ import { LeftNavUser } from '../molecules/LeftNavUser/'
 
 const LeftNav = () => {
   const { push, pathname } = useRouter()
-  const [session] = useSession()
+  const user = useUser()
 
   const handleLogout = async () => {
     const data = await signOut({ redirect: false, callbackUrl: '/' })
     push(data.url)
   }
 
-  if (!session) return null
+  if (!user) return null
 
   return (
     <nav className="flex flex-col w-64 h-screen max-h-screen">
       <LeftNavBrand
         onClick={() => {
-          if (session) push('/home')
+          if (user) push('/home')
           else push('/')
         }}
       />
@@ -63,7 +64,7 @@ const LeftNav = () => {
         </LeftNavLink>
         <LeftNavPostBtn />
       </ul>
-      <LeftNavUser src={session.avatar} />
+      <LeftNavUser user={user} />
     </nav>
   )
 }

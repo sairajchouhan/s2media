@@ -10,6 +10,7 @@ export const useUser = () => {
     email: session.email,
     id: session.id,
     username: session.username,
+    displayName: session.displayName,
   }
   return sessionUser
 }

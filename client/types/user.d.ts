@@ -4,4 +4,5 @@ export interface SessionUser {
   email: string
   id: string
   username: string
+  displayName: string
 }

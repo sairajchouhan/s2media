@@ -1,4 +1,3 @@
-import { User } from '@prisma/client'
 import { Request, Response } from 'express'
 import { validationResult } from 'express-validator'
 // import createError from 'http-errors'
@@ -115,7 +114,9 @@ export const getToken = async (req: Request, res: Response) => {
     displayName: string
   } = req.body
 
-  let user: User | null
+  console.log(req.body)
+
+  let user: any
 
   user = await prisma.user.findFirst({
     where: {
@@ -163,11 +164,14 @@ export const getToken = async (req: Request, res: Response) => {
     })
   }
 
+  console.log(user)
+
   const payload = {
     id: user.id,
     username: user.username,
     email: user.email,
     avatar: user.avatar,
+    displayName: user.profile.displayName,
   }
 
   const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '30d' })
