@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { SessionUser } from '../../../types/user'
 import { Avatar } from '../../atoms/Avatar'
 import { IconButton } from '../../atoms/IconButton'
@@ -10,6 +10,11 @@ export interface PostHeadProps {
 }
 
 export const PostHead = ({ user, moreIcon, caption }: PostHeadProps) => {
+  const [seeMore, setSeeMore] = useState(false)
+  const handleSeeMore = () => {
+    setSeeMore(true)
+  }
+
   return (
     <div>
       <div className="flex items-center justify-between px-2 py-3">
@@ -25,8 +30,22 @@ export const PostHead = ({ user, moreIcon, caption }: PostHeadProps) => {
         </div>
       </div>
       {caption && (
-        <div className="px-2 py-3">
-          <p>{caption}</p>
+        <div className="flex px-2 pb-2">
+          <p
+            className={`items-end leading-6 text-base flex-1 text-gray-700 ${
+              !seeMore ? 'truncate' : ''
+            }`}
+          >
+            {caption}
+          </p>
+          <div className={`${seeMore ? 'hidden' : ''}`}>
+            <a
+              className="text-sm text-gray-500 cursor-pointer hover:underline"
+              onClick={handleSeeMore}
+            >
+              see more
+            </a>
+          </div>
         </div>
       )}
     </div>
