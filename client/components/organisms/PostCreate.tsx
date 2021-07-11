@@ -21,7 +21,6 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [loading, setLoading] = useLoading()
   const [caption, setCaption] = useState('')
-  console.log(loading)
 
   useEffect(() => {
     if (selectedFile) {
@@ -39,8 +38,6 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
       setSelectedFile(files[0])
     }
   }
-
-  console.log(selectedFile)
 
   const handleRemoveSelectedImage = () => {
     console.log('I will remove')
@@ -62,8 +59,6 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
     else res = true
     return res
   }
-
-  console.log(textareaRef.current?.value)
 
   const handleCreatePost = async () => {
     const isValid = validatePostData()

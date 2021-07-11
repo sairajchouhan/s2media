@@ -37,6 +37,7 @@ export const allPosts = async (_: Request, res: Response) => {
   const posts = await prisma.post.findMany({
     include: {
       _count: { select: { like: true, comment: true } },
+      user: true,
     },
     orderBy: {
       createdAt: 'desc',

@@ -7,7 +7,6 @@ import PrivateRoute from '../../components/PrivateRoute'
 
 const Home = () => {
   const [session] = useSession()
-  console.log(session)
   const [posts, setPosts] = useState<any>([])
   const [l, setL] = useState(true)
 
@@ -18,6 +17,8 @@ const Home = () => {
       setL(false)
     })()
   }, [])
+
+  console.log(posts[0])
 
   if (!session) return null
 
