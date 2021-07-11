@@ -21,7 +21,13 @@ export const PostHead = ({ user, moreIcon, caption }: PostHeadProps) => {
         <div className="flex items-center ">
           <Avatar src={user.avatar} w="w-10" h="h-10" alt="user profile image" />
           <div className="flex flex-col pl-2">
-            <p className="font-semibold leading-5 text-gray-800 text-md">{user.username}</p>
+            <div className="flex items-center">
+              <a className="font-semibold leading-5 text-gray-800 cursor-pointer text-md hover:underline">
+                {user.displayName}
+              </a>
+              <div className="mx-1 text-base font-normal text-gray-600">·</div>
+              <p className="text-sm leading-5 text-gray-500 text-md">@{user.username}</p>
+            </div>
             <p className="text-xs text-gray-500">2 min ago</p>
           </div>
         </div>
