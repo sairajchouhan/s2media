@@ -4,7 +4,6 @@ import axios from 'axios'
 import React, { Dispatch, Fragment, SetStateAction, useEffect, useRef, useState } from 'react'
 import Cancel from '../../assets/svgs/cancel.svg'
 import CancelWhite from '../../assets/svgs/cancelwhite.svg'
-import useLoading from '../../hooks/useLoading'
 import { useUser } from '../../hooks/useUser'
 import { AutoGrowTextArea } from '../atoms/AutoGrowTextArea'
 import { Avatar } from '../atoms/Avatar'
@@ -19,8 +18,7 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [selectedFile, setSelectedFile] = useState<Blob | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
-  const [loading, setLoading] = useLoading()
-  const [caption, setCaption] = useState('')
+  // const [caption, setCaption] = useState('')
 
   useEffect(() => {
     if (selectedFile) {

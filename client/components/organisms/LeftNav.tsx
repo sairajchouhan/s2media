@@ -7,6 +7,7 @@ import Profile from '../../assets/svgs/profile.svg'
 import Saved from '../../assets/svgs/saved.svg'
 import Settings from '../../assets/svgs/settings.svg'
 import { useUser } from '../../hooks/useUser'
+import { paths } from '../../utils/paths'
 import { LeftNavPostBtn } from '../atoms/LeftNavPostBtn/LeftNavPostBtn'
 import { LeftNavBrand } from '../molecules/LeftNavBrand/'
 import { LeftNavLink } from '../molecules/LeftNavLink/'
@@ -27,18 +28,18 @@ const LeftNav = () => {
     <nav className="flex flex-col w-64 h-screen max-h-screen">
       <LeftNavBrand
         onClick={() => {
-          if (user) push('/home')
-          else push('/')
+          if (user) push(paths.home)
+          else push(paths.landing)
         }}
       />
       <ul className="flex flex-col items-start w-full h-full space-y-2">
-        <LeftNavLink active={pathname === '/home'} icon={Home} onClick={() => push('/home')}>
+        <LeftNavLink active={pathname === paths.home} icon={Home} onClick={() => push(paths.home)}>
           Home
         </LeftNavLink>
         <LeftNavLink
-          active={pathname === '/messages'}
+          active={pathname === paths.messages}
           icon={Message}
-          onClick={() => push('/messages')}
+          onClick={() => push(paths.messages)}
         >
           Messages
         </LeftNavLink>
@@ -49,16 +50,20 @@ const LeftNav = () => {
         >
           Profile
         </LeftNavLink>
-        <LeftNavLink active={pathname === '/saved'} icon={Saved} onClick={() => push('/saved')}>
+        <LeftNavLink
+          active={pathname === paths.saved}
+          icon={Saved}
+          onClick={() => push(paths.saved)}
+        >
           Saved
         </LeftNavLink>
         <LeftNavLink active={pathname === '/logout'} icon={Logout} onClick={() => handleLogout()}>
           Logout
         </LeftNavLink>
         <LeftNavLink
-          active={pathname === '/settings'}
+          active={pathname === paths.settings}
           icon={Settings}
-          onClick={() => push('/settings')}
+          onClick={() => push(paths.settings)}
         >
           Settings
         </LeftNavLink>

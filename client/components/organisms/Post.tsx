@@ -27,7 +27,7 @@ export const Post = ({ post }: PostProps) => {
       <main className="cursor-pointer" onClick={() => push(`/post/${post.id}`)}>
         <NextImage src={post.url} />
       </main>
-      <PostFoot id={post.id} icon1={HeartOutline} icon2={CommentPost} icon3={Saved} />
+      <PostFoot icon1={HeartOutline} icon2={CommentPost} icon3={Saved} />
     </div>
   )
 }
