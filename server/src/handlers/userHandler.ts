@@ -27,6 +27,7 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
       profile: true,
       followers: true,
       following: true,
+      post: true,
     },
   })
 

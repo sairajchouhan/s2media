@@ -15,6 +15,8 @@ export interface User {
   provider: string
   createdAt: string
   updatedAt: string
+  following: Array<any>
+  followers: Array<any>
 }
 
 export interface Profile {
