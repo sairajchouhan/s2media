@@ -7,9 +7,9 @@ import HeartOutline from '../../assets/svgs/heartout.svg'
 import MoreHorizontal from '../../assets/svgs/moreh.svg'
 import Saved from '../../assets/svgs/savedoutline.svg'
 import { NextImage } from '../../components/atoms/Image/image'
-import { PageNav } from '../../components/molecules/PageNav/page-nav'
-import { PostFoot } from '../../components/molecules/PostFoot/post-foot'
-import { PostHead } from '../../components/molecules/PostHead/post-head'
+import { PageNav } from '../../components/molecules/Page/page-nav'
+import { PostFoot } from '../../components/molecules/Post/post-foot'
+import { PostHead } from '../../components/molecules/Post/post-head'
 import PrivateRoute from '../../components/PrivateRoute'
 
 const EachPost = () => {
@@ -33,7 +33,7 @@ const EachPost = () => {
           <main>
             <NextImage src={post.url} />
           </main>
-          <PostFoot id={post.id} icon1={HeartOutline} icon2={CommentPost} icon3={Saved} />
+          <PostFoot icon1={HeartOutline} icon2={CommentPost} icon3={Saved} />
         </main>
       </div>
     </PrivateRoute>

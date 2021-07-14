@@ -1,5 +1,5 @@
 import React from 'react'
-import { PageNav } from '../../components/molecules/PageNav'
+import { PageNav } from '../../components/molecules/Page'
 import PrivateRoute from '../../components/PrivateRoute'
 
 const Messages = () => {

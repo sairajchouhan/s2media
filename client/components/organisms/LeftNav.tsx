@@ -9,9 +9,7 @@ import Settings from '../../assets/svgs/settings.svg'
 import { useUser } from '../../hooks/useUser'
 import { paths } from '../../utils/paths'
 import { LeftNavPostBtn } from '../atoms/LeftNavPostBtn/LeftNavPostBtn'
-import { LeftNavBrand } from '../molecules/LeftNavBrand/'
-import { LeftNavLink } from '../molecules/LeftNavLink/'
-import { LeftNavUser } from '../molecules/LeftNavUser/'
+import { LeftNavBrand, LeftNavLink, LeftNavUser } from '../molecules/LeftNav'
 
 const LeftNav = () => {
   const { push, pathname } = useRouter()

@@ -1,5 +1,5 @@
 import React from 'react'
-import { PageNav } from '../../components/molecules/PageNav/page-nav'
+import { PageNav } from '../../components/molecules/Page/page-nav'
 import PrivateRoute from '../../components/PrivateRoute'
 
 const Saved = () => {

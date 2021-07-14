@@ -9,8 +9,7 @@ import Saved from '../../assets/svgs/savedoutline.svg'
 import { useUser } from '../../hooks/useUser'
 import { PostWithUserAndProfile } from '../../types/post'
 import { NextImage } from '../atoms/Image'
-import { PostFoot } from '../molecules/PostFoot'
-import { PostHead } from '../molecules/PostHead'
+import { PostFoot, PostHead } from '../molecules/Post'
 
 export interface PostProps {
   post: PostWithUserAndProfile
