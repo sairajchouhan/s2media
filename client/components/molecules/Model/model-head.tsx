@@ -4,8 +4,8 @@ import Cancel from '../../../assets/svgs/cancel.svg'
 import { IconButton } from '../../atoms/IconButton/icon-button'
 
 export interface ModelHeadProps {
-  title?: string
   toggleOpen: () => void
+  title?: string
   icon?: typeof React.Component
 }
 

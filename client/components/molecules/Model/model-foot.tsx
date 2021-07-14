@@ -4,9 +4,9 @@ import React from 'react'
 export interface ModelFooterProps {
   primaryAction?: () => void
   primaryActionTitle?: () => string
-  children: React.ReactChild
+  children: React.ReactChild | React.ReactChild[]
 }
 
 export const ModelFoot = ({ children }: ModelFooterProps) => {
-  return <div className="flex items-center justify-end mt-6">{children}</div>
+  return <div className="">{children}</div>
 }

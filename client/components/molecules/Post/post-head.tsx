@@ -13,7 +13,7 @@ export const PostHead = ({ post: { user, caption, createdAt }, moreIcon }: PostH
   return (
     <div>
       <div className="flex items-center justify-between px-2 py-2 ">
-        <div className="z-20 flex items-center">
+        <div className="flex items-center">
           <Link href={'/profile'}>
             <a className="flex items-center">
               <Avatar src={user.avatar} w="w-10" h="h-10" alt="user profile image" />
@@ -34,7 +34,7 @@ export const PostHead = ({ post: { user, caption, createdAt }, moreIcon }: PostH
             <p className="text-xs leading-4 text-gray-500">{JSON.stringify(createdAt)}</p>
           </div>
         </div>
-        <div className="z-10">
+        <div className="">
           <IconButton w="w-4" h="h-4" icon={moreIcon} />
         </div>
       </div>
