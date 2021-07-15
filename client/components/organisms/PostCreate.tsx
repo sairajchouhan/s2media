@@ -5,6 +5,7 @@ import CancelWhite from '../../assets/svgs/cancelwhite.svg'
 import { useUser } from '../../hooks/useUser'
 import { AutoGrowTextArea } from '../atoms/AutoGrowTextArea'
 import { Avatar } from '../atoms/Avatar'
+import { Button } from '../atoms/Button'
 import { IconButton } from '../atoms/IconButton'
 import { Model } from '../molecules/Model'
 import { ModelBody } from '../molecules/Model/model-body'
@@ -18,6 +19,8 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [selectedFile, setSelectedFile] = useState<Blob | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  // loading state
+  const [loading, setLoading] = useState<boolean>(false)
   // const [caption, setCaption] = useState('')
 
   useEffect(() => {
@@ -63,6 +66,7 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
   }
 
   const handleCreatePost = async () => {
+    setLoading((l) => !l)
     const isValid = validatePostData()
 
     if (!isValid) {
@@ -75,6 +79,7 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
     if (textareaRef.current?.value !== '' && textareaRef.current?.value) {
       formData.append('caption', textareaRef.current?.value as string)
     }
+    await new Promise((resolve) => setTimeout(resolve, 1000))
     try {
       console.log(formData)
       const res = await axios.post('http://localhost:5000/api/v1/post', formData, {
@@ -90,6 +95,7 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
       console.log('err ra babu')
       console.log(err)
     }
+    setLoading((l) => !l)
   }
 
   return (
@@ -129,10 +135,12 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
             </div>
           </div>
         </ModelBody>
+
         <Model.Foot>
           <div className="flex items-center justify-between mt-6">
             <div>
               <label
+                role="button"
                 className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md cursor-pointer hover:bg-blue-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                 htmlFor="postfile"
               >
@@ -140,13 +148,15 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
               </label>
               <input onChange={handleFileChange} id="postfile" type="file" className="hidden" />
             </div>
-            <button
-              type="button"
-              className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+            <Button
               onClick={handleCreatePost}
+              variant="solid"
+              colorScheme="green"
+              loading={loading}
+              disabled={loading}
             >
               Post
-            </button>
+            </Button>
           </div>
         </Model.Foot>
       </Model>
