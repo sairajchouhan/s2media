@@ -31,3 +31,7 @@ export interface Profile {
 export interface UserWithProfile extends User {
   profile: Profile
 }
+
+export interface UserFullDetails extends UserWithProfile {
+  post: Post[]
+}

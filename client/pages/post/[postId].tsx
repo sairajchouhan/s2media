@@ -28,7 +28,7 @@ const EachPost = () => {
     <PrivateRoute>
       <div className="min-h-screen border-l border-r border-opacity-80">
         <PageNav title="Post" />
-        <main className="hover:bg-gray-50">
+        <main className="">
           <PostHead post={post} moreIcon={MoreHorizontal} />
           <main>
             <NextImage src={post.url} />
@@ -38,6 +38,17 @@ const EachPost = () => {
       </div>
     </PrivateRoute>
   )
+}
+
+export const getServerSideProps = async () => {
+  const res = await fetch('http://localhost:3000/api/auth/session')
+  const data = await res.json()
+
+  console.log(data)
+
+  return {
+    props: {},
+  }
 }
 
 export default EachPost

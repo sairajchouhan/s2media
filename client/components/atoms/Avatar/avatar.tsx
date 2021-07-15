@@ -10,7 +10,7 @@ interface AvatarProps {
 
 export const Avatar = ({ src, alt, w = 'w-6', h = 'h-6' }: AvatarProps) => {
   return (
-    <div className={`${w} ${h} inline-block`}>
+    <div className={`${w} ${h}`}>
       <NextImage roundedFull={true} src={src} alt={alt} />
     </div>
   )

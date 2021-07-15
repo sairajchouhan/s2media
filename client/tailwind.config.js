@@ -6,7 +6,11 @@ module.exports = {
     extend: {},
   },
   variants: {
-    extend: {},
+    extend: {
+      borderColor: ['focus-visible'],
+      opacity: ['disabled'],
+      flex: ['hover'],
+    },
   },
   plugins: [require('@tailwindcss/forms'), require('tailwindcss-debug-screens')],
 }
