@@ -12,5 +12,5 @@ export const useUser = () => {
     username: session.username,
     displayName: session.displayName,
   }
-  return sessionUser
+  return { ...sessionUser }
 }

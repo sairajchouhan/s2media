@@ -52,11 +52,7 @@ export const updateProfile = async (req: Request, res: Response) => {
       id: req.user.id,
     },
     include: {
-      profile: {
-        select: {
-          id: true,
-        },
-      },
+      profile: true,
     },
   })
 
@@ -73,13 +69,22 @@ export const updateProfile = async (req: Request, res: Response) => {
     })
     return res.json(profile)
   }
+
+  const updateObj: { bio: string; displayName: string } | Record<string, string> = {}
+
+  if (bio) {
+    updateObj.bio = bio
+  }
+  if (displayName) {
+    updateObj.displayName = displayName
+  }
+
   const profile = await prisma.profile.update({
     where: {
-      id: user.profile?.id,
+      id: user.profile.id,
     },
     data: {
-      bio,
-      displayName,
+      ...updateObj,
     },
   })
 

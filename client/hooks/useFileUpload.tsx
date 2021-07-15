@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-export const useFile = () => {
+export const useFileUpload = () => {
   const [selectedFile, setSelectedFile] = useState<Blob | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 

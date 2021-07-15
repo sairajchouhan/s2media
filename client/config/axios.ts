@@ -1,6 +1,5 @@
-import axios from 'axios'
+import axiosMain from 'axios'
 // create axios with config
-const axiosInstance = axios.create({
-  baseURL: process.env.API_END_POINT,
+export const axios = axiosMain.create({
+  baseURL: 'http://localhost:5000/api/v1',
 })
-export default axiosInstance
