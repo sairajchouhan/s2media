@@ -34,6 +34,7 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
 
   const toggleOpen = () => {
     setOpen((open) => !open)
+    handlePostCancel()
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +52,6 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
   }
 
   const handlePostCancel = () => {
-    setOpen((open) => !open)
     setTimeout(() => {
       setSelectedFile(null)
       setPreviewUrl(null)

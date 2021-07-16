@@ -32,9 +32,9 @@ export const EditProfile = ({ open, setOpen, userFullDetails: user }: EditProfil
 
   const handleUpdateProfile = async () => {
     // return from the function if profile.name is trimmed and empty
-    // if (profile.name.trim() === '' || profile.name.trim() === '') {
-    //   return
-    // }
+    if (profile.name.trim() === '' && profile.name.trim() === '') {
+      return
+    }
 
     try {
       const res = await axios.put(

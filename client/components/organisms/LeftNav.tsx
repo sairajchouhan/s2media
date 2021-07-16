@@ -44,7 +44,7 @@ const LeftNav = () => {
         <LeftNavLink
           active={pathname === '/profile'}
           icon={Profile}
-          onClick={() => push('/profile')}
+          onClick={() => push(paths.profile({ username: user.username }).href)}
         >
           Profile
         </LeftNavLink>

@@ -78,10 +78,12 @@ const baseClasses = [
   'px-4',
   'py-1.5',
   'font-semibold',
+  'font-base',
   'rounded-lg',
   'focus:outline-none',
   'focus:ring-2',
   'focus:ring-opacity-80',
+  'shadow',
 ]
 
 export const Button = ({

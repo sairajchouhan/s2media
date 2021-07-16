@@ -5,9 +5,9 @@ export const paths = {
   settings: '/settings',
   saved: '/saved',
   // profile: 'profile',
-  profile: ({ profileId }: { profileId: string }) => {
+  profile: ({ username }: { username: string }) => {
     return {
-      href: `/profile/${profileId}`,
+      href: `/profile/${username}`,
     }
   },
   post: ({ postId }: { postId: string }) => {

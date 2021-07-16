@@ -6,18 +6,18 @@ interface IProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   prefetch?: boolean
 }
 
-export const Link = ({ to, prefetch = true, ...props }: IProps, ref: any) => {
+export const Link = ({ to, ...props }: IProps) => {
   if (typeof to === 'string') {
     return (
-      <NextLink href={to} prefetch={prefetch || false}>
-        <a {...props} ref={ref} />
+      <NextLink href={to}>
+        <a {...props} />
       </NextLink>
     )
   }
 
   return (
-    <NextLink href={to.href} prefetch={prefetch || false}>
-      <a {...props} ref={ref} />
+    <NextLink href={to.href}>
+      <a {...props} />
     </NextLink>
   )
 }
