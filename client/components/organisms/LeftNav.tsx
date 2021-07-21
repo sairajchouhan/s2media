@@ -8,6 +8,7 @@ import Settings from '../../assets/svgs/settings.svg'
 import { useUser } from '../../hooks/useUser'
 import { paths } from '../../utils/paths'
 import { LeftNavPostBtn } from '../atoms/LeftNavPostBtn/LeftNavPostBtn'
+import { HomeIcon } from '../icons'
 import { LeftNavBrand, LeftNavLink, LeftNavUser } from '../molecules/LeftNav'
 
 const LeftNav = () => {
@@ -18,6 +19,10 @@ const LeftNav = () => {
   const handleLogout = async () => {
     const data = await signOut({ redirect: false, callbackUrl: '/' })
     push(data.url)
+  }
+
+  const isActive = (path: string) => {
+    return pathname === path
   }
 
   if (!user) return null
@@ -31,11 +36,7 @@ const LeftNav = () => {
         }}
       />
       <ul className="flex flex-col items-start w-full h-full space-y-2">
-        <LeftNavLink
-          active={pathname === paths.home}
-          icon={Settings}
-          onClick={() => push(paths.home)}
-        >
+        <LeftNavLink active={isActive(paths.home)} icon={HomeIcon} onClick={() => push(paths.home)}>
           Home
         </LeftNavLink>
         <LeftNavLink

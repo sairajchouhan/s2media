@@ -17,8 +17,8 @@ export const ProfileCard = ({ userFullDetails }: ProfileCardProps) => {
   }
 
   return (
-    <div className="flex px-2">
-      <div className="flex-shrink block">
+    <div className="flex flex-wrap px-2">
+      <div className="flex-shrink block mx-auto">
         <Avatar src={userFullDetails.avatar} alt="user profile avatar" w="w-40" h="h-40" />
       </div>
       <div className="flex-1 p-2 ml-5 space-y-1">
