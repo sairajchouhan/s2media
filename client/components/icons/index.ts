@@ -1,0 +1,6 @@
+export * from './HomeIcon'
+export * from './MessageIcon'
+export * from './NotificationIcon'
+export * from './ProfileIcon'
+export * from './SavedIcon'
+export * from './SettingsIcon'

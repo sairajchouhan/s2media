@@ -1,18 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Button } from '../../components/atoms/Button'
 import { PageNav } from '../../components/molecules/Page'
 import PrivateRoute from '../../components/PrivateRoute'
 import { useUser } from '../../hooks/useUser'
 
 const Messages = () => {
-  const [open, setOpen] = useState(false)
   const user = useUser()
-  const toggleOpen = () => {
-    setOpen((open) => !open)
-  }
-
-  const textareaRef = React.useRef<HTMLTextAreaElement>(null)
-
   if (!user) return null
   return (
     <PrivateRoute>
@@ -39,6 +32,7 @@ const Messages = () => {
               Click Me
             </Button>
           </div>
+          <div className="mt-10"></div>
         </main>
       </div>
     </PrivateRoute>

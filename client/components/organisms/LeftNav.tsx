@@ -1,6 +1,5 @@
 import { signOut } from 'next-auth/client'
 import { useRouter } from 'next/router'
-import Home from '../../assets/svgs/home.svg'
 import Logout from '../../assets/svgs/logout.svg'
 import Message from '../../assets/svgs/message.svg'
 import Profile from '../../assets/svgs/profile.svg'
@@ -14,6 +13,7 @@ import { LeftNavBrand, LeftNavLink, LeftNavUser } from '../molecules/LeftNav'
 const LeftNav = () => {
   const { push, pathname } = useRouter()
   const user = useUser()
+  console.log(user)
 
   const handleLogout = async () => {
     const data = await signOut({ redirect: false, callbackUrl: '/' })
@@ -31,7 +31,11 @@ const LeftNav = () => {
         }}
       />
       <ul className="flex flex-col items-start w-full h-full space-y-2">
-        <LeftNavLink active={pathname === paths.home} icon={Home} onClick={() => push(paths.home)}>
+        <LeftNavLink
+          active={pathname === paths.home}
+          icon={Settings}
+          onClick={() => push(paths.home)}
+        >
           Home
         </LeftNavLink>
         <LeftNavLink
@@ -47,6 +51,13 @@ const LeftNav = () => {
           onClick={() => push(paths.profile({ username: user.username }).href)}
         >
           Profile
+        </LeftNavLink>
+        <LeftNavLink
+          active={pathname === '/notifications'}
+          icon={Profile}
+          onClick={() => push(paths.notifications)}
+        >
+          Notifications
         </LeftNavLink>
         <LeftNavLink
           active={pathname === paths.saved}

@@ -40,11 +40,29 @@ const Profile = () => {
           <section className="mt-4">
             <nav className="border-t border-b border-opacity-80">
               <ul className="flex items-center justify-around h-10">
-                <li className="flex items-center justify-center flex-1 h-full text-center bg-gray-200 border-r cursor-pointer border-opacity-80">
-                  <Link to={paths.profile({ username: userFullDetails.username })}>Your Posts</Link>
+                <li className="flex items-center justify-center flex-1 h-full text-sm font-semibold text-center cursor-pointer hover:bg-indigo-50 border-opacity-80">
+                  <Link
+                    className="flex items-center justify-center w-full h-full"
+                    to={paths.profile({ username: userFullDetails.username })}
+                  >
+                    Your Posts
+                  </Link>
                 </li>
-                <li className="flex items-center justify-center flex-1 h-full text-center bg-gray-200 border-r cursor-pointer border-opacity-80">
-                  <Link to={paths.profile({ username: 'someuser' })}>Not Your Posts</Link>
+                <li className="flex-1 h-full text-sm font-semibold text-center cursor-pointer hover:bg-indigo-50 border-opacity-80">
+                  <Link
+                    className="flex items-center justify-center w-full h-full"
+                    to={paths.profile({ username: 'someuser' })}
+                  >
+                    Likes
+                  </Link>
+                </li>
+                <li className="flex-1 h-full text-sm font-semibold text-center cursor-pointer hover:bg-indigo-50 border-opacity-80">
+                  <Link
+                    className="flex items-center justify-center w-full h-full"
+                    to={paths.profile({ username: 'someuser' })}
+                  >
+                    Saved
+                  </Link>
                 </li>
               </ul>
             </nav>

@@ -4,6 +4,7 @@ export const paths = {
   messages: '/messages',
   settings: '/settings',
   saved: '/saved',
+  notifications: '/notifications',
   // profile: 'profile',
   profile: ({ username }: { username: string }) => {
     return {
