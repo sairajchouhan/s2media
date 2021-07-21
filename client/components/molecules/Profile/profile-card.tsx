@@ -17,7 +17,7 @@ export const ProfileCard = ({ userFullDetails }: ProfileCardProps) => {
   }
 
   return (
-    <div className="flex flex-wrap px-2">
+    <div className="flex flex-wrap px-2 py-2">
       <div className="flex-shrink block mx-auto">
         <Avatar src={userFullDetails.avatar} alt="user profile avatar" w="w-40" h="h-40" />
       </div>
@@ -32,7 +32,7 @@ export const ProfileCard = ({ userFullDetails }: ProfileCardProps) => {
           </div>
           <h3 className="text-gray-500">@{userFullDetails.username}</h3>
         </div>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between space-y-3">
           <p>{userFullDetails.post.length} posts</p>
           <p>{userFullDetails.followers.length} followers</p>
           <p>{userFullDetails.following.length} following</p>

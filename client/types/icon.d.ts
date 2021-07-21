@@ -6,4 +6,5 @@ export interface IconProps extends React.SVGProps<SVGSVGElement> {
 
 export interface LeftNavIconProps extends IconProps {
   variant?: 'solid' | 'outline'
+  styling?: string
 }

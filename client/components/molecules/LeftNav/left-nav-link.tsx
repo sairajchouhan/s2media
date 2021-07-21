@@ -21,7 +21,7 @@ export const LeftNavLink = ({ active, icon: Icon, onClick, children }: LeftNavLi
             active ? 'text-indigo-600' : 'text-gray-600'
           }`}
         /> */}
-        <Icon variant="outline" className="mr-2" />
+        <Icon variant={active ? 'solid' : 'outline'} styling="text-indigo-600 mr-4" />
         <p
           className={`text-lg font-bold group-hover:text-indigo-500 ${
             active ? 'text-indigo-600' : 'text-gray-600'

@@ -1,17 +1,16 @@
 import React from 'react'
 import { LeftNavIconProps } from '../../types'
 
-export const ProfileIcon = ({ variant, ...props }: LeftNavIconProps) => {
+export const ProfileIcon = ({ variant, styling }: LeftNavIconProps) => {
   return (
     <>
       {variant === 'outline' && (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="w-6 h-6"
+          className={`w-6 h-6 ${styling}`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
-          {...props}
         >
           <path
             strokeLinecap="round"
@@ -24,10 +23,9 @@ export const ProfileIcon = ({ variant, ...props }: LeftNavIconProps) => {
       {variant === 'solid' && (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="w-6 h-6"
+          className={`w-6 h-6 ${styling}`}
           viewBox="0 0 20 20"
           fill="currentColor"
-          {...props}
         >
           <path
             fillRule="evenodd"

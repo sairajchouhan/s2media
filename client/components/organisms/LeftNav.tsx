@@ -1,20 +1,22 @@
 import { signOut } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import Logout from '../../assets/svgs/logout.svg'
-import Message from '../../assets/svgs/message.svg'
-import Profile from '../../assets/svgs/profile.svg'
-import Saved from '../../assets/svgs/saved.svg'
-import Settings from '../../assets/svgs/settings.svg'
 import { useUser } from '../../hooks/useUser'
 import { paths } from '../../utils/paths'
 import { LeftNavPostBtn } from '../atoms/LeftNavPostBtn/LeftNavPostBtn'
-import { HomeIcon } from '../icons'
+import {
+  HomeIcon,
+  MessageIcon,
+  NotificationIcon,
+  ProfileIcon,
+  SavedIcon,
+  SettingsIcon,
+} from '../icons'
 import { LeftNavBrand, LeftNavLink, LeftNavUser } from '../molecules/LeftNav'
 
 const LeftNav = () => {
   const { push, pathname } = useRouter()
   const user = useUser()
-  console.log(user)
 
   const handleLogout = async () => {
     const data = await signOut({ redirect: false, callbackUrl: '/' })
@@ -41,28 +43,28 @@ const LeftNav = () => {
         </LeftNavLink>
         <LeftNavLink
           active={pathname === paths.messages}
-          icon={Message}
+          icon={MessageIcon}
           onClick={() => push(paths.messages)}
         >
           Messages
         </LeftNavLink>
         <LeftNavLink
-          active={pathname === '/profile'}
-          icon={Profile}
+          active={pathname.split('/').includes('profile')}
+          icon={ProfileIcon}
           onClick={() => push(paths.profile({ username: user.username }).href)}
         >
           Profile
         </LeftNavLink>
         <LeftNavLink
           active={pathname === '/notifications'}
-          icon={Profile}
+          icon={NotificationIcon}
           onClick={() => push(paths.notifications)}
         >
           Notifications
         </LeftNavLink>
         <LeftNavLink
           active={pathname === paths.saved}
-          icon={Saved}
+          icon={SavedIcon}
           onClick={() => push(paths.saved)}
         >
           Saved
@@ -72,7 +74,7 @@ const LeftNav = () => {
         </LeftNavLink>
         <LeftNavLink
           active={pathname === paths.settings}
-          icon={Settings}
+          icon={SettingsIcon}
           onClick={() => push(paths.settings)}
         >
           Settings
