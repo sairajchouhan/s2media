@@ -2,13 +2,11 @@
 // import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
-import CommentPost from '../../assets/svgs/commentpost.svg'
-import HeartOutline from '../../assets/svgs/heartout.svg'
 import MoreHorizontal from '../../assets/svgs/moreh.svg'
-import Saved from '../../assets/svgs/savedoutline.svg'
 import { useUser } from '../../hooks/useUser'
 import { PostWithUserAndProfile } from '../../types/post'
 import { NextImage } from '../atoms/Image'
+import { HeartIcon } from '../icons'
 import { PostFoot, PostHead } from '../molecules/Post'
 
 export interface PostProps {
@@ -26,7 +24,7 @@ export const Post = ({ post }: PostProps) => {
       <main className="cursor-pointer" onClick={() => push(`/post/${post.id}`)}>
         <NextImage src={post.url} />
       </main>
-      <PostFoot icon1={HeartOutline} icon2={CommentPost} icon3={Saved} />
+      <PostFoot icon1={HeartIcon} post={post} />
     </div>
   )
 }

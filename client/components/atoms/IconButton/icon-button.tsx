@@ -1,8 +1,11 @@
 import React, { ButtonHTMLAttributes, DetailedHTMLProps } from 'react'
+import { LeftNavIconProps } from '../../../types/icon'
 
 export interface IconButtonProps
   extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
-  icon: typeof React.Component
+  // eslint-disable-next-line no-unused-vars
+  icon: (props: LeftNavIconProps) => JSX.Element
+  variant?: 'solid' | 'outline'
   w?: string
   h?: string
   textColour?: string
@@ -19,6 +22,7 @@ export const IconButton = ({
   w = 'w-5',
   h = 'h-5',
   p = 'p-2',
+  variant,
   ...props
 }: IconButtonProps) => {
   return (
@@ -27,7 +31,7 @@ export const IconButton = ({
       {...props}
     >
       <div className={`${w} ${h} ${textColour} flex justify-center items-center`}>
-        <Icon />
+        <Icon className={`${w} ${h} ${p} ${textColour} ${bgColor}`} variant={variant} />
       </div>
     </button>
   )

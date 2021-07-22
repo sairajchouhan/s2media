@@ -7,6 +7,8 @@ export interface PostWithUserAndProfile {
   url: string
   userId: string
   user: UserWithProfile
+  like: Array[any]
+  comment: Array[any]
   _count?: {
     like: number
     comment: number

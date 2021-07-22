@@ -1,3 +1,4 @@
+export * from './HeartIcon'
 export * from './HomeIcon'
 export * from './MessageIcon'
 export * from './NotificationIcon'
