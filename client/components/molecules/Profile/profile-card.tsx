@@ -21,7 +21,7 @@ export const ProfileCard = ({ userFullDetails }: ProfileCardProps) => {
       <div className="flex-shrink block mx-auto">
         <Avatar src={userFullDetails.avatar} alt="user profile avatar" w="w-40" h="h-40" />
       </div>
-      <div className="flex-1 p-2 ml-5 space-y-1">
+      <div className="flex-1 p-2 ml-5 space-y-2">
         <div>
           <div className="flex items-center justify-between ">
             <h1 className="text-xl font-bold">{userFullDetails.profile.displayName}</h1>
@@ -32,7 +32,7 @@ export const ProfileCard = ({ userFullDetails }: ProfileCardProps) => {
           </div>
           <h3 className="text-gray-500">@{userFullDetails.username}</h3>
         </div>
-        <div className="flex items-center justify-between space-y-3">
+        <div className="flex items-center justify-between">
           <p>{userFullDetails.post.length} posts</p>
           <p>{userFullDetails.followers.length} followers</p>
           <p>{userFullDetails.following.length} following</p>

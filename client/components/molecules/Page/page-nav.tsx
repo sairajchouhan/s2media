@@ -11,7 +11,7 @@ interface PageNavProps {
 export const PageNav = ({ title, subtitle }: PageNavProps) => {
   const { back } = useRouter()
   return (
-    <div className="sticky top-0 bg-white">
+    <div className="sticky top-0 z-10 bg-white">
       <div className="flex items-center w-full p-2 border-b border-opacity-80">
         <div className="mr-2">
           <IconButton icon={Back} onClick={() => back()} hoverBgColor="bg-blue-50" />

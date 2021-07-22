@@ -19,7 +19,7 @@ const Home = () => {
 
   return (
     <PrivateRoute>
-      <div className="h-full">
+      <div className="h-full border-l border-r border-opacity-80">
         <Stories />
         <main>
           {isLoading ? (

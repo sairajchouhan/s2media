@@ -69,15 +69,16 @@ const LeftNav = () => {
         >
           Saved
         </LeftNavLink>
-        <LeftNavLink active={pathname === '/logout'} icon={Logout} onClick={() => handleLogout()}>
-          Logout
-        </LeftNavLink>
+
         <LeftNavLink
           active={pathname === paths.settings}
           icon={SettingsIcon}
           onClick={() => push(paths.settings)}
         >
           Settings
+        </LeftNavLink>
+        <LeftNavLink active={pathname === '/logout'} icon={Logout} onClick={() => handleLogout()}>
+          Logout
         </LeftNavLink>
         <LeftNavPostBtn />
       </ul>

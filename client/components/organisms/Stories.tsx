@@ -2,7 +2,7 @@
 
 const Stories = () => {
   return (
-    <div className="px-3 py-3 mt-6 border rounded-sm">
+    <div className="px-3 py-3 border-b rounded-sm border-opacity-80">
       <ul className="flex space-x-6">
         <li className="flex flex-col items-center space-y-1 ">
           <div className="relative p-0.5 rounded-full bg-gradient-to-tr from-indigo-400 to-pink-400">

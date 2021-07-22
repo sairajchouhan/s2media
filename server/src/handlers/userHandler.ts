@@ -115,3 +115,24 @@ export const getUserInfo = async (req: Request, res: Response) => {
 
   return res.json(user)
 }
+
+export const getAllPostsOfUser = async (req: Request, res: Response) => {
+  const id = req.params.userId
+  const posts = await prisma.post.findMany({
+    where: {
+      userId: id,
+    },
+    include: {
+      _count: { select: { like: true, comment: true } },
+      user: {
+        include: {
+          profile: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  })
+  return res.json(posts)
+}

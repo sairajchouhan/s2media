@@ -1,5 +1,5 @@
 import React from 'react'
-import { Loader } from '../../Loader/loader'
+import { Loader } from '../Loader'
 
 export interface ButtonProps extends React.HtmlHTMLAttributes<HTMLButtonElement> {
   colorScheme?: 'indigo' | 'red' | 'green' | 'gray'

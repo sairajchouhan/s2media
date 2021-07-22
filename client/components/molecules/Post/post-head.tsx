@@ -12,7 +12,7 @@ export interface PostHeadProps {
 export const PostHead = ({ post: { user, caption, createdAt }, moreIcon }: PostHeadProps) => {
   return (
     <div>
-      <div className="flex items-center justify-between px-2 py-2 ">
+      <div className="flex items-center justify-between px-2 py-2">
         <div className="flex items-center">
           <Link href={'/profile'}>
             <a className="flex items-center">
@@ -39,7 +39,7 @@ export const PostHead = ({ post: { user, caption, createdAt }, moreIcon }: PostH
         </div>
       </div>
       {caption && (
-        <div className="flex px-2 py-2">
+        <div className="flex px-2 pb-2">
           <p className="items-end flex-1 text-base leading-6 text-gray-700">{caption}</p>
         </div>
       )}
