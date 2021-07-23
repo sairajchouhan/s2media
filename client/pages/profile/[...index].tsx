@@ -26,17 +26,14 @@ const Profile = () => {
     }
   )
 
-  const { data: userPosts, isLoading: lPostUsers } = useQuery(
-    ['user', 'posts', user?.id],
-    async () => {
-      const res = await axios.get(`http://localhost:5000/api/v1/user/${user?.id}/posts`, {
-        headers: {
-          Authorization: `Bearer ${user?.accessToken}`,
-        },
-      })
-      return res.data
-    }
-  )
+  const { data: userPosts } = useQuery(['user', 'posts', user?.id], async () => {
+    const res = await axios.get(`http://localhost:5000/api/v1/user/${user?.id}/posts`, {
+      headers: {
+        Authorization: `Bearer ${user?.accessToken}`,
+      },
+    })
+    return res.data
+  })
 
   console.log(userPosts)
 

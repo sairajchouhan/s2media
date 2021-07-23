@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React from 'react'
+import React, { useState } from 'react'
 import { axios } from '../../../config/axios'
 import { useUser } from '../../../hooks/useUser'
 import { LeftNavIconProps } from '../../../types/icon'
@@ -15,31 +15,41 @@ export interface PostFootInterface {
 
 export const PostFoot = ({ icon1, icon2, icon3, post }: PostFootInterface) => {
   const user = useUser()
-  // console.log(post)
+  const [likeCount, setLikeCount] = useState<number>(post.like.length)
+  const [userLiked, setUserLiked] = useState<boolean>(
+    post.like.some((like: any) => like.userId === user?.id)
+  )
+  console.log(likeCount, userLiked)
+
   const handleLikePost = async () => {
-    // /post/like/:postId  POST
-    const { data } = await axios.post(
-      `/post/like/${post.id}`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${user?.accessToken}`,
-        },
-      }
-    )
+    const currentLikes = likeCount
+    if (userLiked) {
+      setUserLiked(false)
+      setLikeCount((like) => like - 1)
+    }
+    if (!userLiked) {
+      setUserLiked(true)
+      setLikeCount((like) => like + 1)
+    }
+    try {
+      await axios.post(
+        `/post/like/${post.id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${user?.accessToken}`,
+          },
+        }
+      )
+    } catch (err) {
+      setLikeCount(currentLikes)
+      setUserLiked((state) => !state)
+      console.error(err)
+    }
     // console.log(data)
   }
 
   // console.log(post.like.userId === user?.id ? 'solid' : 'outline')
-
-  const getVariant = (type: 'like') => {
-    const likes: Array<any> = post[type]
-    const liked = likes.find((like: any) => like.userId === user?.id)
-    if (liked) return 'solid'
-    else return 'outline'
-  }
-
-  console.log(getVariant('like'))
 
   if (!user) return null
 
@@ -53,7 +63,7 @@ export const PostFoot = ({ icon1, icon2, icon3, post }: PostFootInterface) => {
             textColour="text-red-600"
             hoverBgColor="bg-red-100"
             icon={icon1}
-            variant={getVariant('like')}
+            variant={userLiked ? 'solid' : 'outline'}
             onClick={handleLikePost}
           />
           {/* <IconButton w="w-6" h="h-6" icon={icon2} /> */}
@@ -62,7 +72,7 @@ export const PostFoot = ({ icon1, icon2, icon3, post }: PostFootInterface) => {
       </div>
       <div className="flex items-center">
         <p className="text-sm text-gray-600">
-          <span>{post._count?.like} likes</span>
+          <span>{likeCount} likes</span>
         </p>
         <span className="w-1 h-1 mx-2 mt-1 bg-gray-400 rounded-full"></span>
         <p className="text-sm text-gray-600">

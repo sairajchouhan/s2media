@@ -31,6 +31,11 @@ const Home = () => {
               </React.Fragment>
             ))
           )}
+          {/* {!isLoading && (
+            <React.Fragment>
+              <Post post={posts[0]} />
+            </React.Fragment>
+          )} */}
         </main>
       </div>
     </PrivateRoute>

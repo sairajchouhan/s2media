@@ -3,10 +3,10 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { useQuery } from 'react-query'
 import CommentPost from '../../assets/svgs/commentpost.svg'
-import HeartOutline from '../../assets/svgs/heartout.svg'
 import MoreHorizontal from '../../assets/svgs/moreh.svg'
 import Saved from '../../assets/svgs/savedoutline.svg'
 import { NextImage } from '../../components/atoms/Image/image'
+import { HeartIcon } from '../../components/icons/HeartIcon'
 import { PageNav } from '../../components/molecules/Page/page-nav'
 import { PostFoot } from '../../components/molecules/Post/post-foot'
 import { PostHead } from '../../components/molecules/Post/post-head'
@@ -33,22 +33,11 @@ const EachPost = () => {
           <main>
             <NextImage src={post.url} />
           </main>
-          <PostFoot post={post} icon1={HeartOutline} icon2={CommentPost} icon3={Saved} />
+          <PostFoot post={post} icon1={HeartIcon} icon2={CommentPost} icon3={Saved} />
         </main>
       </div>
     </PrivateRoute>
   )
-}
-
-export const getServerSideProps = async () => {
-  const res = await fetch('http://localhost:3000/api/auth/session')
-  const data = await res.json()
-
-  console.log(data)
-
-  return {
-    props: {},
-  }
 }
 
 export default EachPost
