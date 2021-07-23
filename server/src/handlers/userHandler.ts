@@ -27,7 +27,12 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
       profile: true,
       followers: true,
       following: true,
-      post: true,
+      post: {
+        include: {
+          like: true,
+          comment: true,
+        },
+      },
     },
   })
 
@@ -129,6 +134,8 @@ export const getAllPostsOfUser = async (req: Request, res: Response) => {
           profile: true,
         },
       },
+      like: true,
+      comment: true,
     },
     orderBy: {
       createdAt: 'desc',

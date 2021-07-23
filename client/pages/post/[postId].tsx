@@ -33,7 +33,7 @@ const EachPost = () => {
           <main>
             <NextImage src={post.url} />
           </main>
-          <PostFoot icon1={HeartOutline} icon2={CommentPost} icon3={Saved} />
+          <PostFoot post={post} icon1={HeartOutline} icon2={CommentPost} icon3={Saved} />
         </main>
       </div>
     </PrivateRoute>

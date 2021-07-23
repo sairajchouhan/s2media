@@ -135,6 +135,8 @@ export const getPostById = async (req: Request, res: Response) => {
       id: postId,
     },
     include: {
+      like: true,
+      comment: true,
       user: {
         include: {
           profile: true,
