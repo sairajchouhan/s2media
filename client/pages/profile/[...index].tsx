@@ -1,45 +1,56 @@
-import axios from 'axios'
 import React from 'react'
-import { useQuery } from 'react-query'
 import { Link } from '../../components/Link'
 import { PageNav } from '../../components/molecules/Page/page-nav'
 import { ProfileCard } from '../../components/molecules/Profile'
 import { Post } from '../../components/organisms/Post'
 import PrivateRoute from '../../components/PrivateRoute'
+import { useQuery } from '../../hooks/useQuery'
 import { useUser } from '../../hooks/useUser'
 import { PostWithUserAndProfile } from '../../types/post'
-import { UserFullDetails } from '../../types/user'
 import { paths } from '../../utils/paths'
 
 const Profile = () => {
   const user = useUser()
 
-  const { data: userFullDetails, isLoading, isError } = useQuery<UserFullDetails>(
-    ['profile', user?.username],
-    async () => {
-      const res = await axios.get('http://localhost:5000/api/v1/user/me', {
-        headers: {
-          Authorization: `Bearer ${user?.accessToken}`,
-        },
-      })
-      return res.data
-    }
-  )
-
-  const { data: userPosts } = useQuery(['user', 'posts', user?.id], async () => {
-    const res = await axios.get(`http://localhost:5000/api/v1/user/${user?.id}/posts`, {
-      headers: {
-        Authorization: `Bearer ${user?.accessToken}`,
-      },
-    })
-    return res.data
+  const {
+    data: userFullDetails,
+    loading,
+    error,
+  } = useQuery('/user/me', {
+    headers: {
+      Authorization: `Bearer ${user?.accessToken}`,
+    },
   })
 
-  console.log(userPosts)
+  const { data: userPosts } = useQuery(`/user/${user?.id}/posts`)
+
+  // const {
+  //   data: userFullDetails,
+  //   isLoading,
+  //   isError,
+  // } = useQuery<UserFullDetails>(['profile', user?.username], async () => {
+  //   const res = await axios.get('http://localhost:5000/api/v1/user/me', {
+  //     headers: {
+  //       Authorization: `Bearer ${user?.accessToken}`,
+  //     },
+  //   })
+  //   return res.data
+  // })
+
+  // const { data: userPosts } = useQuery(['user', 'posts', user?.id], async () => {
+  //   const res = await axios.get(`http://localhost:5000/api/v1/user/${user?.id}/posts`, {
+  //     headers: {
+  //       Authorization: `Bearer ${user?.accessToken}`,
+  //     },
+  //   })
+  //   return res.data
+  // })
+
+  // console.log(userPosts)
 
   if (!user || !userFullDetails) return null
-  if (isError) return <h1>Something went wrong, Try again</h1>
-  if (isLoading) return <h1>Loading...</h1>
+  if (error) return <h1>Something went wrong, Try again</h1>
+  if (loading) return <h1>Loading...</h1>
 
   return (
     <PrivateRoute>
