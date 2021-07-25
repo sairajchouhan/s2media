@@ -1,9 +1,7 @@
 import { useRouter } from 'next/router'
 import React from 'react'
-import CommentPost from '../../assets/svgs/commentpost.svg'
-import MoreHorizontal from '../../assets/svgs/moreh.svg'
-import Saved from '../../assets/svgs/savedoutline.svg'
 import { NextImage } from '../../components/atoms/Image/image'
+import { DotsHorizontal } from '../../components/icons'
 import { HeartIcon } from '../../components/icons/HeartIcon'
 import { PageNav } from '../../components/molecules/Page/page-nav'
 import { PostFoot } from '../../components/molecules/Post/post-foot'
@@ -30,11 +28,11 @@ const EachPost = () => {
       <div className="min-h-screen border-l border-r border-opacity-80">
         <PageNav title="Post" />
         <main className="">
-          <PostHead post={post} moreIcon={MoreHorizontal} />
+          <PostHead post={post} icon={DotsHorizontal} />
           <main>
             <NextImage src={post.url} />
           </main>
-          <PostFoot post={post} icon1={HeartIcon} icon2={CommentPost} icon3={Saved} />
+          <PostFoot post={post} icon1={HeartIcon} icon2={() => <></>} icon3={() => <></>} />
         </main>
       </div>
     </PrivateRoute>

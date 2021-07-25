@@ -1,12 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import axios from 'axios'
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
-import CancelWhite from '../../assets/svgs/cancelwhite.svg'
 import { useUser } from '../../hooks/useUser'
 import { AutoGrowTextArea } from '../atoms/AutoGrowTextArea'
 import { Avatar } from '../atoms/Avatar'
 import { Button } from '../atoms/Button'
 import { IconButton } from '../atoms/IconButton'
+import { CancenIcon } from '../icons/CancenIcon'
 import { Model } from '../molecules/Model'
 import { ModelBody } from '../molecules/Model/model-body'
 export interface PostCreateInterface {
@@ -120,12 +120,12 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
                   </div>
                   <div className="absolute top-3 right-3">
                     <IconButton
-                      icon={CancelWhite}
+                      icon={CancenIcon}
                       w="w-4"
                       h="h-4"
                       p="p-1"
                       hoverBgColor="bg-black bg-opacity-60"
-                      textColour="text-white"
+                      textColour="text-gray-300"
                       bgColor="bg-black bg-opacity-50"
                       onClick={handleRemoveSelectedImage}
                     />

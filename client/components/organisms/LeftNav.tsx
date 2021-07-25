@@ -1,6 +1,5 @@
 import { signOut } from 'next-auth/client'
 import { useRouter } from 'next/router'
-import Logout from '../../assets/svgs/logout.svg'
 import { useUser } from '../../hooks/useUser'
 import { paths } from '../../utils/paths'
 import { LeftNavPostBtn } from '../atoms/LeftNavPostBtn/LeftNavPostBtn'
@@ -77,7 +76,11 @@ const LeftNav = () => {
         >
           Settings
         </LeftNavLink>
-        <LeftNavLink active={pathname === '/logout'} icon={Logout} onClick={() => handleLogout()}>
+        <LeftNavLink
+          active={pathname === '/logout'}
+          icon={() => <></>}
+          onClick={() => handleLogout()}
+        >
           Logout
         </LeftNavLink>
         <LeftNavPostBtn />

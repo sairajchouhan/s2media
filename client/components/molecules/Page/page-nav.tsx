@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React from 'react'
-import Back from '../../../assets/svgs/back.svg'
 import { IconButton } from '../../atoms/IconButton'
+import { BackIcon } from '../../icons'
 
 interface PageNavProps {
   title: string
@@ -14,7 +14,7 @@ export const PageNav = ({ title, subtitle }: PageNavProps) => {
     <div className="sticky top-0 z-10 bg-white">
       <div className="flex items-center w-full p-2 border-b border-opacity-80">
         <div className="mr-2">
-          <IconButton icon={Back} onClick={() => back()} hoverBgColor="bg-blue-50" />
+          <IconButton icon={BackIcon} onClick={() => back()} hoverBgColor="bg-blue-50" />
         </div>
         <div className="flex flex-col">
           <p className={`text-lg font-extrabold cursor-default ${subtitle ? 'leading-5' : ''} `}>

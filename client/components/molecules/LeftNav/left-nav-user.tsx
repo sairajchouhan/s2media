@@ -1,7 +1,7 @@
 import React from 'react'
-import MoreHorizontal from '../../../assets/svgs/moreh.svg'
 import { SessionUser } from '../../../types/user'
 import { Avatar } from '../../atoms/Avatar'
+import { DotsHorizontal } from '../../icons'
 
 export interface LeftNavUserProps {
   user: SessionUser
@@ -20,7 +20,7 @@ export const LeftNavUser = ({ user: { username, displayName, avatar } }: LeftNav
             <p className="text-base font-semibold text-gray-600">@{username}</p>
           </div>
           <div className="w-4 h-4 text-gray-600">
-            <MoreHorizontal />
+            <DotsHorizontal />
           </div>
         </div>
       </div>

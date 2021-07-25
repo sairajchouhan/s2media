@@ -2,14 +2,14 @@
 import React, { useState } from 'react'
 import { axios } from '../../../config/axios'
 import { useUser } from '../../../hooks/useUser'
-import { LeftNavIconProps } from '../../../types/icon'
+import { IconComp } from '../../../types/icon'
 import { PostWithUserAndProfile } from '../../../types/post'
 import { IconButton } from '../../atoms/IconButton'
 
 export interface PostFootInterface {
-  icon1: (props: LeftNavIconProps) => JSX.Element
-  icon2?: typeof React.Component
-  icon3?: typeof React.Component
+  icon1: IconComp
+  icon2?: IconComp
+  icon3?: IconComp
   post: PostWithUserAndProfile
 }
 

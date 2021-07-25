@@ -2,11 +2,10 @@
 // import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
-import MoreHorizontal from '../../assets/svgs/moreh.svg'
 import { useUser } from '../../hooks/useUser'
 import { PostWithUserAndProfile } from '../../types/post'
 import { NextImage } from '../atoms/Image'
-import { HeartIcon } from '../icons'
+import { DotsHorizontal, HeartIcon } from '../icons'
 import { PostFoot, PostHead } from '../molecules/Post'
 
 export interface PostProps {
@@ -20,7 +19,7 @@ export const Post = ({ post }: PostProps) => {
 
   return (
     <div className="overflow-hidden transition-all border-b rounded-sm shadow-sm border-opacity-80 hover:bg-gray-50">
-      <PostHead post={post} moreIcon={MoreHorizontal} />
+      <PostHead post={post} icon={DotsHorizontal} />
       <main className="cursor-pointer" onClick={() => push(`/post/${post.id}`)}>
         <NextImage src={post.url} />
       </main>

@@ -1,10 +1,10 @@
 import React from 'react'
-import { LeftNavIconProps } from '../../../types/icon'
+import { IconComp } from '../../../types/icon'
 
 export type LeftNavLinkProps = {
   active: boolean
   // eslint-disable-next-line no-unused-vars
-  icon: (props: LeftNavIconProps) => JSX.Element
+  icon: IconComp
   onClick: () => void
   children: React.ReactNode
 }
