@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
-import jwt from 'jsonwebtoken'
-import { JwtPaylod } from '../types'
+import fbadmin from 'firebase-admin'
 
-export default (req: Request, res: Response, next: NextFunction) => {
+export default async (req: Request, res: Response, next: NextFunction) => {
   const authorization = req.header('Authorization')
 
   if (!authorization) {
@@ -11,8 +10,8 @@ export default (req: Request, res: Response, next: NextFunction) => {
       message: 'authorization denied',
     })
   }
-  const token = authorization.split(' ')[1]
-  if (!token) {
+  const idToken = authorization.split(' ')[1]
+  if (!idToken) {
     return res.status(401).json({
       status: 401,
       message: 'authorization denied',
@@ -20,8 +19,9 @@ export default (req: Request, res: Response, next: NextFunction) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!)
-    req.user = decoded as JwtPaylod
+    const decodedToken = await fbadmin.auth().verifyIdToken(idToken)
+    console.log(decodedToken)
+    req.user = decodedToken as any
     return next()
   } catch (err) {
     return res.status(401).json({
