@@ -1,16 +1,16 @@
-import { useSession } from 'next-auth/client'
 import React from 'react'
 import { Post } from '../../components/organisms/Post'
 import Stories from '../../components/organisms/Stories'
 import PrivateRoute from '../../components/PrivateRoute'
 import { useQuery } from '../../hooks/useQuery'
+import { useUser } from '../../hooks/useUser'
 import { PostWithUserAndProfile } from '../../types/post'
 
 const Home = () => {
-  const [session] = useSession()
+  const user = useUser()
   const { data: posts, loading, error } = useQuery('/post')
 
-  if (!session) return null
+  if (!user) return null
   if (error) return <p>Error!</p>
   if (loading || !posts) return <p>Loading...</p>
 

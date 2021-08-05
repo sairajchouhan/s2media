@@ -1,14 +1,14 @@
-import { useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import React from 'react'
+import { useUser } from '../hooks/useUser'
 
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
-  const [session, loading] = useSession()
+  const user = useUser()
   const { push } = useRouter()
 
-  if (loading) return null
+  // if (loading) return null
 
-  if (!session) {
+  if (!user) {
     push('/')
     return null
   }

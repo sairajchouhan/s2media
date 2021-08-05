@@ -1,10 +1,10 @@
-import { signIn, signOut, useSession } from 'next-auth/client'
+import { signIn, signOut } from 'next-auth/client'
 import Link from 'next/link'
+import { useUser } from '../../hooks/useUser'
 
 interface NavProps {}
 const Nav = (_props: NavProps) => {
-  const [session, loading] = useSession()
-  console.log(loading)
+  const user = useUser()
 
   return (
     <div className="w-full bg-blue-50 h-14">
@@ -15,10 +15,10 @@ const Nav = (_props: NavProps) => {
           </Link>
         </div>
         <ul className="flex items-center h-full">
-          {session ? (
+          {false ? (
             <>
               <li className="cursor-pointer">
-                <a className="mr-6">{JSON.stringify(session)}</a>
+                <a className="mr-6">{JSON.stringify(user)}</a>
               </li>
               <li onClick={() => signOut()} className="cursor-pointer">
                 <Link href="/api/auth/signout">

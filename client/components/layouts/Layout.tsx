@@ -1,14 +1,14 @@
-import { useSession } from 'next-auth/client'
 import React from 'react'
+import { useUser } from '../../hooks/useUser'
 import AuthenticatedLayout from './AuthenticatedLayout'
 import UnAuthenticatedLayout from './UnAuthenticatedLayout'
 
 const Layout = ({ children }: { session?: any; children: React.ReactNode }) => {
-  const [session, loading] = useSession()
-  if (loading) return null
+  const user = useUser()
+  // if (loading) return null
   return (
     <>
-      {session ? (
+      {false ? (
         <AuthenticatedLayout>{children}</AuthenticatedLayout>
       ) : (
         <UnAuthenticatedLayout>{children}</UnAuthenticatedLayout>
