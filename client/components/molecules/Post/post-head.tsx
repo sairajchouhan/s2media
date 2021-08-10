@@ -17,7 +17,9 @@ export const PostHead = ({ post: { user, caption, createdAt }, icon }: PostHeadP
         <div className="flex items-center">
           <Link href={'/profile'}>
             <a className="flex items-center">
-              <Avatar src={user.avatar} w="w-10" h="h-10" alt="user profile image" />
+              {user.avatar && (
+                <Avatar src={user.avatar} w="w-10" h="h-10" alt="user profile image" />
+              )}
             </a>
           </Link>
           <div className="flex flex-col pl-2">

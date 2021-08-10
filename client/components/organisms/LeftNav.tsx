@@ -1,6 +1,5 @@
-import { signOut } from 'next-auth/client'
 import { useRouter } from 'next/router'
-import { useUser } from '../../hooks/useUser'
+import { useAuth } from '../../context/authContext'
 import { paths } from '../../utils/paths'
 import { LeftNavPostBtn } from '../atoms/LeftNavPostBtn/LeftNavPostBtn'
 import {
@@ -15,11 +14,11 @@ import { LeftNavBrand, LeftNavLink, LeftNavUser } from '../molecules/LeftNav'
 
 const LeftNav = () => {
   const { push, pathname } = useRouter()
-  const user = useUser()
+  const { user, logout } = useAuth()
 
   const handleLogout = async () => {
-    const data = await signOut({ redirect: false, callbackUrl: '/' })
-    push(data.url)
+    await logout()
+    push('/')
   }
 
   const isActive = (path: string) => {

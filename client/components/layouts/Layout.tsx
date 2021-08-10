@@ -1,14 +1,13 @@
 import React from 'react'
-import { useUser } from '../../hooks/useUser'
+import { useAuth } from '../../context/authContext'
 import AuthenticatedLayout from './AuthenticatedLayout'
 import UnAuthenticatedLayout from './UnAuthenticatedLayout'
 
 const Layout = ({ children }: { session?: any; children: React.ReactNode }) => {
-  const user = useUser()
-  // if (loading) return null
+  const { isAuthenticated } = useAuth()
   return (
     <>
-      {false ? (
+      {isAuthenticated ? (
         <AuthenticatedLayout>{children}</AuthenticatedLayout>
       ) : (
         <UnAuthenticatedLayout>{children}</UnAuthenticatedLayout>

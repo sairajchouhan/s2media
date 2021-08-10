@@ -2,7 +2,7 @@
 // import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { useUser } from '../../hooks/useUser'
+import { useAuth } from '../../context/authContext'
 import { PostWithUserAndProfile } from '../../types/post'
 import { NextImage } from '../atoms/Image'
 import { DotsHorizontal, HeartIcon } from '../icons'
@@ -13,7 +13,7 @@ export interface PostProps {
 }
 
 export const Post = ({ post }: PostProps) => {
-  const user = useUser()
+  const { user } = useAuth()
   const { push } = useRouter()
   if (!user) return null
 

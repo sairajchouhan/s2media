@@ -12,7 +12,7 @@ export const LeftNavUser = ({ user: { username, displayName, avatar } }: LeftNav
     <li className="flex items-center px-8 py-4 mt-auto mb-3 rounded-lg cursor-pointer select-none hover:bg-indigo-50">
       <div className="flex items-center w-full ">
         <div className="grid place-items-center">
-          <Avatar src={avatar} alt="ransom image from unsplash" w="w-10" h="h-10" />
+          {avatar && <Avatar src={avatar} alt="ransom image from unsplash" w="w-10" h="h-10" />}
         </div>
         <div className="flex items-center justify-between flex-1 pl-3">
           <div>
