@@ -18,7 +18,7 @@ const LeftNav = () => {
 
   const handleLogout = async () => {
     await logout()
-    push('/')
+    push('/login')
   }
 
   const isActive = (path: string) => {

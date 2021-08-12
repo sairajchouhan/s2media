@@ -1,14 +1,14 @@
 import React from 'react'
 import { Button } from '../../components/atoms/Button'
+import AuthenticatedLayout from '../../components/layouts/AuthenticatedLayout'
 import { PageNav } from '../../components/molecules/Page'
-import PrivateRoute from '../../components/PrivateRoute'
 import { useUser } from '../../hooks/useUser'
 
 const Messages = () => {
   const user = useUser()
   if (!user) return null
   return (
-    <PrivateRoute>
+    <AuthenticatedLayout>
       <div className="min-h-screen border-l border-r border-opacity-80">
         <PageNav title="Messages" />
         <main className="px-2 pl-10 mt-5">
@@ -35,7 +35,7 @@ const Messages = () => {
           <div className="mt-10"></div>
         </main>
       </div>
-    </PrivateRoute>
+    </AuthenticatedLayout>
   )
 }
 

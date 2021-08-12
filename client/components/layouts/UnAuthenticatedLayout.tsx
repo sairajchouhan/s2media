@@ -1,14 +1,29 @@
-import React from 'react'
+import { useRouter } from 'next/router'
+import React, { useEffect } from 'react'
+import { useAuth } from '../../context/authContext'
 import Nav from '../organisms/Nav'
 
 const UnAuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
+  const { user } = useAuth()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (user) {
+      router.push('/home')
+    }
+  }, [user, router])
+
   return (
-    <div>
-      <header>
-        <Nav />
-      </header>
-      <section className="container w-3/4 mx-auto">{children}</section>
-    </div>
+    <>
+      {!user && (
+        <>
+          <header>
+            <Nav />
+          </header>
+          <section className="container w-3/4 mx-auto">{children}</section>
+        </>
+      )}
+    </>
   )
 }
 

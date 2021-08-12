@@ -1,15 +1,15 @@
 import React from 'react'
+import AuthenticatedLayout from '../../components/layouts/AuthenticatedLayout'
 import { PageNav } from '../../components/molecules/Page/page-nav'
-import PrivateRoute from '../../components/PrivateRoute'
 
 const Saved = () => {
   return (
-    <PrivateRoute>
+    <AuthenticatedLayout>
       <div className="min-h-screen border-l border-r border-opacity-80">
         <PageNav title="Saved" />
         <main className="px-2">Saved Posts</main>
       </div>
-    </PrivateRoute>
+    </AuthenticatedLayout>
   )
 }
 

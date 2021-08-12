@@ -1,9 +1,9 @@
 import React from 'react'
+import AuthenticatedLayout from '../../components/layouts/AuthenticatedLayout'
 import { Link } from '../../components/Link'
 import { PageNav } from '../../components/molecules/Page/page-nav'
 import { ProfileCard } from '../../components/molecules/Profile'
 import { Post } from '../../components/organisms/Post'
-import PrivateRoute from '../../components/PrivateRoute'
 import { useQuery } from '../../hooks/useQuery'
 import { useUser } from '../../hooks/useUser'
 import { PostWithUserAndProfile } from '../../types/post'
@@ -53,7 +53,7 @@ const Profile = () => {
   if (loading) return <h1>Loading...</h1>
 
   return (
-    <PrivateRoute>
+    <AuthenticatedLayout>
       <div className="min-h-screen border-l border-r border-opacity-80">
         <PageNav title="Profile" subtitle={`@${userFullDetails.username}`} />
         <main className="flex flex-col mt-4">
@@ -95,7 +95,7 @@ const Profile = () => {
           </section>
         </main>
       </div>
-    </PrivateRoute>
+    </AuthenticatedLayout>
   )
 }
 

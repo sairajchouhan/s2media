@@ -1,12 +1,12 @@
 import { useRouter } from 'next/router'
 import React from 'react'
-import { NextImage } from '../../components/atoms/Image/image'
+import { NextImage } from '../../components/atoms/Image'
 import { DotsHorizontal } from '../../components/icons'
 import { HeartIcon } from '../../components/icons/HeartIcon'
+import AuthenticatedLayout from '../../components/layouts/AuthenticatedLayout'
 import { PageNav } from '../../components/molecules/Page/page-nav'
 import { PostFoot } from '../../components/molecules/Post/post-foot'
 import { PostHead } from '../../components/molecules/Post/post-head'
-import PrivateRoute from '../../components/PrivateRoute'
 import { useQuery } from '../../hooks/useQuery'
 
 const EachPost = () => {
@@ -24,7 +24,7 @@ const EachPost = () => {
   if (loading || !post) return <h1>Loading...</h1>
 
   return (
-    <PrivateRoute>
+    <AuthenticatedLayout>
       <div className="min-h-screen border-l border-r border-opacity-80">
         <PageNav title="Post" />
         <main className="">
@@ -35,7 +35,7 @@ const EachPost = () => {
           <PostFoot post={post} icon1={HeartIcon} icon2={() => <></>} icon3={() => <></>} />
         </main>
       </div>
-    </PrivateRoute>
+    </AuthenticatedLayout>
   )
 }
 

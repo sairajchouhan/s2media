@@ -1,3 +1,4 @@
+import UnAuthenticatedLayout from '../components/layouts/UnAuthenticatedLayout'
 export default function Landing() {
-  return <>bro this is index page</>
+  return <UnAuthenticatedLayout>bro this is index page</UnAuthenticatedLayout>
 }

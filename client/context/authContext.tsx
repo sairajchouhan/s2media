@@ -34,8 +34,6 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
         user.getIdToken().then((idToken) => {
           setUser(formatUser(user, idToken))
         })
-      } else {
-        setUser(null)
       }
       setLoading(false)
     })
@@ -68,5 +66,15 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     googleSignIn,
   }
 
-  return <AuthContext.Provider value={returnObj}>{!loading && children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={returnObj}>
+      {loading ? (
+        <div className="flex items-center justify-center w-full h-screen bg-gray-100">
+          <h1 className="text-indigo-600 text-8xl">S2Media</h1>
+        </div>
+      ) : (
+        children
+      )}
+    </AuthContext.Provider>
+  )
 }
