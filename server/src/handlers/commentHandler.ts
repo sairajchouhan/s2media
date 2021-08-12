@@ -12,7 +12,7 @@ export const createComment = async (req: Request, res: Response) => {
   }
   const { body } = req.body
   const postId = req.params.postId
-  const userId = req.user.id
+  const userId = req.user.uid
 
   const comment = await prisma.comment.create({
     data: {
@@ -36,7 +36,7 @@ export const editComment = async (req: Request, res: Response) => {
 
   const postId = req.params.postId
   const commentId = req.params.commentId
-  const userId = req.user.id
+  const userId = req.user.uid
   const { body } = req.body
 
   const post = await prisma.post.findUnique({
@@ -75,7 +75,7 @@ export const deleteComment = async (req: Request, res: Response) => {
 
   const postId = req.params.postId
   const commentId = req.params.commentId
-  const userId = req.user.id
+  const userId = req.user.uid
 
   const post = await prisma.post.findUnique({
     where: {

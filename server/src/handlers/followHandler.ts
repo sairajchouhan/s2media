@@ -13,11 +13,11 @@ export const followUser = async (req: Request, res: Response) => {
 
   const userId = req.params.userId
 
-  if (req.user.id === userId) throw createError(400, 'Cannot follow yourself')
+  if (req.user.uid === userId) throw createError(400, 'Cannot follow yourself')
 
   const user = await prisma.user.findUnique({
     where: {
-      id: req.user.id,
+      id: req.user.uid,
     },
     include: {
       following: true,
@@ -32,7 +32,7 @@ export const followUser = async (req: Request, res: Response) => {
     await prisma.follow.create({
       data: {
         followedId: userId,
-        followerId: req.user.id,
+        followerId: req.user.uid,
       },
     })
 

@@ -1,29 +1,19 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import { axios } from '../config/axios'
 import firebase from '../config/firebase'
 
 const AuthContext = createContext<any>({})
 export const useAuth = () => useContext(AuthContext)
 
-type FormatedUser = {
-  uid: string
-  email: string
-  displayName: string
-  avatar: string
-  idToken: string
-}
-
-const formatUser = (user: firebase.User, idToken: string): FormatedUser => {
+const formatUser = (user: firebase.User, idToken: string): any => {
   return {
-    uid: user.uid as string,
-    email: user.email as string,
-    displayName: user.displayName as string,
-    avatar: user.photoURL as string,
+    ...user,
     idToken,
   }
 }
 
 export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<FormatedUser | null>(null)
+  const [user, setUser] = useState<Record<any, any> | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -31,11 +21,30 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
       console.log(user)
       if (user) {
         console.log(user)
-        user.getIdToken().then((idToken) => {
-          setUser(formatUser(user, idToken))
-        })
+        user
+          .getIdToken()
+          .then(async (idToken) => {
+            setUser(formatUser(user, idToken))
+            try {
+              const userRes = await axios.get('/user/me', {
+                headers: {
+                  Authorization: `Bearer ${idToken}`,
+                },
+              })
+              const user = userRes.data
+              setUser(formatUser(user, idToken))
+              setLoading(false)
+            } catch (err) {
+              console.log(err)
+              setLoading(false)
+            }
+          })
+          .catch((err) => {
+            console.log(err.message)
+            setUser(null)
+            setLoading(false)
+          })
       }
-      setLoading(false)
     })
     return () => unsub()
   }, [])

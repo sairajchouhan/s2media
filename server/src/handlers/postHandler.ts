@@ -26,7 +26,7 @@ export const createPost = async (req: Request, res: Response) => {
     data: {
       url: imageUploadRes.secure_url,
       caption: caption,
-      userId: req.user.id,
+      userId: req.user.uid,
     },
   })
 
@@ -72,7 +72,7 @@ export const updatePost = async (req: Request, res: Response) => {
   if (!post) {
     throw createError(404, 'Post does not exist')
   }
-  if (post.userId !== req.user.id) {
+  if (post.userId !== req.user.uid) {
     throw createError(403, 'Unauthorized')
   }
 
@@ -109,7 +109,7 @@ export const deletePost = async (req: Request, res: Response) => {
     throw createError(404, 'Post does not exist')
   }
 
-  if (post.userId !== req.user.id) {
+  if (post.userId !== req.user.uid) {
     throw createError(403, 'Unauthorized')
   }
 

@@ -19,9 +19,11 @@ export const getAllUsers = async (_req: Request, res: Response) => {
 }
 
 export const getAuthUserInfo = async (req: Request, res: Response) => {
+  console.log(req.user.uid)
+
   const user = await prisma.user.findUnique({
     where: {
-      id: req.user.id,
+      id: req.user.uid,
     },
     include: {
       profile: true,
@@ -54,7 +56,7 @@ export const updateProfile = async (req: Request, res: Response) => {
   const { bio, displayName } = req.body
   const user = await prisma.user.findUnique({
     where: {
-      id: req.user.id,
+      id: req.user.uid,
     },
     include: {
       profile: true,

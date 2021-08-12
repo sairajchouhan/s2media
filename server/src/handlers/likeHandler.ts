@@ -12,7 +12,7 @@ export const likeAndUnlikePost = async (req: Request, res: Response) => {
   }
 
   const postId = req.params.postId
-  const userId = req.user.id
+  const userId = req.user.uid
 
   const post = await prisma.post.findUnique({
     where: {

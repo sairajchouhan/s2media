@@ -1,8 +1,11 @@
 import admin from 'firebase-admin'
 import serviceAccount from '../../admin.json'
 
-if (admin.apps.length === 0) {
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount as any),
-  })
+export const initAdmin = () => {
+  if (admin.apps.length === 0) {
+    console.log(`Initializing Firebase Admin SDK with service account`)
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount as any),
+    })
+  }
 }
