@@ -1,9 +1,11 @@
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { Button } from '../../components/atoms/Button'
 import UnAuthenticatedLayout from '../../components/layouts/UnAuthenticatedLayout'
 import { useAuth } from '../../context/authContext'
 
 const Signup = () => {
+  const router = useRouter()
   const { signup } = useAuth()
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState({
@@ -23,6 +25,7 @@ const Signup = () => {
     try {
       setLoading(true)
       await signup(data.email, data.password)
+      // router.push('/home')
     } catch (err) {
       console.error(err)
     }

@@ -16,9 +16,7 @@ const formatUser = (user: Record<any, any>, idToken: string): any => {
 export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<Record<any, any> | null>(null)
   const [loading, setLoading] = useState(true)
-  const { push } = useRouter()
-
-  console.log(user)
+  const router = useRouter()
 
   useEffect(() => {
     const unsub = firebase.auth().onAuthStateChanged((user) => {
@@ -33,11 +31,11 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
                 },
               })
               const {
-                data: { redirect, userFullDetials },
+                data: { userFullDetials },
               } = userResp
               setUser(formatUser(userFullDetials, idToken))
               setLoading(false)
-              push(redirect)
+              console.log('!', router.pathname)
             } catch (err) {
               console.log(err)
               setUser(null)
@@ -54,7 +52,6 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
       }
     })
     return () => unsub()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const login = (email: string, password: string) => {
