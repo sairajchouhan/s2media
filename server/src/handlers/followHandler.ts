@@ -17,7 +17,7 @@ export const followUser = async (req: Request, res: Response) => {
 
   const user = await prisma.user.findUnique({
     where: {
-      id: req.user.uid,
+      uid: req.user.uid,
     },
     include: {
       following: true,

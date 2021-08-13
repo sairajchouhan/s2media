@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { axios } from '../config/axios'
 import firebase from '../config/firebase'
@@ -5,7 +6,7 @@ import firebase from '../config/firebase'
 const AuthContext = createContext<any>({})
 export const useAuth = () => useContext(AuthContext)
 
-const formatUser = (user: firebase.User, idToken: string): any => {
+const formatUser = (user: Record<any, any>, idToken: string): any => {
   return {
     ...user,
     idToken,
@@ -15,27 +16,31 @@ const formatUser = (user: firebase.User, idToken: string): any => {
 export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<Record<any, any> | null>(null)
   const [loading, setLoading] = useState(true)
+  const { push } = useRouter()
+
+  console.log(user)
 
   useEffect(() => {
     const unsub = firebase.auth().onAuthStateChanged((user) => {
-      console.log(user)
       if (user) {
-        console.log(user)
         user
           .getIdToken()
           .then(async (idToken) => {
-            setUser(formatUser(user, idToken))
             try {
-              const userRes = await axios.get('/user/me', {
+              const userResp = await axios.get('/user/me', {
                 headers: {
                   Authorization: `Bearer ${idToken}`,
                 },
               })
-              const user = userRes.data
-              setUser(formatUser(user, idToken))
+              const {
+                data: { redirect, userFullDetials },
+              } = userResp
+              setUser(formatUser(userFullDetials, idToken))
               setLoading(false)
+              push(redirect)
             } catch (err) {
               console.log(err)
+              setUser(null)
               setLoading(false)
             }
           })
@@ -44,9 +49,12 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
             setUser(null)
             setLoading(false)
           })
+      } else {
+        setLoading(false)
       }
     })
     return () => unsub()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const login = (email: string, password: string) => {

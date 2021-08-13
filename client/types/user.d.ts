@@ -8,7 +8,8 @@ export interface SessionUser {
 }
 
 export interface User {
-  id: string
+  uid: string
+  idToken: string
   email: string
   username: string
   avatar: string

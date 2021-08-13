@@ -104,7 +104,7 @@ export const Button = ({
 			${disabled && 'cursor-not-allowed'}
 			relative disabled:opacity-70 
 			`}
-      disabled={disabled}
+      disabled={disabled || loading}
     >
       {loading && (
         <div className="absolute inset-0 flex items-center justify-center red-100">

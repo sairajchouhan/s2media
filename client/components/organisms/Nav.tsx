@@ -1,11 +1,8 @@
 import { signOut } from 'next-auth/client'
 import Link from 'next/link'
-import { useUser } from '../../hooks/useUser'
 
 interface NavProps {}
 const Nav = (_props: NavProps) => {
-  const user = useUser()
-
   return (
     <div className="w-full bg-blue-50 h-14">
       <div className="flex items-center justify-between h-full px-20">
@@ -17,9 +14,6 @@ const Nav = (_props: NavProps) => {
         <ul className="flex items-center h-full">
           {false ? (
             <>
-              <li className="cursor-pointer">
-                <a className="mr-6">{JSON.stringify(user)}</a>
-              </li>
               <li onClick={() => signOut()} className="cursor-pointer">
                 <Link href="/api/auth/signout">
                   <a className="">Logout</a>

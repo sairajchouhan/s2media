@@ -3,14 +3,11 @@ import AuthenticatedLayout from '../../components/layouts/AuthenticatedLayout'
 import { Post } from '../../components/organisms/Post'
 import Stories from '../../components/organisms/Stories'
 import { useQuery } from '../../hooks/useQuery'
-import { useUser } from '../../hooks/useUser'
 import { PostWithUserAndProfile } from '../../types/post'
 
 const Home = () => {
-  const user = useUser()
   const { data: posts, loading, error } = useQuery('/post')
 
-  if (!user) return null
   if (error) return <p>Error!</p>
   if (loading || !posts) return <p>Loading...</p>
 

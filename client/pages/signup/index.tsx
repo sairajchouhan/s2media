@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { Button } from '../../components/atoms/Button'
 import UnAuthenticatedLayout from '../../components/layouts/UnAuthenticatedLayout'
@@ -6,7 +5,7 @@ import { useAuth } from '../../context/authContext'
 
 const Signup = () => {
   const { signup } = useAuth()
-  const router = useRouter()
+  const [loading, setLoading] = useState(false)
   const [data, setData] = useState({
     email: '',
     password: '',
@@ -22,12 +21,12 @@ const Signup = () => {
       return
     }
     try {
-      const res = await signup(data.email, data.password)
-      router.push('/home')
-      console.log(res)
+      setLoading(true)
+      await signup(data.email, data.password)
     } catch (err) {
       console.error(err)
     }
+    setLoading(false)
   }
 
   return (
@@ -59,7 +58,7 @@ const Signup = () => {
               className="w-full rounded-lg"
             />
           </div>
-          <Button onClick={handleSignup} className="py-2" colorScheme="green">
+          <Button onClick={handleSignup} loading={loading} className="py-2" colorScheme="green">
             Submit
           </Button>
         </div>

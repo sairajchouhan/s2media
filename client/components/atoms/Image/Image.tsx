@@ -17,6 +17,7 @@ export const NextImage = ({
   objectPosition,
   ...props
 }: NextImageProps) => {
+  if (!src) return null
   return (
     <div className="imageContainer" {...props}>
       <Image

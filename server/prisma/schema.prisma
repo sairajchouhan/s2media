@@ -12,11 +12,11 @@ generator client {
 }
 
 model User {
-  id        String      @id @default(cuid())
+  uid        String      @id 
   email     String   @unique
   username  String   @unique
   avatar    String?   
-  provider  String   @default("google")
+  provider  String   
   profile   Profile?
   post Post[]
   like Like[]
@@ -32,7 +32,7 @@ model Profile {
   bio String?
   displayName String?
   userId String
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [uid])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -45,7 +45,7 @@ model Post{
   like Like[]
   comment Comment[]
   userId String
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [uid])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -54,7 +54,7 @@ model Like {
   id String @id @default(cuid())
   userId String
   postId String
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [uid])
   post Post @relation(fields: [postId], references: [id])
   createdAt DateTime @default(now())
   @@unique([userId, postId])
@@ -65,7 +65,7 @@ model Comment {
   body String
   userId String
   postId String
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [uid])
   post Post @relation(fields: [postId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -75,8 +75,8 @@ model Follow {
   id String @id @default(cuid())
   followedId String
   followerId String
-  followed User @relation(name: "followed",fields: [followedId], references: [id])
-  follower User @relation(name: "follower", fields: [followerId], references: [id])
+  followed User @relation(name: "followed",fields: [followedId], references: [uid])
+  follower User @relation(name: "follower", fields: [followerId], references: [uid])
   createdAt DateTime @default(now())
   @@unique([followedId, followerId])
 }

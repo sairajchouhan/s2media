@@ -2,7 +2,6 @@ import Link from 'next/link'
 import React from 'react'
 import { IconComp } from '../../../types'
 import { PostWithUserAndProfile } from '../../../types/post'
-import { Avatar } from '../../atoms/Avatar'
 import { IconButton } from '../../atoms/IconButton'
 
 export interface PostHeadProps {
@@ -17,9 +16,9 @@ export const PostHead = ({ post: { user, caption, createdAt }, icon }: PostHeadP
         <div className="flex items-center">
           <Link href={'/profile'}>
             <a className="flex items-center">
-              {user.avatar && (
+              {/* {user.avatar && (
                 <Avatar src={user.avatar} w="w-10" h="h-10" alt="user profile image" />
-              )}
+              )} */}
             </a>
           </Link>
           <div className="flex flex-col pl-2">
@@ -27,10 +26,10 @@ export const PostHead = ({ post: { user, caption, createdAt }, icon }: PostHeadP
               <a>
                 <div className="flex items-center">
                   <div className="font-semibold leading-4 text-gray-800 cursor-pointer text-md hover:underline">
-                    {user.profile.displayName}
+                    {user?.profile.displayName}
                   </div>
                   <div className="mx-1 text-base font-normal text-gray-600">·</div>
-                  <p className="text-sm leading-5 text-gray-500 text-md">@{user.username}</p>
+                  <p className="text-sm leading-5 text-gray-500 text-md">@{user?.username}</p>
                 </div>
               </a>
             </Link>

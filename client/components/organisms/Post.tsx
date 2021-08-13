@@ -2,7 +2,6 @@
 // import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { useAuth } from '../../context/authContext'
 import { PostWithUserAndProfile } from '../../types/post'
 import { NextImage } from '../atoms/Image'
 import { DotsHorizontal, HeartIcon } from '../icons'
@@ -13,9 +12,7 @@ export interface PostProps {
 }
 
 export const Post = ({ post }: PostProps) => {
-  const { user } = useAuth()
   const { push } = useRouter()
-  if (!user) return null
 
   return (
     <div className="overflow-hidden transition-all border-b rounded-sm shadow-sm border-opacity-80 hover:bg-gray-50">

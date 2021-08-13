@@ -2,12 +2,13 @@ import { Request, Response } from 'express'
 import { validationResult } from 'express-validator'
 import createError from 'http-errors'
 import prisma from '../../prisma'
+import { get4RandomChars } from '../utils'
 
 export const getAllUsers = async (_req: Request, res: Response) => {
   const data = await prisma.user.findMany({
     orderBy: { createdAt: 'desc' },
     select: {
-      id: true,
+      uid: true,
       username: true,
       email: true,
       createdAt: true,
@@ -19,30 +20,57 @@ export const getAllUsers = async (_req: Request, res: Response) => {
 }
 
 export const getAuthUserInfo = async (req: Request, res: Response) => {
-  console.log(req.user.uid)
+  console.log(req.user.email)
 
-  const user = await prisma.user.findUnique({
-    where: {
-      id: req.user.uid,
-    },
-    include: {
-      profile: true,
-      followers: true,
-      following: true,
-      post: {
-        include: {
-          like: true,
-          comment: true,
-        },
+  let user: any
+  const includeObj = {
+    profile: true,
+    followers: true,
+    following: true,
+    post: {
+      include: {
+        like: true,
+        comment: true,
       },
     },
+  }
+
+  user = await prisma.user.findUnique({
+    where: {
+      email: req.user.email,
+    },
+    include: includeObj,
   })
 
   if (!user) {
-    throw createError(403, 'User not found')
+    const username = req.user.email.split('@')[0]
+
+    user = await prisma.user.create({
+      data: {
+        uid: req.user.uid,
+        email: req.user.email,
+        username: `${username}_${get4RandomChars()}`,
+        avatar: null,
+        provider: req.user.firebase.sign_in_provider,
+        profile: {
+          create: {
+            bio: null,
+            displayName: username,
+          },
+        },
+      },
+      include: includeObj,
+    })
+    return res.status(201).json({
+      redirect: '/home',
+      user,
+    })
   }
 
-  res.send(user)
+  return res.status(200).json({
+    redirect: '/home',
+    userFullDetials: user,
+  })
 }
 
 export const updateProfile = async (req: Request, res: Response) => {
@@ -56,7 +84,7 @@ export const updateProfile = async (req: Request, res: Response) => {
   const { bio, displayName } = req.body
   const user = await prisma.user.findUnique({
     where: {
-      id: req.user.uid,
+      uid: req.user.uid,
     },
     include: {
       profile: true,
@@ -71,7 +99,7 @@ export const updateProfile = async (req: Request, res: Response) => {
       data: {
         bio,
         displayName,
-        userId: user.id,
+        userId: user.uid,
       },
     })
     return res.json(profile)
@@ -105,11 +133,11 @@ export const getUserInfo = async (req: Request, res: Response) => {
       errors: errors.array(),
     })
   }
-  const id = req.params.userId
+  const uid = req.params.userId
 
   const user = await prisma.user.findUnique({
     where: {
-      id,
+      uid,
     },
     include: {
       profile: true,

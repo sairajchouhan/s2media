@@ -2,11 +2,10 @@ import React from 'react'
 import { Button } from '../../components/atoms/Button'
 import AuthenticatedLayout from '../../components/layouts/AuthenticatedLayout'
 import { PageNav } from '../../components/molecules/Page'
-import { useUser } from '../../hooks/useUser'
 
 const Messages = () => {
-  const user = useUser()
-  if (!user) return null
+  // const { user } = useAuth()
+
   return (
     <AuthenticatedLayout>
       <div className="min-h-screen border-l border-r border-opacity-80">

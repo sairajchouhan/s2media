@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import axios from 'axios'
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
-import { useUser } from '../../hooks/useUser'
+import { useAuth } from '../../context/authContext'
 import { AutoGrowTextArea } from '../atoms/AutoGrowTextArea'
 import { Avatar } from '../atoms/Avatar'
 import { Button } from '../atoms/Button'
@@ -15,13 +15,11 @@ export interface PostCreateInterface {
 }
 
 export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
-  const user = useUser()
+  const { user } = useAuth()
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [selectedFile, setSelectedFile] = useState<Blob | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
-  // loading state
   const [loading, setLoading] = useState<boolean>(false)
-  // const [caption, setCaption] = useState('')
 
   useEffect(() => {
     if (selectedFile) {
@@ -30,7 +28,7 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
   }, [selectedFile])
 
   // const validateInputFile = () => {}
-  if (!user) return null
+  // if (!user) return null
 
   const toggleOpen = () => {
     setOpen((open) => !open)
@@ -84,7 +82,7 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
       console.log(formData)
       const res = await axios.post('http://localhost:5000/api/v1/post', formData, {
         headers: {
-          Authorization: `Bearer ${user.accessToken}`,
+          Authorization: `Bearer ${user.idToken}`,
         },
       })
       setOpen((open) => !open)
@@ -106,7 +104,9 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
           <div className="mt-4">
             <div className="flex items-start h-full space-x-4">
               <div className="h-full">
-                <Avatar src={user.avatar} w="w-10" h="h-10" alt="authenticated user avatar" />
+                {user.avatar && (
+                  <Avatar src={user.avatar} w="w-10" h="h-10" alt="authenticated user avatar" />
+                )}
               </div>
               <div className="flex items-center flex-1 h-full">
                 <AutoGrowTextArea initialFocusRef={textareaRef} />

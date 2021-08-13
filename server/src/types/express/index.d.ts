@@ -5,7 +5,7 @@ declare namespace Express {
     user: {
       aud: string
       auth_time: number
-      email?: string
+      email: string
       email_verified?: boolean
       exp: number
       iat: number

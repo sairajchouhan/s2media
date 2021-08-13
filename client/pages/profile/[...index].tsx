@@ -4,53 +4,12 @@ import { Link } from '../../components/Link'
 import { PageNav } from '../../components/molecules/Page/page-nav'
 import { ProfileCard } from '../../components/molecules/Profile'
 import { Post } from '../../components/organisms/Post'
-import { useQuery } from '../../hooks/useQuery'
-import { useUser } from '../../hooks/useUser'
+import { useAuth } from '../../context/authContext'
 import { PostWithUserAndProfile } from '../../types/post'
 import { paths } from '../../utils/paths'
 
 const Profile = () => {
-  const user = useUser()
-
-  const {
-    data: userFullDetails,
-    loading,
-    error,
-  } = useQuery('/user/me', {
-    headers: {
-      Authorization: `Bearer ${user?.accessToken}`,
-    },
-  })
-
-  const { data: userPosts } = useQuery(`/user/${user?.id}/posts`)
-
-  // const {
-  //   data: userFullDetails,
-  //   isLoading,
-  //   isError,
-  // } = useQuery<UserFullDetails>(['profile', user?.username], async () => {
-  //   const res = await axios.get('http://localhost:5000/api/v1/user/me', {
-  //     headers: {
-  //       Authorization: `Bearer ${user?.accessToken}`,
-  //     },
-  //   })
-  //   return res.data
-  // })
-
-  // const { data: userPosts } = useQuery(['user', 'posts', user?.id], async () => {
-  //   const res = await axios.get(`http://localhost:5000/api/v1/user/${user?.id}/posts`, {
-  //     headers: {
-  //       Authorization: `Bearer ${user?.accessToken}`,
-  //     },
-  //   })
-  //   return res.data
-  // })
-
-  // console.log(userPosts)
-
-  if (!user || !userFullDetails) return null
-  if (error) return <h1>Something went wrong, Try again</h1>
-  if (loading) return <h1>Loading...</h1>
+  const { user: userFullDetails } = useAuth()
 
   return (
     <AuthenticatedLayout>
@@ -90,8 +49,10 @@ const Profile = () => {
             </nav>
           </section>
           <section>
-            {userPosts &&
-              userPosts.map((post: PostWithUserAndProfile) => <Post key={post.id} post={post} />)}
+            {userFullDetails.post &&
+              userFullDetails.post.map((post: PostWithUserAndProfile) => (
+                <Post key={post.id} post={post} />
+              ))}
           </section>
         </main>
       </div>
