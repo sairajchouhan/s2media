@@ -24,15 +24,14 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
 
   let user: any
   const includeObj = {
-    profile: true,
-    followers: true,
-    following: true,
-    post: {
-      include: {
-        like: true,
-        comment: true,
+    _count: {
+      select: {
+        post: true,
+        followers: true,
+        following: true,
       },
     },
+    profile: true,
   }
 
   user = await prisma.user.findUnique({

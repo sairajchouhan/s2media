@@ -20,6 +20,8 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
+  console.log(user)
+
   useEffect(() => {
     const unsub = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
@@ -38,7 +40,6 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
               setUser(formatUser(userFullDetials, idToken))
               setLoading(false)
               if (fromPaths.includes(router.pathname)) {
-                console.log('!', 'inside if')
                 router.push('/home')
               }
             } catch (err) {

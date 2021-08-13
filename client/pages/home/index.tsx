@@ -1,5 +1,4 @@
 import React from 'react'
-import AuthenticatedLayout from '../../components/layouts/AuthenticatedLayout'
 import { Post } from '../../components/organisms/Post'
 import Stories from '../../components/organisms/Stories'
 import { useQuery } from '../../hooks/useQuery'
@@ -12,7 +11,7 @@ const Home = () => {
   if (loading || !posts) return <p>Loading...</p>
 
   return (
-    <AuthenticatedLayout>
+    <>
       <div className="h-full border-l border-r border-opacity-80">
         <Stories />
         <main>
@@ -32,7 +31,7 @@ const Home = () => {
           )} */}
         </main>
       </div>
-    </AuthenticatedLayout>
+    </>
   )
 }
 
