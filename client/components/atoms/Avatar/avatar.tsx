@@ -1,5 +1,6 @@
 import React from 'react'
 import { NextImage } from '../Image'
+import DummyUser from './dummyUser.svg'
 
 interface AvatarProps {
   src: string
@@ -9,6 +10,14 @@ interface AvatarProps {
 }
 
 export const Avatar = ({ src, alt, w = 'w-6', h = 'h-6' }: AvatarProps) => {
+  if (src === null || !src) {
+    return (
+      <div className={`${w} ${h}`}>
+        <NextImage roundedFull={true} src={DummyUser} alt={'dummyUser'} />
+      </div>
+    )
+  }
+
   return (
     <div className={`${w} ${h}`}>
       <NextImage roundedFull={true} src={src} alt={alt} />

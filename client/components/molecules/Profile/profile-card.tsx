@@ -33,9 +33,9 @@ export const ProfileCard = ({ userFullDetails }: ProfileCardProps) => {
           <h3 className="text-gray-500">@{userFullDetails.username}</h3>
         </div>
         <div className="flex items-center justify-between">
-          <p>{userFullDetails.post.length} posts</p>
-          <p>{userFullDetails.followers.length} followers</p>
-          <p>{userFullDetails.following.length} following</p>
+          <p>{userFullDetails._count.post} posts</p>
+          <p>{userFullDetails._count.followers} followers</p>
+          <p>{userFullDetails._count.following} following</p>
         </div>
         <div>{userFullDetails.profile.bio && <p>{userFullDetails.profile.bio}</p>}</div>
       </div>

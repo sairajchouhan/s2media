@@ -14,6 +14,11 @@ export interface User {
   username: string
   avatar: string
   provider: string
+  _count: {
+    post: number
+    followers: number
+    following: number
+  }
   createdAt: string
   updatedAt: string
   following: Array<any>

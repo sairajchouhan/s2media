@@ -2,6 +2,7 @@ import Link from 'next/link'
 import React from 'react'
 import { IconComp } from '../../../types'
 import { PostWithUserAndProfile } from '../../../types/post'
+import { Avatar } from '../../atoms/Avatar/avatar'
 import { IconButton } from '../../atoms/IconButton'
 
 export interface PostHeadProps {
@@ -16,9 +17,7 @@ export const PostHead = ({ post: { user, caption, createdAt }, icon }: PostHeadP
         <div className="flex items-center">
           <Link href={'/profile'}>
             <a className="flex items-center">
-              {/* {user.avatar && (
-                <Avatar src={user.avatar} w="w-10" h="h-10" alt="user profile image" />
-              )} */}
+              <Avatar src={user.avatar} w="w-10" h="h-10" alt="user profile image" />
             </a>
           </Link>
           <div className="flex flex-col pl-2">
