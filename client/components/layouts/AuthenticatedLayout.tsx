@@ -12,7 +12,8 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
     if (!user) {
       router.push('/login')
     }
-  }, [router, user])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     user && (

@@ -13,12 +13,14 @@ import {
 import { LeftNavBrand, LeftNavLink, LeftNavUser } from '../molecules/LeftNav'
 
 const LeftNav = () => {
+  const router = useRouter()
   const { push, pathname } = useRouter()
   const { user, logout } = useAuth()
 
   const handleLogout = async () => {
     await logout()
-    push('/login')
+    // window.location.href = paths.login
+    router.push('/login')
   }
 
   const isActive = (path: string) => {

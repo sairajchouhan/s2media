@@ -11,7 +11,8 @@ const UnAuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
     if (user) {
       router.push('/home')
     }
-  }, [user, router])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <>

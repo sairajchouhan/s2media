@@ -7,6 +7,7 @@ import { useAuth } from '../../context/authContext'
 const Login = () => {
   const router = useRouter()
   const { login } = useAuth()
+  const [loading, setLoading] = useState(false)
   const [data, setData] = useState({
     email: 'sairaj2119@gmail.com',
     password: 'aunzbedi',
@@ -17,11 +18,11 @@ const Login = () => {
   }
 
   const handleLogin = async () => {
-    console.log(data)
     if (!data.email || !data.password || data.password.trim() === '' || data.email.trim() === '') {
       return
     }
     try {
+      setLoading(true)
       await login(data.email, data.password)
       // router.push('/home')
     } catch (err) {
@@ -58,7 +59,7 @@ const Login = () => {
               className="w-full rounded-lg"
             />
           </div>
-          <Button onClick={handleLogin} className="py-2" colorScheme="green">
+          <Button onClick={handleLogin} loading={loading} className="py-2" colorScheme="green">
             Submit
           </Button>
         </div>

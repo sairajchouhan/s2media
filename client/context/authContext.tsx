@@ -6,6 +6,8 @@ import firebase from '../config/firebase'
 const AuthContext = createContext<any>({})
 export const useAuth = () => useContext(AuthContext)
 
+const fromPaths = ['/login', '/signup']
+
 const formatUser = (user: Record<any, any>, idToken: string): any => {
   return {
     ...user,
@@ -35,7 +37,10 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
               } = userResp
               setUser(formatUser(userFullDetials, idToken))
               setLoading(false)
-              console.log('!', router.pathname)
+              if (fromPaths.includes(router.pathname)) {
+                console.log('!', 'inside if')
+                router.push('/home')
+              }
             } catch (err) {
               console.log(err)
               setUser(null)
@@ -52,7 +57,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
       }
     })
     return () => unsub()
-  }, [])
+  }, [router])
 
   const login = (email: string, password: string) => {
     return firebase.auth().signInWithEmailAndPassword(email, password)
