@@ -1,16 +1,15 @@
-import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { Button } from '../../components/atoms/Button'
 import UnAuthenticatedLayout from '../../components/layouts/UnAuthenticatedLayout'
 import { useAuth } from '../../context/authContext'
+import { providerNames } from '../../utils/oAuthProviders'
 
 const Login = () => {
-  const router = useRouter()
-  const { login } = useAuth()
+  const { login, oAuthLogin } = useAuth()
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState({
-    email: 'sairaj2119@gmail.com',
-    password: 'aunzbedi',
+    email: '',
+    password: '',
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,10 +23,13 @@ const Login = () => {
     try {
       setLoading(true)
       await login(data.email, data.password)
-      // router.push('/home')
     } catch (err) {
       console.error(err)
     }
+  }
+
+  const handleOAuthLogin = async (providerName: string) => {
+    await oAuthLogin(providerName)
   }
 
   return (
@@ -61,6 +63,15 @@ const Login = () => {
           </div>
           <Button onClick={handleLogin} loading={loading} className="py-2" colorScheme="green">
             Submit
+          </Button>
+          <span className="my-4"></span>
+          <Button
+            onClick={() => handleOAuthLogin(providerNames.google)}
+            loading={loading}
+            className="py-2"
+            colorScheme="green"
+          >
+            Login With Google
           </Button>
         </div>
       </div>

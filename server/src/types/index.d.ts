@@ -8,7 +8,7 @@ export type JwtPaylod = {
 export type DecodedIdToken = {
   aud: string
   auth_time: number
-  email?: string
+  email: string
   email_verified?: boolean
   exp: number
   iat: number

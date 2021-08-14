@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { axios } from '../config/axios'
 import firebase from '../config/firebase'
+import { getProvider } from '../utils/oAuthProviders'
 
 const AuthContext = createContext<any>({})
 export const useAuth = () => useContext(AuthContext)
@@ -19,8 +20,6 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
   const [user, setUser] = useState<Record<any, any> | null>(null)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
-
-  console.log(user)
 
   useEffect(() => {
     const unsub = firebase.auth().onAuthStateChanged((user) => {
@@ -68,9 +67,8 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     return firebase.auth().createUserWithEmailAndPassword(email, password)
   }
 
-  const googleSignIn = () => {
-    let provider = new firebase.auth.GoogleAuthProvider()
-    return firebase.auth().signInWithPopup(provider)
+  const oAuthLogin = (provider: string) => {
+    return firebase.auth().signInWithPopup(getProvider(provider))
   }
 
   const logout = async () => {
@@ -83,7 +81,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     login,
     signup,
     logout,
-    googleSignIn,
+    oAuthLogin,
   }
 
   return (

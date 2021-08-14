@@ -20,8 +20,7 @@ export const getAllUsers = async (_req: Request, res: Response) => {
 }
 
 export const getAuthUserInfo = async (req: Request, res: Response) => {
-  console.log(req.user.email)
-
+  // console.log(req.user)
   let user: any
   const includeObj = {
     _count: {
@@ -49,7 +48,7 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
         uid: req.user.uid,
         email: req.user.email,
         username: `${username}_${get4RandomChars()}`,
-        avatar: null,
+        avatar: req.user.picture ?? null,
         provider: req.user.firebase.sign_in_provider,
         profile: {
           create: {
@@ -60,10 +59,25 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
       },
       include: includeObj,
     })
+    console.log(user)
     return res.status(201).json({
       redirect: '/home',
       user,
     })
+  }
+
+  if (user.provider !== req.user.firebase.sign_in_provider) {
+    const updatedUser = await prisma.user.update({
+      where: {
+        email: req.user.email,
+      },
+      data: {
+        provider: req.user.firebase.sign_in_provider,
+        avatar: req.user.picture ?? null,
+      },
+      include: includeObj,
+    })
+    return res.status(201).json({ redirect: '/home', user: updatedUser })
   }
 
   return res.status(200).json({
