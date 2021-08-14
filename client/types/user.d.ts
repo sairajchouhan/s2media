@@ -8,11 +8,17 @@ export interface SessionUser {
 }
 
 export interface User {
-  id: string
+  uid: string
+  idToken: string
   email: string
   username: string
   avatar: string
   provider: string
+  _count: {
+    post: number
+    followers: number
+    following: number
+  }
   createdAt: string
   updatedAt: string
   following: Array<any>

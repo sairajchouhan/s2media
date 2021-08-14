@@ -1,11 +1,8 @@
-import { signIn, signOut, useSession } from 'next-auth/client'
+import { signOut } from 'next-auth/client'
 import Link from 'next/link'
 
 interface NavProps {}
 const Nav = (_props: NavProps) => {
-  const [session, loading] = useSession()
-  console.log(loading)
-
   return (
     <div className="w-full bg-blue-50 h-14">
       <div className="flex items-center justify-between h-full px-20">
@@ -15,11 +12,8 @@ const Nav = (_props: NavProps) => {
           </Link>
         </div>
         <ul className="flex items-center h-full">
-          {session ? (
+          {false ? (
             <>
-              <li className="cursor-pointer">
-                <a className="mr-6">{JSON.stringify(session)}</a>
-              </li>
               <li onClick={() => signOut()} className="cursor-pointer">
                 <Link href="/api/auth/signout">
                   <a className="">Logout</a>
@@ -28,13 +22,15 @@ const Nav = (_props: NavProps) => {
             </>
           ) : (
             <>
-              <li
-                onClick={() => {
-                  signIn('google', { callbackUrl: 'http://localhost:3000/home' })
-                }}
-                className="px-5 py-2 text-white transition bg-purple-600 rounded-lg cursor-pointer hover:bg-purple-500"
-              >
-                <a>Login</a>
+              <li className="px-5 py-2 mr-4 text-white transition bg-purple-600 rounded-lg cursor-pointer hover:bg-purple-500">
+                <Link href="/login">
+                  <a>Login</a>
+                </Link>
+              </li>
+              <li className="px-5 py-2 text-white transition bg-purple-600 rounded-lg cursor-pointer hover:bg-purple-500">
+                <Link href="/signup">
+                  <a>Signup</a>
+                </Link>
               </li>
             </>
           )}

@@ -19,7 +19,7 @@ export const useQuery = (url: string, opts?: any) => {
       setLoading((l) => !l)
     }
     func()
-  }, [url])
+  }, [url, opts])
 
   return {
     data,

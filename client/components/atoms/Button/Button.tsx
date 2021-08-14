@@ -102,9 +102,9 @@ export const Button = ({
 			${variant === 'solid' ? getSolidColorClasses(colorScheme, disabled).join(' ') : ''}
 			${variant === 'outline' ? getOutlineColorClasses(colorScheme, disabled).join(' ') : ''}
 			${disabled && 'cursor-not-allowed'}
-			m-1 relative disabled:opacity-70 
+			relative disabled:opacity-70 
 			`}
-      disabled={disabled}
+      disabled={disabled || loading}
     >
       {loading && (
         <div className="absolute inset-0 flex items-center justify-center red-100">

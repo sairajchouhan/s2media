@@ -1,26 +1,22 @@
-import { useSession } from 'next-auth/client'
 import React from 'react'
 import { Post } from '../../components/organisms/Post'
 import Stories from '../../components/organisms/Stories'
-import PrivateRoute from '../../components/PrivateRoute'
 import { useQuery } from '../../hooks/useQuery'
 import { PostWithUserAndProfile } from '../../types/post'
 
 const Home = () => {
-  const [session] = useSession()
   const { data: posts, loading, error } = useQuery('/post')
 
-  if (!session) return null
   if (error) return <p>Error!</p>
   if (loading || !posts) return <p>Loading...</p>
 
   return (
-    <PrivateRoute>
+    <>
       <div className="h-full border-l border-r border-opacity-80">
         <Stories />
         <main>
           {loading ? (
-            <h1>Loading...</h1>
+            <h1 className="text-green-700 text-7xl">Loading...</h1>
           ) : (
             posts.map((post: PostWithUserAndProfile) => (
               <React.Fragment key={post.id}>
@@ -35,7 +31,7 @@ const Home = () => {
           )} */}
         </main>
       </div>
-    </PrivateRoute>
+    </>
   )
 }
 

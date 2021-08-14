@@ -1,15 +1,24 @@
-import { Provider } from 'next-auth/client'
 import type { AppProps } from 'next/app'
-import Layout from '../components/layouts/Layout'
+import { useRouter } from 'next/router'
+import AuthenticatedLayout from '../components/layouts/AuthenticatedLayout'
+import { AuthContextProvider } from '../context/authContext'
 import '../styles/globals.css'
 
+const noAuthRequiredPages = ['/login', '/signup', '/']
+
 function MyApp({ Component, pageProps }: AppProps) {
+  const router = useRouter()
+  console.log(router.pathname)
   return (
-    <Provider session={pageProps.session}>
-      <Layout>
+    <AuthContextProvider>
+      {noAuthRequiredPages.includes(router.pathname) ? (
         <Component {...pageProps} />
-      </Layout>
-    </Provider>
+      ) : (
+        <AuthenticatedLayout>
+          <Component {...pageProps} />
+        </AuthenticatedLayout>
+      )}
+    </AuthContextProvider>
   )
 }
 export default MyApp

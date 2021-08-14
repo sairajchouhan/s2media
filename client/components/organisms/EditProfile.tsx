@@ -2,7 +2,6 @@
 import React, { Dispatch, SetStateAction, useState } from 'react'
 import { axios } from '../../config/axios'
 import { useFileUpload } from '../../hooks/useFileUpload'
-import { useUser } from '../../hooks/useUser'
 import { UserFullDetails } from '../../types/user'
 import { Avatar } from '../atoms/Avatar'
 import { Model } from '../molecules/Model'
@@ -14,10 +13,7 @@ export interface EditProfileProps {
 }
 export const EditProfile = ({ open, setOpen, userFullDetails: user }: EditProfileProps) => {
   const { handleFileChange, previewUrl, resetFile, selectedFile } = useFileUpload()
-  // create a useState with name and bio initialized to empty string
   const [profile, setProfile] = useState<{ name: string; bio: string }>({ name: '', bio: '' })
-  const sessionUser = useUser()
-  if (!sessionUser) return null
 
   const handleProfileInputChange = (
     e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>
@@ -45,7 +41,7 @@ export const EditProfile = ({ open, setOpen, userFullDetails: user }: EditProfil
         },
         {
           headers: {
-            Authorization: `Bearer ${sessionUser.accessToken}`,
+            Authorization: `Bearer ${user.idToken}`,
           },
         }
       )

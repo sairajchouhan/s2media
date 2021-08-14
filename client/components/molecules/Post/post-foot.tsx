@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
 import { axios } from '../../../config/axios'
-import { useUser } from '../../../hooks/useUser'
+import { useAuth } from '../../../context/authContext'
 import { IconComp } from '../../../types/icon'
 import { PostWithUserAndProfile } from '../../../types/post'
 import { IconButton } from '../../atoms/IconButton'
@@ -14,12 +14,11 @@ export interface PostFootInterface {
 }
 
 export const PostFoot = ({ icon1, icon2, icon3, post }: PostFootInterface) => {
-  const user = useUser()
+  const { user } = useAuth()
   const [likeCount, setLikeCount] = useState<number>(post.like.length)
   const [userLiked, setUserLiked] = useState<boolean>(
     post.like.some((like: any) => like.userId === user?.id)
   )
-  console.log(likeCount, userLiked)
 
   const handleLikePost = async () => {
     const currentLikes = likeCount

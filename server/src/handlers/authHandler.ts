@@ -148,9 +148,11 @@ export const getToken = async (req: Request, res: Response) => {
     console.log(cleanUsername)
     user = await prisma.user.create({
       data: {
+        uid: 'this',
         email,
         username: cleanUsername,
         avatar,
+        provider: 'asdf',
         profile: {
           create: {
             bio: null,
