@@ -10,7 +10,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 export const Input = ({ id, label, placeholder, error, errorText, ...props }: InputProps) => {
   return (
-    <div className="relative">
+    <>
       <label htmlFor={id}>{label}</label>
       <input
         id={id}
@@ -20,6 +20,6 @@ export const Input = ({ id, label, placeholder, error, errorText, ...props }: In
         {...props}
       />
       {error && <p className="text-xs mt-0.5 font-semibold text-red-500">*{errorText}</p>}
-    </div>
+    </>
   )
 }

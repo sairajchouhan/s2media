@@ -9,7 +9,7 @@ export interface LeftNavUserProps {
 
 export const LeftNavUser = ({ user: { username, displayName, avatar } }: LeftNavUserProps) => {
   return (
-    <li className="flex items-center px-8 py-4 mt-auto mb-3 rounded-lg cursor-pointer select-none hover:bg-indigo-50">
+    <li className="flex items-center px-4 py-4 mt-auto mb-3 rounded-lg cursor-pointer select-none hover:bg-indigo-50">
       <div className="flex items-center w-full ">
         <div className="grid place-items-center">
           <Avatar src={avatar} alt="ransom image from unsplash" w="w-10" h="h-10" />

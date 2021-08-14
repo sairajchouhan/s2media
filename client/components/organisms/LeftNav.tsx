@@ -19,7 +19,6 @@ const LeftNav = () => {
 
   const handleLogout = async () => {
     await logout()
-    // window.location.href = paths.login
     router.push('/login')
   }
 

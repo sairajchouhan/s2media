@@ -54,6 +54,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
           })
       } else {
         setLoading(false)
+        setUser(null)
       }
     })
     return () => unsub()
