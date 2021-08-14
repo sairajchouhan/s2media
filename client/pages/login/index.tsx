@@ -48,6 +48,7 @@ const Login = () => {
               id="email"
               name="email"
               className="w-full rounded-lg"
+              placeholder="me@gmail.com"
             />
           </div>
           <div className="mb-8">
