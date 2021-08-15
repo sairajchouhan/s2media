@@ -3,13 +3,13 @@ import { NextImage } from '../Image'
 import DummyUser from './dummyUser.svg'
 
 interface AvatarProps {
-  src: string
+  src?: string | null
   alt: string
   w?: string
   h?: string
 }
 
-export const Avatar = ({ src, alt, w = 'w-6', h = 'h-6' }: AvatarProps) => {
+export const Avatar = ({ src = null, alt, w = 'w-6', h = 'h-6' }: AvatarProps) => {
   if (src === null || !src) {
     return (
       <div className={`${w} ${h}`}>

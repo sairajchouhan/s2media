@@ -17,8 +17,10 @@ export const PostFoot = ({ icon1, icon2, icon3, post }: PostFootInterface) => {
   const { user } = useAuth()
   const [likeCount, setLikeCount] = useState<number>(post.like.length)
   const [userLiked, setUserLiked] = useState<boolean>(
-    post.like.some((like: any) => like.userId === user?.id)
+    post.like.some((like: any) => like.userId === user?.uid)
   )
+
+  if (!user) return null
 
   const handleLikePost = async () => {
     const currentLikes = likeCount
@@ -36,7 +38,7 @@ export const PostFoot = ({ icon1, icon2, icon3, post }: PostFootInterface) => {
         {},
         {
           headers: {
-            Authorization: `Bearer ${user?.accessToken}`,
+            Authorization: `Bearer ${user.idToken}`,
           },
         }
       )

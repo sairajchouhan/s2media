@@ -27,8 +27,7 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
     }
   }, [selectedFile])
 
-  // const validateInputFile = () => {}
-  // if (!user) return null
+  if (!user) return null
 
   const toggleOpen = () => {
     setOpen((open) => !open)

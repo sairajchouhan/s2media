@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { UserFullDetails } from '../../../types/user'
+import { AuthUser } from '../../../types/user'
 import { Avatar } from '../../atoms/Avatar/avatar'
 import { Button } from '../../atoms/Button'
 import { EditProfile } from '../../organisms/EditProfile'
 
 export interface ProfileCardProps {
-  userFullDetails: UserFullDetails
+  userFullDetails: AuthUser
 }
 
 export const ProfileCard = ({ userFullDetails }: ProfileCardProps) => {

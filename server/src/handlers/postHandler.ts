@@ -41,6 +41,12 @@ export const allPosts = async (_: Request, res: Response) => {
       comment: true,
       user: {
         include: {
+          _count: {
+            select: {
+              followers: true,
+              following: true,
+            },
+          },
           profile: true,
         },
       },

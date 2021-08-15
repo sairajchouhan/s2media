@@ -4,6 +4,7 @@ import { useAuth } from '../context/authContext'
 
 const AuthGaurdOn = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuth()
+
   const router = useRouter()
   useEffect(() => {
     if (!user) {

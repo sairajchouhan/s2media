@@ -1,13 +1,19 @@
 import React from 'react'
-import { SessionUser } from '../../../types/user'
+import { AuthUser } from '../../../types/user'
 import { Avatar } from '../../atoms/Avatar'
 import { DotsHorizontal } from '../../icons'
 
 export interface LeftNavUserProps {
-  user: SessionUser
+  user: AuthUser
 }
 
-export const LeftNavUser = ({ user: { username, displayName, avatar } }: LeftNavUserProps) => {
+export const LeftNavUser = ({
+  user: {
+    username,
+    profile: { displayName },
+    avatar,
+  },
+}: LeftNavUserProps) => {
   return (
     <li className="flex items-center px-4 py-4 mt-auto mb-3 rounded-lg cursor-pointer select-none hover:bg-indigo-50">
       <div className="flex items-center w-full ">

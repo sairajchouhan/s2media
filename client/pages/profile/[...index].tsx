@@ -2,13 +2,12 @@ import React from 'react'
 import { Link } from '../../components/Link'
 import { PageNav } from '../../components/molecules/Page/page-nav'
 import { ProfileCard } from '../../components/molecules/Profile'
-import { Post } from '../../components/organisms/Post'
 import { useAuth } from '../../context/authContext'
-import { PostWithUserAndProfile } from '../../types/post'
 import { paths } from '../../utils/paths'
 
 const Profile = () => {
   const { user: userFullDetails } = useAuth()
+  if (!userFullDetails) return
 
   return (
     <div className="min-h-screen border-l border-r border-opacity-80">
@@ -46,12 +45,7 @@ const Profile = () => {
             </ul>
           </nav>
         </section>
-        <section>
-          {userFullDetails.post &&
-            userFullDetails.post.map((post: PostWithUserAndProfile) => (
-              <Post key={post.id} post={post} />
-            ))}
-        </section>
+        <section>{/* TODO: render posts here */}</section>
       </main>
     </div>
   )

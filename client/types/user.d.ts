@@ -1,43 +1,28 @@
-export interface SessionUser {
-  accessToken: string
-  avatar: string
-  email: string
-  id: string
-  username: string
-  displayName: string
-}
-
-export interface User {
+export interface BaseUser {
   uid: string
-  idToken: string
-  email: string
   username: string
-  avatar: string
+  email: string
+  avatar: string | null
   provider: string
+  createdAt: string
+  updatedAt: string
+  profile: {
+    id: string
+    bio: string | null
+    displayName: string | null
+    userId: string
+    createdAt: string
+    updatedAt: string
+  }
   _count: {
     post: number
     followers: number
     following: number
   }
-  createdAt: string
-  updatedAt: string
-  following: Array<any>
-  followers: Array<any>
 }
 
-export interface Profile {
-  id: string
-  bio?: string | null
-  displayName?: string | null
-  userId: string
-  updatedAt: string
-  createdAt: string
+export interface AuthUser extends BaseUser {
+  idToken: string
 }
 
-export interface UserWithProfile extends User {
-  profile: Profile
-}
-
-export interface UserFullDetails extends UserWithProfile {
-  post: Post[]
-}
+export interface ProfileUser extends BaseUser {}

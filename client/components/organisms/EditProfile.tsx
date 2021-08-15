@@ -2,14 +2,14 @@
 import React, { Dispatch, SetStateAction, useState } from 'react'
 import { axios } from '../../config/axios'
 import { useFileUpload } from '../../hooks/useFileUpload'
-import { UserFullDetails } from '../../types/user'
+import { AuthUser } from '../../types/user'
 import { Avatar } from '../atoms/Avatar'
 import { Model } from '../molecules/Model'
 
 export interface EditProfileProps {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
-  userFullDetails: UserFullDetails
+  userFullDetails: AuthUser
 }
 export const EditProfile = ({ open, setOpen, userFullDetails: user }: EditProfileProps) => {
   const { handleFileChange, previewUrl, resetFile, selectedFile } = useFileUpload()
