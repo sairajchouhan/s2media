@@ -1,4 +1,3 @@
-import { signOut } from 'next-auth/client'
 import Link from 'next/link'
 
 interface NavProps {}
@@ -14,7 +13,7 @@ const Nav = (_props: NavProps) => {
         <ul className="flex items-center h-full">
           {false ? (
             <>
-              <li onClick={() => signOut()} className="cursor-pointer">
+              <li className="cursor-pointer">
                 <Link href="/api/auth/signout">
                   <a className="">Logout</a>
                 </Link>

@@ -17,7 +17,6 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^2.26.0",
-    "bcryptjs": "^2.4.3",
     "cloudinary": "^1.26.2",
     "cors": "^2.8.5",
     "datauri": "^3.0.0",
@@ -26,15 +25,12 @@
     "express-validator": "^6.12.0",
     "firebase-admin": "^9.11.0",
     "http-errors": "^1.8.0",
-    "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.2"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.12",
     "@types/http-errors": "^1.8.0",
-    "@types/jsonwebtoken": "^8.5.2",
     "@types/morgan": "^1.9.2",
     "@types/multer": "^1.4.7",
     "@types/node": "^15.12.5",

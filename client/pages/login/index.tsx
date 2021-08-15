@@ -42,7 +42,11 @@ const Login = () => {
   }
 
   const handleOAuthLogin = async (providerName: string) => {
-    await oAuthLogin(providerName)
+    try {
+      await oAuthLogin(providerName)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
