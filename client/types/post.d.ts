@@ -1,15 +1,15 @@
-import { UserWithProfile } from './user'
-export interface PostWithUserAndProfile {
+import { BaseUser } from './user'
+export interface PostWithBaseUser {
   caption: string
-  createdAt: string
   id: string
-  updatedAt: string
   url: string
   userId: string
-  user: UserWithProfile
+  user: BaseUser
   like: Array[any]
   comment: Array[any]
-  _count?: {
+  createdAt: string
+  updatedAt: string
+  _count: {
     like: number
     comment: number
   }

@@ -1,13 +1,13 @@
 import Link from 'next/link'
 import React from 'react'
 import { IconComp } from '../../../types'
-import { PostWithUserAndProfile } from '../../../types/post'
+import { PostWithBaseUser } from '../../../types/post'
 import { Avatar } from '../../atoms/Avatar/avatar'
 import { IconButton } from '../../atoms/IconButton'
 
 export interface PostHeadProps {
   icon: IconComp
-  post: PostWithUserAndProfile
+  post: PostWithBaseUser
 }
 
 export const PostHead = ({ post: { user, caption, createdAt }, icon }: PostHeadProps) => {

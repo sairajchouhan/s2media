@@ -3,14 +3,14 @@ import React, { useState } from 'react'
 import { axios } from '../../../config/axios'
 import { useAuth } from '../../../context/authContext'
 import { IconComp } from '../../../types/icon'
-import { PostWithUserAndProfile } from '../../../types/post'
+import { PostWithBaseUser } from '../../../types/post'
 import { IconButton } from '../../atoms/IconButton'
 
 export interface PostFootInterface {
   icon1: IconComp
   icon2?: IconComp
   icon3?: IconComp
-  post: PostWithUserAndProfile
+  post: PostWithBaseUser
 }
 
 export const PostFoot = ({ icon1, icon2, icon3, post }: PostFootInterface) => {

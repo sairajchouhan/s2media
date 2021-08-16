@@ -2,13 +2,13 @@
 // import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { PostWithUserAndProfile } from '../../types/post'
+import { PostWithBaseUser } from '../../types/post'
 import { NextImage } from '../atoms/Image'
 import { DotsHorizontal, HeartIcon } from '../icons'
 import { PostFoot, PostHead } from '../molecules/Post'
 
 export interface PostProps {
-  post: PostWithUserAndProfile
+  post: PostWithBaseUser
 }
 
 export const Post = ({ post }: PostProps) => {

@@ -2,13 +2,12 @@ import React from 'react'
 import { Post } from '../../components/organisms/Post'
 import Stories from '../../components/organisms/Stories'
 import { useQuery } from '../../hooks/useQuery'
-import { PostWithUserAndProfile } from '../../types/post'
+import { PostWithBaseUser } from '../../types/post'
 
 const Home = () => {
   const { data: posts, loading, error } = useQuery('/post')
 
   if (error) return <p>Error!</p>
-  if (loading || !posts) return <p>Loading...</p>
 
   return (
     <>
@@ -16,9 +15,9 @@ const Home = () => {
         <Stories />
         <main>
           {loading ? (
-            <h1 className="text-green-700 text-7xl">Loading...</h1>
+            <h1 className="text-4xl text-center text-indigo-500">Loading...</h1>
           ) : (
-            posts.map((post: PostWithUserAndProfile) => (
+            posts.map((post: PostWithBaseUser) => (
               <React.Fragment key={post.id}>
                 <Post post={post} />
               </React.Fragment>
@@ -34,5 +33,32 @@ const Home = () => {
     </>
   )
 }
+
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//   const { idk } = nookies.get(ctx)
+
+//   if (!idk) {
+//     return {
+//       redirect: {
+//         destination: '/login',
+//         permanent: false,
+//       },
+//     }
+//   }
+
+//   let data
+//   try {
+//     const res = await axios.get(`/post`)
+//     data = res.data
+//   } catch (err) {
+//     console.log(err)
+//   }
+
+//   return {
+//     props: {
+//       serverPosts: data,
+//     },
+//   }
+// }
 
 export default Home

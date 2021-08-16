@@ -2,21 +2,21 @@ import { useEffect, useState } from 'react'
 import { axios } from '../config/axios'
 export const useQuery = (url: string, opts?: any) => {
   const [data, setData] = useState<any>(null)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
   useEffect(() => {
     const func = async () => {
       setError(false)
-      setLoading((l) => !l)
       try {
         const { data } = await axios.get(url, opts)
+        await new Promise((res) => setTimeout(res, 2000))
         setData(data)
       } catch (err) {
         console.error(err)
         setError(true)
       }
-      setLoading((l) => !l)
+      setLoading(false)
     }
     func()
   }, [url, opts])

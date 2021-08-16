@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import nookies from 'nookies'
 import { useAuth } from '../../context/authContext'
 import { paths } from '../../utils/paths'
 import { LeftNavPostBtn } from '../atoms/LeftNavPostBtn/LeftNavPostBtn'
@@ -19,6 +20,7 @@ const LeftNav = () => {
 
   const handleLogout = async () => {
     await logout()
+    nookies.destroy(undefined, 'idk')
     router.push('/login')
   }
 
