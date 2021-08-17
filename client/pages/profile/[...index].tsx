@@ -2,11 +2,16 @@ import React from 'react'
 import { Link } from '../../components/Link'
 import { PageNav } from '../../components/molecules/Page/page-nav'
 import { ProfileCard } from '../../components/molecules/Profile'
+import { Post } from '../../components/organisms/Post'
 import { useAuth } from '../../context/authContext'
+import { useQuery } from '../../hooks/useQuery'
+import { PostWithBaseUser } from '../../types/post'
 import { paths } from '../../utils/paths'
 
 const Profile = () => {
   const { user: userFullDetails } = useAuth()
+  const { data: posts, loading, error } = useQuery('/post')
+
   if (!userFullDetails) return
 
   return (
@@ -45,7 +50,13 @@ const Profile = () => {
             </ul>
           </nav>
         </section>
-        <section>{/* TODO: render posts here */}</section>
+        <section>
+          {loading ? (
+            <h1 className="mt-5 text-4xl text-center text-indigo-500">Loading...</h1>
+          ) : (
+            posts.map((post: PostWithBaseUser) => <Post key={post.id} post={post} />)
+          )}
+        </section>
       </main>
     </div>
   )

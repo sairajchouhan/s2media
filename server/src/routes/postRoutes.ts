@@ -1,15 +1,16 @@
 import { Router } from 'express'
 import ash from 'express-async-handler'
-import { body, param } from 'express-validator'
+import { body, param, query } from 'express-validator'
 import { allPosts, createPost, deletePost, getPostById, updatePost } from '../handlers/postHandler'
 import auth from '../middlewares/auth'
 import { singleImageUploadMiddleware } from '../middlewares/singleImageUpload'
 
 const router = Router()
 
-router.post('/', auth, singleImageUploadMiddleware, [body('caption').optional().trim().escape()], ash(createPost))
-router.get('/', ash(allPosts))
+router.get('/', [query('userId').optional().trim()], ash(allPosts))
 
+// Post CRUD
+router.post('/', auth, singleImageUploadMiddleware, [body('caption').optional().trim().escape()], ash(createPost))
 router.get('/:postId', [param('postId').not().isEmpty()], ash(getPostById))
 router.put(
   '/:postId',

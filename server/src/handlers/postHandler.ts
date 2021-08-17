@@ -33,8 +33,16 @@ export const createPost = async (req: Request, res: Response) => {
   return res.send(createdPost)
 }
 
-export const allPosts = async (_: Request, res: Response) => {
+export const allPosts = async (req: Request, res: Response) => {
+  const userId = (req.query.userId as string) ?? undefined
   const posts = await prisma.post.findMany({
+    where: {
+      userId: userId,
+    },
+    take: 10,
+    orderBy: {
+      createdAt: 'desc',
+    },
     include: {
       _count: { select: { like: true, comment: true } },
       like: true,
@@ -50,9 +58,6 @@ export const allPosts = async (_: Request, res: Response) => {
           profile: true,
         },
       },
-    },
-    orderBy: {
-      createdAt: 'desc',
     },
   })
   res.json(posts)
