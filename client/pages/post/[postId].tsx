@@ -20,17 +20,22 @@ const EachPost = () => {
   // })
 
   if (error) return <h1>Something went wrong</h1>
-  if (loading || !post) return <h1>Loading...</h1>
 
   return (
     <div className="min-h-screen border-l border-r border-opacity-80">
       <PageNav title="Post" />
       <main className="">
-        <PostHead post={post} icon={DotsHorizontal} />
-        <main>
-          <NextImage src={post.url} />
-        </main>
-        <PostFoot post={post} icon1={HeartIcon} icon2={() => <></>} icon3={() => <></>} />
+        {loading ? (
+          <h1>Loading...</h1>
+        ) : (
+          <>
+            <PostHead post={post} icon={DotsHorizontal} />
+            <main>
+              <NextImage src={post.url} />
+            </main>
+            <PostFoot post={post} icon1={HeartIcon} icon2={() => <></>} icon3={() => <></>} />
+          </>
+        )}
       </main>
     </div>
   )

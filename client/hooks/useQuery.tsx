@@ -10,7 +10,6 @@ export const useQuery = (url: string, opts?: any) => {
       setError(false)
       try {
         const { data } = await axios.get(url, opts)
-        await new Promise((res) => setTimeout(res, 2000))
         setData(data)
       } catch (err) {
         console.error(err)
