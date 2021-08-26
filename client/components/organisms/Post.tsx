@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { PostWithBaseUser } from '../../types/post'
 import { NextImage } from '../atoms/Image'
-import { DotsHorizontal, HeartIcon } from '../icons'
+import { DotsHorizontal } from '../icons'
 import { PostFoot, PostHead } from '../molecules/Post'
 
 export interface PostProps {
@@ -20,7 +20,7 @@ export const Post = ({ post }: PostProps) => {
       <main className="cursor-pointer" onClick={() => push(`/post/${post.id}`)}>
         <NextImage src={post.url} />
       </main>
-      <PostFoot icon1={HeartIcon} post={post} />
+      <PostFoot post={post} />
     </div>
   )
 }

@@ -63,7 +63,6 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
   }
 
   const handleCreatePost = async () => {
-    setLoading((l) => !l)
     const isValid = validatePostData()
 
     if (!isValid) {
@@ -76,9 +75,9 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
     if (textareaRef.current?.value !== '' && textareaRef.current?.value) {
       formData.append('caption', textareaRef.current?.value as string)
     }
-    await new Promise((resolve) => setTimeout(resolve, 1000))
     try {
       console.log(formData)
+      setLoading((l) => !l)
       const res = await axios.post('http://localhost:5000/api/v1/post', formData, {
         headers: {
           Authorization: `Bearer ${user.idToken}`,

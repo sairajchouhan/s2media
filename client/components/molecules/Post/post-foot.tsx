@@ -2,18 +2,15 @@
 import React, { useState } from 'react'
 import { axios } from '../../../config/axios'
 import { useAuth } from '../../../context/authContext'
-import { IconComp } from '../../../types/icon'
 import { PostWithBaseUser } from '../../../types/post'
 import { IconButton } from '../../atoms/IconButton'
+import { HeartIcon, SavedIcon } from '../../icons'
 
 export interface PostFootInterface {
-  icon1: IconComp
-  icon2?: IconComp
-  icon3?: IconComp
   post: PostWithBaseUser
 }
 
-export const PostFoot = ({ icon1, icon2, icon3, post }: PostFootInterface) => {
+export const PostFoot = ({ post }: PostFootInterface) => {
   const { user } = useAuth()
   const [likeCount, setLikeCount] = useState<number>(post.like.length)
   const [userLiked, setUserLiked] = useState<boolean>(
@@ -63,13 +60,22 @@ export const PostFoot = ({ icon1, icon2, icon3, post }: PostFootInterface) => {
             h="h-6"
             textColour="text-red-600"
             hoverBgColor="bg-red-100"
-            icon={icon1}
+            icon={HeartIcon}
             variant={userLiked ? 'solid' : 'outline'}
             onClick={handleLikePost}
           />
           {/* <IconButton w="w-6" h="h-6" icon={icon2} /> */}
         </div>
-        <div>{/* <IconButton icon={icon3} w="w-6" h="h-6" /> */}</div>
+        <div>
+          <IconButton
+            w="w-6"
+            h="h-6"
+            textColour="text-gray-600"
+            hoverBgColor="bg-gray-100"
+            icon={SavedIcon}
+            variant={'outline'}
+          />
+        </div>
       </div>
       <div className="flex items-center">
         <p className="text-sm text-gray-600">
