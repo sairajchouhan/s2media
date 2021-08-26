@@ -32,7 +32,6 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
   const [user, setUser] = useState<AuthUser | null>(null)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
-  console.log(user)
 
   useEffect(() => {
     const unsub = firebase.auth().onIdTokenChanged((user) => {

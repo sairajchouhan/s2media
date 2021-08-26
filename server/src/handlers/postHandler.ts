@@ -34,11 +34,31 @@ export const createPost = async (req: Request, res: Response) => {
 }
 
 export const allPosts = async (req: Request, res: Response) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      errors: errors.array(),
+    })
+  }
+
   const userId = (req.query.userId as string) ?? undefined
+  const likeBool = req.query.like ?? undefined
+  const saveBool = req.query.save ?? undefined
+
+  const where: Record<string, any> = {}
+
+  if (userId) {
+    where.userId = userId
+  }
+  if (likeBool) {
+    where['like'] = { some: {} }
+  }
+  if (saveBool) {
+    where['save'] = { some: {} }
+  }
+
   const posts = await prisma.post.findMany({
-    where: {
-      userId: userId,
-    },
+    where: where,
     take: 10,
     orderBy: {
       createdAt: 'desc',
@@ -61,7 +81,7 @@ export const allPosts = async (req: Request, res: Response) => {
       },
     },
   })
-  res.json(posts)
+  return res.json(posts)
 }
 
 export const updatePost = async (req: Request, res: Response) => {
@@ -149,6 +169,7 @@ export const getPostById = async (req: Request, res: Response) => {
     include: {
       like: true,
       comment: true,
+      save: true,
       user: {
         include: {
           profile: true,

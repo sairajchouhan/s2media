@@ -7,7 +7,7 @@ import { singleImageUploadMiddleware } from '../middlewares/singleImageUpload'
 
 const router = Router()
 
-router.get('/', [query('userId').optional().trim()], ash(allPosts))
+router.get('/', [query('userId').optional().trim(), query('like').optional().toBoolean()], ash(allPosts))
 
 // Post CRUD
 router.post('/', auth, singleImageUploadMiddleware, [body('caption').optional().trim().escape()], ash(createPost))

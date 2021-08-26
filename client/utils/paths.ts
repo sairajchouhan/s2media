@@ -8,9 +8,23 @@ export const paths = {
   saved: '/saved',
   notifications: '/notifications',
   // profile: 'profile',
-  profile: ({ username }: { username: string }) => {
+  profile: ({
+    username,
+    query,
+  }: {
+    username: string
+    query?: { like?: boolean; save?: boolean }
+  }) => {
+    let href = { value: `/profile/${username}` }
+
+    if (query?.like) {
+      href.value += `/liked`
+    }
+    if (query?.save) {
+      href.value += `/saved`
+    }
     return {
-      href: `/profile/${username}`,
+      href: href.value,
     }
   },
   post: ({ postId }: { postId: string }) => {
