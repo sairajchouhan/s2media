@@ -16,6 +16,9 @@ export const PostFoot = ({ post }: PostFootInterface) => {
   const [userLiked, setUserLiked] = useState<boolean>(
     post.like.some((like: any) => like.userId === user?.uid)
   )
+  const [userSaved, setUserSaved] = useState<boolean>(
+    post.save.some((save: any) => save.userId === user?.uid)
+  )
 
   if (!user) return null
 
@@ -44,10 +47,29 @@ export const PostFoot = ({ post }: PostFootInterface) => {
       setUserLiked((state) => !state)
       console.error(err)
     }
-    // console.log(data)
   }
-
-  // console.log(post.like.userId === user?.id ? 'solid' : 'outline')
+  const handleSavePost = async () => {
+    if (userSaved) {
+      setUserSaved(false)
+    }
+    if (!userSaved) {
+      setUserSaved(true)
+    }
+    try {
+      await axios.post(
+        `/post/save/${post.id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${user.idToken}`,
+          },
+        }
+      )
+    } catch (err) {
+      setUserSaved((state) => !state)
+      console.error(err)
+    }
+  }
 
   if (!user) return null
 
@@ -73,7 +95,8 @@ export const PostFoot = ({ post }: PostFootInterface) => {
             textColour="text-gray-600"
             hoverBgColor="bg-gray-100"
             icon={SavedIcon}
-            variant={'outline'}
+            variant={userSaved ? 'solid' : 'outline'}
+            onClick={handleSavePost}
           />
         </div>
       </div>

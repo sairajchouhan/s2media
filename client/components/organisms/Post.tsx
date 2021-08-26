@@ -13,6 +13,7 @@ export interface PostProps {
 
 export const Post = ({ post }: PostProps) => {
   const { push } = useRouter()
+  console.log(post)
 
   return (
     <div className="overflow-hidden transition-all border-b rounded-sm shadow-sm border-opacity-80 hover:bg-gray-50">

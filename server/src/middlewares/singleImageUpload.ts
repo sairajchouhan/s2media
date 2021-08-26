@@ -10,6 +10,6 @@ export const singleImageUploadMiddleware = (req: Request, res: Response, next: N
     } else if (err) {
       return res.status(400).send('someting went wrong')
     }
-    next()
+    return next()
   })
 }

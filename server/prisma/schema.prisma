@@ -20,6 +20,7 @@ model User {
   profile   Profile?
   post Post[]
   like Like[]
+  save Save[]
   followers Follow[] @relation("followed")
   following Follow[] @relation("follower")
   comment Comment[]
@@ -43,6 +44,7 @@ model Post{
   url String 
   caption String?
   like Like[]
+  save Save[]
   comment Comment[]
   userId String
   user User @relation(fields: [userId], references: [uid])
@@ -57,6 +59,17 @@ model Like {
   user User @relation(fields: [userId], references: [uid])
   post Post @relation(fields: [postId], references: [id])
   createdAt DateTime @default(now())
+  @@unique([userId, postId])
+}
+
+model Save {
+  id String @id @default(cuid())
+  userId String
+  postId String
+  user User @relation(fields: [userId], references: [uid])
+  post Post @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   @@unique([userId, postId])
 }
 

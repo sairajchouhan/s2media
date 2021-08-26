@@ -26,11 +26,13 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
     _count: {
       select: {
         post: true,
+        save: true,
         followers: true,
         following: true,
       },
     },
     profile: true,
+    save: true,
   }
 
   user = await prisma.user.findUnique({

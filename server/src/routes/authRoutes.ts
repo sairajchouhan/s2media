@@ -1,7 +1,4 @@
 import { Router } from 'express'
-import { getToken } from '../handlers/authHandler'
-import { body } from 'express-validator'
-import ash from 'express-async-handler'
 
 const router = Router()
 
@@ -22,10 +19,10 @@ const router = Router()
 //   ash(login)
 // )
 
-router.post(
-  '/gettoken',
-  [body('email', 'Enter a valid Email').isEmail().normalizeEmail(), body('username').exists(), body('avatar').exists()],
-  ash(getToken)
-)
+// router.post(
+//   '/gettoken',
+//   [body('email', 'Enter a valid Email').isEmail().normalizeEmail(), body('username').exists(), body('avatar').exists()],
+//   ash(getToken)
+// )
 
 export default router

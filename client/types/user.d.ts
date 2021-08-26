@@ -14,7 +14,9 @@ export interface BaseUser {
     createdAt: string
     updatedAt: string
   }
+  save: Array<Record<any, any>>
   _count: {
+    save: number
     post: number
     followers: number
     following: number

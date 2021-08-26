@@ -1,11 +1,3 @@
-import { Request, Response } from 'express'
-import { validationResult } from 'express-validator'
-// import createError from 'http-errors'
-import createError from 'http-errors'
-// import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
-import prisma from '../../prisma'
-
 // export const register = async (req: Request, res: Response) => {
 //   const errors = validationResult(req)
 //   if (!errors.isEmpty()) {
@@ -95,87 +87,87 @@ import prisma from '../../prisma'
 //   return res.json({ token })
 // }
 
-export const getToken = async (req: Request, res: Response) => {
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: [errors.array()],
-    })
-  }
-  const {
-    email,
-    username,
-    avatar,
-    displayName,
-  }: {
-    email: string
-    username: string
-    avatar: string
-    displayName: string
-  } = req.body
+// export const getToken = async (req: Request, res: Response) => {
+//   const errors = validationResult(req)
+//   if (!errors.isEmpty()) {
+//     return res.status(400).json({
+//       errors: [errors.array()],
+//     })
+//   }
+//   const {
+//     email,
+//     username,
+//     avatar,
+//     displayName,
+//   }: {
+//     email: string
+//     username: string
+//     avatar: string
+//     displayName: string
+//   } = req.body
 
-  console.log(req.body)
+//   console.log(req.body)
 
-  let user: any
+//   let user: any
 
-  user = await prisma.user.findFirst({
-    where: {
-      OR: [
-        {
-          username: {
-            equals: username,
-          },
-        },
-        {
-          email: {
-            equals: email,
-          },
-        },
-      ],
-    },
-    include: {
-      profile: true,
-    },
-  })
+//   user = await prisma.user.findFirst({
+//     where: {
+//       OR: [
+//         {
+//           username: {
+//             equals: username,
+//           },
+//         },
+//         {
+//           email: {
+//             equals: email,
+//           },
+//         },
+//       ],
+//     },
+//     include: {
+//       profile: true,
+//     },
+//   })
 
-  if (user && (user.username !== username || user.email !== email)) {
-    throw createError(400, 'dont mess with me')
-  }
+//   if (user && (user.username !== username || user.email !== email)) {
+//     throw createError(400, 'dont mess with me')
+//   }
 
-  if (!user) {
-    let cleanUsername = username.toLowerCase()
-    cleanUsername = cleanUsername.split(' ').join('')
-    console.log(cleanUsername)
-    user = await prisma.user.create({
-      data: {
-        uid: 'this',
-        email,
-        username: cleanUsername,
-        avatar,
-        provider: 'asdf',
-        profile: {
-          create: {
-            bio: null,
-            displayName,
-          },
-        },
-      },
-      include: {
-        profile: true,
-      },
-    })
-  }
+//   if (!user) {
+//     let cleanUsername = username.toLowerCase()
+//     cleanUsername = cleanUsername.split(' ').join('')
+//     console.log(cleanUsername)
+//     user = await prisma.user.create({
+//       data: {
+//         uid: 'this',
+//         email,
+//         username: cleanUsername,
+//         avatar,
+//         provider: 'asdf',
+//         profile: {
+//           create: {
+//             bio: null,
+//             displayName,
+//           },
+//         },
+//       },
+//       include: {
+//         profile: true,
+//       },
+//     })
+//   }
 
-  console.log(user)
+//   console.log(user)
 
-  const payload = {
-    id: user.id,
-    username: user.username,
-    email: user.email,
-    avatar: user.avatar,
-    displayName: user.profile.displayName,
-  }
+//   const payload = {
+//     id: user.id,
+//     username: user.username,
+//     email: user.email,
+//     avatar: user.avatar,
+//     displayName: user.profile.displayName,
+//   }
 
-  const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '30d' })
-  return res.json({ ...user, token })
-}
+//   const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '30d' })
+//   return res.json({ ...user, token })
+// }
