@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -21,6 +18,8 @@ model User {
   post Post[]
   like Like[]
   save Save[]
+  reply Reply[]
+  repliedTo Reply[] @relation("repliedToUser")
   followers Follow[] @relation("followed")
   following Follow[] @relation("follower")
   comment Comment[]
@@ -46,6 +45,7 @@ model Post{
   like Like[]
   save Save[]
   comment Comment[]
+  reply Reply[]
   userId String
   user User @relation(fields: [userId], references: [uid])
   createdAt DateTime @default(now())
@@ -75,11 +75,28 @@ model Save {
 
 model Comment {
   id String @id @default(cuid())
-  body String
+  commentText String
   userId String
   postId String
   user User @relation(fields: [userId], references: [uid])
   post Post @relation(fields: [postId], references: [id])
+  reply Reply[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Reply {
+  id String @id @default(cuid())
+  commentText String
+  userId String
+  postId String
+  commentId String
+  repliedToUserUid String?
+  user User @relation(fields: [userId], references: [uid])
+  post Post @relation(fields: [postId], references: [id])
+  comment Comment @relation(fields: [commentId], references: [id])
+  repliedToUser User? @relation("repliedToUser",fields: [repliedToUserUid], references: [uid])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -93,3 +110,4 @@ model Follow {
   createdAt DateTime @default(now())
   @@unique([followedId, followerId])
 }
+//

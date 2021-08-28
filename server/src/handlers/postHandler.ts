@@ -68,6 +68,7 @@ export const allPosts = async (req: Request, res: Response) => {
       like: true,
       comment: true,
       save: true,
+      reply: true,
       user: {
         include: {
           _count: {

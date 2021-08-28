@@ -2,7 +2,6 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { NextImage } from '../../components/atoms/Image'
 import { DotsHorizontal } from '../../components/icons'
-import { HeartIcon } from '../../components/icons/HeartIcon'
 import { PageNav } from '../../components/molecules/Page/page-nav'
 import { PostFoot } from '../../components/molecules/Post/post-foot'
 import { PostHead } from '../../components/molecules/Post/post-head'
@@ -33,7 +32,7 @@ const EachPost = () => {
             <main>
               <NextImage src={post.url} />
             </main>
-            <PostFoot post={post} icon1={HeartIcon} icon2={() => <></>} icon3={() => <></>} />
+            <PostFoot post={post} />
           </>
         )}
       </main>
