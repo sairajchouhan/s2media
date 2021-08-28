@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { validationResult } from 'express-validator'
 import createError from 'http-errors'
 import prisma from '../../prisma'
 
@@ -26,12 +25,6 @@ export const getCommentsOfPost = async (req: Request, res: Response) => {
 }
 
 export const createComment = async (req: Request, res: Response) => {
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: errors.array(),
-    })
-  }
   const { commentText } = req.body
   const postId = req.params.postId
   const userId = req.user.uid
@@ -49,13 +42,6 @@ export const createComment = async (req: Request, res: Response) => {
 }
 
 export const editComment = async (req: Request, res: Response) => {
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: errors.array(),
-    })
-  }
-
   const postId = req.params.postId
   const commentId = req.params.commentId
   const userId = req.user.uid
@@ -88,13 +74,6 @@ export const editComment = async (req: Request, res: Response) => {
 }
 
 export const deleteComment = async (req: Request, res: Response) => {
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: errors.array(),
-    })
-  }
-
   const postId = req.params.postId
   const commentId = req.params.commentId
   const userId = req.user.uid
@@ -123,13 +102,6 @@ export const deleteComment = async (req: Request, res: Response) => {
 }
 
 export const getOneComment = async (req: Request, res: Response) => {
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: errors.array(),
-    })
-  }
-
   // const postId = req.params.postId
   const commentId = req.params.commentId
 

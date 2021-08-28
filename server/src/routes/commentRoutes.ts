@@ -3,6 +3,7 @@ import ash from 'express-async-handler'
 import { body, param } from 'express-validator'
 import { createComment, deleteComment, editComment, getCommentsOfPost, getOneComment } from '../handlers/commentHandler'
 import auth from '../middlewares/auth'
+import validate from '../middlewares/validate'
 
 const router = Router()
 
@@ -12,27 +13,31 @@ router.post(
   '/:postId',
   auth,
   [param('postId').notEmpty(), body('commentText').trim().escape().notEmpty()],
+  validate,
   ash(createComment)
 )
 
 router.get(
   '/:postId/:commentId',
-  [param('postId').not().isEmpty(), param('commentId').not().isEmpty()],
   auth,
+  [param('postId').not().isEmpty(), param('commentId').not().isEmpty()],
+  validate,
   ash(getOneComment)
 )
 
 router.put(
   '/:postId/:commentId',
-  [param('postId').isInt().toInt(), param('commentId').isInt().toInt(), body('body').trim().escape().notEmpty()],
   auth,
+  [param('postId').isInt().toInt(), param('commentId').isInt().toInt(), body('body').trim().escape().notEmpty()],
+  validate,
   ash(editComment)
 )
 
 router.delete(
   '/:postId/:commentId',
-  [param('postId').isInt().toInt(), param('commentId').isInt().toInt()],
   auth,
+  [param('postId').isInt().toInt(), param('commentId').isInt().toInt()],
+  validate,
   ash(deleteComment)
 )
 

@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { validationResult } from 'express-validator'
 import createError from 'http-errors'
 import prisma from '../../prisma/'
 import { cloudinaryPostImageUpload } from '../config/cloudinary'
@@ -7,13 +6,6 @@ import { formatBufferTo64 } from '../config/data-uri'
 import { commentAndReplyUser } from './helpers'
 
 export const createPost = async (req: Request, res: Response) => {
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: errors.array(),
-    })
-  }
-
   const { caption }: { caption: string } = req.body
 
   if (!req.file) {
@@ -35,13 +27,6 @@ export const createPost = async (req: Request, res: Response) => {
 }
 
 export const allPosts = async (req: Request, res: Response) => {
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: errors.array(),
-    })
-  }
-
   const userId = (req.query.userId as string) ?? undefined
   const likeBool = req.query.like ?? undefined
   const saveBool = req.query.save ?? undefined
@@ -86,13 +71,6 @@ export const allPosts = async (req: Request, res: Response) => {
 }
 
 export const updatePost = async (req: Request, res: Response) => {
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: errors.array(),
-    })
-  }
-
   const postId = req.params.postId
   const { url, caption } = req.body
 
@@ -123,13 +101,6 @@ export const updatePost = async (req: Request, res: Response) => {
 }
 
 export const deletePost = async (req: Request, res: Response) => {
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: errors.array(),
-    })
-  }
-
   const postId = req.params.postId
 
   const post = await prisma.post.findUnique({
@@ -156,12 +127,6 @@ export const deletePost = async (req: Request, res: Response) => {
 }
 
 export const getPostById = async (req: Request, res: Response) => {
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: errors.array(),
-    })
-  }
   const postId = req.params.postId
   const post = await prisma.post.findUnique({
     where: {

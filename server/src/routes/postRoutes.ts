@@ -4,14 +4,23 @@ import { body, param, query } from 'express-validator'
 import { allPosts, createPost, deletePost, getPostById, updatePost } from '../handlers/postHandler'
 import auth from '../middlewares/auth'
 import { singleImageUploadMiddleware } from '../middlewares/singleImageUpload'
+import validate from '../middlewares/validate'
 
 const router = Router()
 
-router.get('/', [query('userId').optional().trim(), query('like').optional().toBoolean()], ash(allPosts))
+router.get('/', [query('userId').optional().trim(), query('like').optional().toBoolean()], validate, ash(allPosts))
 
 // Post CRUD
-router.post('/', auth, singleImageUploadMiddleware, [body('caption').optional().trim().escape()], ash(createPost))
-router.get('/:postId', [param('postId').not().isEmpty()], ash(getPostById))
+router.post(
+  '/',
+  auth,
+  singleImageUploadMiddleware,
+  [body('caption').optional().trim().escape()],
+  validate,
+  ash(createPost)
+)
+
+router.get('/:postId', [param('postId').not().isEmpty()], validate, ash(getPostById))
 router.put(
   '/:postId',
   auth,
@@ -20,8 +29,9 @@ router.put(
     body('url').trim().notEmpty().optional(),
     body('caption').trim().escape().notEmpty().optional(),
   ],
+  validate,
   ash(updatePost)
 )
-router.delete('/:postId', auth, [param('postId').not().isEmpty()], ash(deletePost))
+router.delete('/:postId', auth, [param('postId').not().isEmpty()], validate, ash(deletePost))
 
 export default router
