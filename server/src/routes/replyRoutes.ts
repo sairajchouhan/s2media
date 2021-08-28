@@ -13,6 +13,7 @@ router.post(
     param('postId').not().isEmpty(),
     param('commentId').not().isEmpty(),
     body('replyText').trim().escape().not().isEmpty(),
+    body('repliedToUserUid').trim().escape().optional(),
   ],
   ash(createReplyToComment)
 )
