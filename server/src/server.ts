@@ -8,6 +8,7 @@ import commentRoutes from './routes/commentRoutes'
 import followRoutes from './routes/followRoutes'
 import likeRoutes from './routes/likeRoutes'
 import postRoutes from './routes/postRoutes'
+import replyRoutes from './routes/replyRoutes'
 import saveRoutes from './routes/saveRoutes'
 import userRoutes from './routes/userRoutes'
 
@@ -32,6 +33,7 @@ app.use('/api/v1/post', postRoutes)
 app.use('/api/v1/post/like', likeRoutes)
 app.use('/api/v1/post/save', saveRoutes)
 app.use('/api/v1/post/comment', commentRoutes)
+app.use('/api/v1/post/comment/reply', replyRoutes)
 app.use('/api/v1/user/follow', followRoutes)
 app.use(errorMiddleware)
 

@@ -3,6 +3,28 @@ import { validationResult } from 'express-validator'
 import createError from 'http-errors'
 import prisma from '../../prisma'
 
+export const getCommentsOfPost = async (req: Request, res: Response) => {
+  const postId = req.params.postId
+  const comments = await prisma.comment.findMany({
+    where: { post: { id: postId } },
+    include: {
+      user: {
+        select: {
+          avatar: true,
+          username: true,
+          profile: {
+            select: {
+              displayName: true,
+            },
+          },
+        },
+      },
+      reply: true,
+    },
+  })
+  res.json({ comments })
+}
+
 export const createComment = async (req: Request, res: Response) => {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
@@ -98,4 +120,27 @@ export const deleteComment = async (req: Request, res: Response) => {
   })
 
   return res.json({ msg: 'Comment deleted successfully' })
+}
+
+export const getOneComment = async (req: Request, res: Response) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      errors: errors.array(),
+    })
+  }
+
+  // const postId = req.params.postId
+  const commentId = req.params.commentId
+
+  const comment = await prisma.comment.findUnique({
+    where: {
+      id: commentId,
+    },
+    include: {
+      reply: true,
+    },
+  })
+
+  return res.json({ comment })
 }

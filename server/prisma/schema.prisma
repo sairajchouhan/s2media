@@ -88,7 +88,7 @@ model Comment {
 
 model Reply {
   id String @id @default(cuid())
-  commentText String
+  replyText String
   userId String
   postId String
   commentId String

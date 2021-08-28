@@ -4,6 +4,7 @@ import createError from 'http-errors'
 import prisma from '../../prisma/'
 import { cloudinaryPostImageUpload } from '../config/cloudinary'
 import { formatBufferTo64 } from '../config/data-uri'
+import { commentAndReplyUser } from './helpers'
 
 export const createPost = async (req: Request, res: Response) => {
   const errors = validationResult(req)
@@ -68,7 +69,6 @@ export const allPosts = async (req: Request, res: Response) => {
       like: true,
       comment: true,
       save: true,
-      reply: true,
       user: {
         include: {
           _count: {
@@ -168,8 +168,19 @@ export const getPostById = async (req: Request, res: Response) => {
       id: postId,
     },
     include: {
+      _count: { select: { like: true, comment: true, reply: true } },
       like: true,
-      comment: true,
+      comment: {
+        include: {
+          reply: {
+            include: {
+              repliedToUser: commentAndReplyUser,
+              user: commentAndReplyUser,
+            },
+          },
+          user: commentAndReplyUser,
+        },
+      },
       save: true,
       user: {
         include: {
