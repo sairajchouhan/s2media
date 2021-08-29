@@ -1,2 +1,2 @@
+export * from './c-r-input'
 export * from './comment'
-export * from './comment-input'
