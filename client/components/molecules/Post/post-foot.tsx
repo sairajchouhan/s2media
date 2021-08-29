@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { axios } from '../../../config/axios'
 import { useAuth } from '../../../context/authContext'
 import { PostWithBaseUser } from '../../../types/post'
 import { IconButton } from '../../atoms/IconButton'
-import { HeartIcon, SavedIcon } from '../../icons'
+import { CommentIcon, HeartIcon, SavedIcon } from '../../icons'
 
 export interface PostFootInterface {
   post: PostWithBaseUser
@@ -12,6 +13,7 @@ export interface PostFootInterface {
 
 export const PostFoot = ({ post }: PostFootInterface) => {
   const { user } = useAuth()
+  const router = useRouter()
   const [likeCount, setLikeCount] = useState<number>(post.like.length)
   const [userLiked, setUserLiked] = useState<boolean>(
     post.like.some((like: any) => like.userId === user?.uid)
@@ -74,7 +76,7 @@ export const PostFoot = ({ post }: PostFootInterface) => {
   if (!user) return null
 
   return (
-    <div className="px-3 py-2 ">
+    <div className="px-3 py-2">
       <div className="flex items-center justify-between">
         <div className="flex">
           <IconButton
@@ -86,7 +88,16 @@ export const PostFoot = ({ post }: PostFootInterface) => {
             variant={userLiked ? 'solid' : 'outline'}
             onClick={handleLikePost}
           />
-          {/* <IconButton w="w-6" h="h-6" icon={icon2} /> */}
+          <IconButton
+            w="w-6"
+            h="h-6"
+            textColour="text-gray-600"
+            hoverBgColor="bg-gray-100"
+            icon={CommentIcon}
+            onClick={() => {
+              router.pathname === '/home' ? router.push(`/post/${post.id}`) : null
+            }}
+          />
         </div>
         <div>
           <IconButton

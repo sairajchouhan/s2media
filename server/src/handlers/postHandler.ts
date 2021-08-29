@@ -56,12 +56,12 @@ export const allPosts = async (req: Request, res: Response) => {
       save: true,
       user: {
         include: {
-          _count: {
-            select: {
-              followers: true,
-              following: true,
-            },
-          },
+          // _count: {
+          //   select: {
+          //     followers: true,
+          //     following: true,
+          //   },
+          // },
           profile: true,
         },
       },
@@ -136,6 +136,9 @@ export const getPostById = async (req: Request, res: Response) => {
       _count: { select: { like: true, comment: true, reply: true } },
       like: true,
       comment: {
+        orderBy: {
+          createdAt: 'desc',
+        },
         include: {
           reply: {
             include: {

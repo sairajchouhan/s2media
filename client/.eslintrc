@@ -1,5 +1,5 @@
 {
-  "extends": "next",
+  "extends": ["next", "next/babel"],
   "rules": {
     "no-unused-vars": [
       "warn",

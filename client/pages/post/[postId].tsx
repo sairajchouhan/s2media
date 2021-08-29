@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { NextImage } from '../../components/atoms/Image'
 import { DotsHorizontal } from '../../components/icons'
+import { Comment, CommentInput } from '../../components/molecules/Comment'
 import { PageNav } from '../../components/molecules/Page/page-nav'
 import { PostFoot } from '../../components/molecules/Post/post-foot'
 import { PostHead } from '../../components/molecules/Post/post-head'
@@ -33,6 +34,14 @@ const EachPost = () => {
               <NextImage src={post.url} />
             </main>
             <PostFoot post={post} />
+            <section className="px-4 pb-10 mb-4 border-opacity-80">
+              <CommentInput />
+              <div>
+                {post.comment.map((comment: any) => (
+                  <Comment comment={comment} />
+                ))}
+              </div>
+            </section>
           </>
         )}
       </main>
