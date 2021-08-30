@@ -4,8 +4,8 @@ import prisma from '../../prisma'
 import { commentAndReplyUser } from './helpers'
 
 export const getCommentsOfPost = async (req: Request, res: Response) => {
-  const commentCount = 1
-  const replyCount = 1
+  const commentCount = 1000
+  const replyCount = 1000
   const postId = req.params.postId
   const comments = await prisma.comment.findMany({
     where: { post: { id: postId } },
