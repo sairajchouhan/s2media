@@ -38,9 +38,7 @@ const EachPost = () => {
               <CommentReplyInput postId={post.id} />
               <div>
                 {post.comment.map((comment: any) => (
-                  <>
-                    <Comment key={comment.id} comment={comment} />
-                  </>
+                  <Comment key={comment.id} comment={comment} />
                 ))}
               </div>
             </section>

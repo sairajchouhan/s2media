@@ -23,7 +23,7 @@ export const Comment = ({ comment }: { comment: any }) => {
           {comment.reply.length > 0 ? (
             <div>
               {comment.reply.map((reply: any) => (
-                <div className="flex items-start mt-3">
+                <div className="flex items-start mt-3" key={reply.id}>
                   <Link to={paths.profile({ username: reply.user.username })}>
                     <Avatar src={reply.user.avatar} w="w-10" h="h-10" alt="user profile image" />
                   </Link>

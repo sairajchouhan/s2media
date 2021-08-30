@@ -13,8 +13,9 @@ export const CommentReplyInput = ({
   repliedToUser?: any
 }) => {
   const { user } = useAuth()
-  const [inputText, setInputText] = useState('')
-  console.log('+', repliedToUser)
+  const [inputText, setInputText] = useState(
+    repliedToUser?.username ? `@${repliedToUser?.username} ` : ''
+  )
 
   const handleCreateComment = async () => {
     if (inputText.trim() === '') return
@@ -59,19 +60,21 @@ export const CommentReplyInput = ({
   }
 
   return (
-    <div className="relative my-4">
-      <Input
-        value={inputText}
-        onChange={(e) => setInputText(e.target.value)}
-        id="textInput"
-        placeholder={commentId ? 'Your reply' : 'Your comment'}
-      />
-      <button
-        onClick={commentId ? handleCreateReply : handleCreateComment}
-        className="absolute top-1/2 transform -translate-y-1/2 right-2 px-2 py-0.5 rounded text-xs text-white bg-indigo-500 font-medium active:bg-indigo-600"
-      >
-        send
-      </button>
-    </div>
+    <>
+      <div className="relative my-4">
+        <Input
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+          id="textInput"
+          placeholder={commentId ? 'Your reply' : 'Your comment'}
+        />
+        <button
+          onClick={commentId ? handleCreateReply : handleCreateComment}
+          className="absolute top-1/2 transform -translate-y-1/2 right-2 px-2 py-0.5 rounded text-xs text-white bg-indigo-500 font-medium active:bg-indigo-600"
+        >
+          send
+        </button>
+      </div>
+    </>
   )
 }
