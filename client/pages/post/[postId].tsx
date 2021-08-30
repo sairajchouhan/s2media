@@ -34,7 +34,7 @@ const EachPost = () => {
     isLoading: isLoadingComments,
     isError: isErrorComments,
   } = useQuery(
-    ['post', { id: post?.id, comments: true }],
+    ['post', { id: post?.id, comment: true }],
     async ({ queryKey }) => {
       let qk = queryKey[1] as any
       const { data } = await axios.get(`/post/comment/${qk.id}`, {

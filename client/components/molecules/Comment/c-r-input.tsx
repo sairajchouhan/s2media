@@ -10,11 +10,18 @@ export const CommentReplyInput = ({
   commentId,
   isReply,
   repliedToUser,
+  setReply,
 }: {
   postId: string
   commentId?: string
   isReply: boolean
   repliedToUser?: any
+  setReply?: React.Dispatch<
+    React.SetStateAction<{
+      show: boolean
+      replyText: string
+    }>
+  >
 }) => {
   const queryClient = useQueryClient()
   const { user } = useAuth()
@@ -36,12 +43,12 @@ export const CommentReplyInput = ({
     },
     {
       onMutate: async (inputText: string) => {
-        await queryClient.cancelQueries(['post', { id: postId, comments: true }])
+        await queryClient.cancelQueries(['post', { id: postId, comment: true }])
         await queryClient.cancelQueries(['post', postId])
 
         const previousComments = queryClient.getQueryData<any>([
           'post',
-          { id: postId, comments: true },
+          { id: postId, comment: true },
         ])
         const previousPost: any = queryClient.getQueryData(['post', postId])
         console.log(previousPost)
@@ -65,7 +72,7 @@ export const CommentReplyInput = ({
         }
 
         if (previousComments) {
-          queryClient.setQueryData(['post', { id: postId, comments: true }], {
+          queryClient.setQueryData(['post', { id: postId, comment: true }], {
             comments: [newComment, ...previousComments.comments],
           })
           queryClient.setQueryData(['post', postId], {
@@ -82,7 +89,7 @@ export const CommentReplyInput = ({
       onError: (_err, _vars, context) => {
         if (context?.previousComments) {
           queryClient.setQueryData<any>(
-            ['post', { id: postId, comments: true }],
+            ['post', { id: postId, comment: true }],
             context.previousComments
           )
         }
@@ -94,7 +101,100 @@ export const CommentReplyInput = ({
         setInputText('')
       },
       onSettled: () => {
-        queryClient.invalidateQueries(['post', { id: postId, comments: true }])
+        queryClient.invalidateQueries(['post', { id: postId, comment: true }])
+      },
+    }
+  )
+  const replyMutation = useMutation(
+    (inputText: string) => {
+      return axios.post(
+        `/post/comment/reply/${postId}/${commentId}`,
+        { replyText: inputText, repliedToUserUid: repliedToUser.uid },
+        {
+          headers: {
+            Authorization: `Bearer ${user?.idToken}`,
+          },
+        }
+      )
+    },
+    {
+      onMutate: async (inputText: string) => {
+        await queryClient.cancelQueries(['post', { id: postId, comment: true }])
+        await queryClient.cancelQueries(['post', postId])
+
+        const previousComments = queryClient.getQueryData<any>([
+          'post',
+          { id: postId, comment: true },
+        ])
+        const previousPost: any = queryClient.getQueryData(['post', postId])
+
+        const newReply = {
+          id: cuid(),
+          replyText: inputText,
+          userId: user?.uid,
+          postId: postId,
+          commentId: commentId,
+          repliedToUserUid: repliedToUser.uid,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          repliedToUser: {
+            uid: repliedToUser.uid,
+            avatar: repliedToUser.avatar,
+            username: repliedToUser.username,
+            profile: {
+              displayName: repliedToUser.profile.displayName,
+            },
+          },
+          user: {
+            uid: user?.uid,
+            avatar: user?.avatar,
+            username: user?.username,
+            profile: {
+              displayName: user?.profile.displayName,
+            },
+          },
+        }
+
+        if (previousComments) {
+          const copyPreviousComments = previousComments
+          const commentIndex = previousComments.comments.findIndex(
+            (comment: any) => comment.id === commentId
+          )
+          copyPreviousComments.comments[commentIndex].reply.push(newReply)
+
+          queryClient.setQueryData(['post', { id: postId, comment: true }], {
+            comments: [...copyPreviousComments.comments],
+          })
+          queryClient.setQueryData(['post', postId], {
+            ...previousPost,
+            _count: {
+              ...previousPost._count,
+              comment: previousPost._count.comment + 1,
+            },
+          })
+        }
+
+        return { previousComments, previousPost }
+      },
+      onError: (_err, _vars, context) => {
+        if (context?.previousComments) {
+          queryClient.setQueryData<any>(
+            ['post', { id: postId, comment: true }],
+            context.previousComments
+          )
+        }
+        if (context?.previousPost) {
+          queryClient.setQueryData<any>(['post', postId], context.previousPost)
+        }
+      },
+      onSuccess: () => {
+        setInputText('')
+        if (setReply) {
+          setReply({ show: false, replyText: '' })
+        }
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries(['post', { id: postId, comment: true }])
       },
     }
   )
@@ -105,25 +205,9 @@ export const CommentReplyInput = ({
   }
 
   const handleCreateReply = async () => {
+    console.log('from create reply')
     if (inputText.trim() === '') return
-    try {
-      await axios.post(
-        `/post/comment/reply/${postId}/${commentId}`,
-        {
-          replyText: inputText,
-          repliedToUserUid: repliedToUser?.uid,
-          repliedToUserName: repliedToUser?.username,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${user?.idToken}`,
-          },
-        }
-      )
-      setInputText('')
-    } catch (err) {
-      console.log(err)
-    }
+    replyMutation.mutate(inputText)
   }
 
   return (

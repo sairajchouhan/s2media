@@ -14,12 +14,7 @@ export const Comment = ({ comment }: { comment: any }) => {
         </Link>
         <div className="flex-1">
           <CommentReplyText crEntity={comment} isReply={false} />
-          <CommentReplyAction
-            commentId={comment.id}
-            postId={comment.postId}
-            crEntity={comment}
-            isReply={false}
-          />
+          <CommentReplyAction commentId={comment.id} postId={comment.postId} crEntity={comment} />
           {comment.reply.length > 0 ? (
             <div>
               {comment.reply.map((reply: any) => (
@@ -33,7 +28,6 @@ export const Comment = ({ comment }: { comment: any }) => {
                       commentId={comment.id}
                       postId={comment.postId}
                       crEntity={reply}
-                      isReply={true}
                     />
                   </div>
                 </div>
