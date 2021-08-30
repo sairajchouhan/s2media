@@ -10,7 +10,7 @@ export const CommentReplyAction = ({
   crEntity: any
   commentId: string
   postId: string
-  isReply?: boolean
+  isReply: boolean
 }) => {
   const [reply, setReply] = useState({ show: false, replyText: '' })
   return (
@@ -27,7 +27,12 @@ export const CommentReplyAction = ({
       </div>
       {reply.show ? (
         <div>
-          <CommentReplyInput postId={postId} commentId={commentId} repliedToUser={crEntity.user} />
+          <CommentReplyInput
+            isReply={isReply}
+            postId={postId}
+            commentId={commentId}
+            repliedToUser={crEntity.user}
+          />
         </div>
       ) : null}
     </div>

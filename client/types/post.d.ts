@@ -12,5 +12,6 @@ export interface PostWithBaseUser {
   _count: {
     like: number
     comment: number
+    reply: number
   }
 }

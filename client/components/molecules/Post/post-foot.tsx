@@ -117,7 +117,7 @@ export const PostFoot = ({ post }: PostFootInterface) => {
         </p>
         <span className="w-1 h-1 mx-2 mt-1 bg-gray-400 rounded-full"></span>
         <p className="text-sm text-gray-600">
-          <span>{post._count?.comment}</span> comments
+          <span>{post._count?.comment + post._count?.reply}</span> comments
         </p>
       </div>
     </div>

@@ -33,15 +33,21 @@ const EachPost = () => {
     data: commentsData,
     isLoading: isLoadingComments,
     isError: isErrorComments,
-  } = useQuery(['post', { id: post?.id, comments: true }], async ({ queryKey }) => {
-    let qk = queryKey[1] as any
-    const { data } = await axios.get(`/post/comment/${qk.id}`, {
-      headers: {
-        Authorization: `Bearer ${user?.idToken}`,
-      },
-    })
-    return data
-  })
+  } = useQuery(
+    ['post', { id: post?.id, comments: true }],
+    async ({ queryKey }) => {
+      let qk = queryKey[1] as any
+      const { data } = await axios.get(`/post/comment/${qk.id}`, {
+        headers: {
+          Authorization: `Bearer ${user?.idToken}`,
+        },
+      })
+      return data
+    },
+    {
+      enabled: !!post,
+    }
+  )
 
   if (isError || !post) return <h1>An error has occured</h1>
 
@@ -59,7 +65,7 @@ const EachPost = () => {
             </main>
             <PostFoot post={post} />
             <section className="px-4 pb-10 border-opacity-80">
-              <CommentReplyInput postId={post.id} />
+              <CommentReplyInput isReply={false} postId={post.id} />
               {isLoadingComments ? (
                 <div>Loading...</div>
               ) : isErrorComments ? (
