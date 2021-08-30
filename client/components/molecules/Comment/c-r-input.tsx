@@ -83,7 +83,7 @@ export const CommentReplyInput = ({
             },
           })
         }
-
+        setInputText('')
         return { previousComments, previousPost }
       },
       onError: (_err, _vars, context) => {
@@ -97,9 +97,7 @@ export const CommentReplyInput = ({
           queryClient.setQueryData<any>(['post', postId], context.previousPost)
         }
       },
-      onSuccess: () => {
-        setInputText('')
-      },
+      onSuccess: () => {},
       onSettled: () => {
         queryClient.invalidateQueries(['post', { id: postId, comment: true }])
       },
@@ -173,6 +171,10 @@ export const CommentReplyInput = ({
             },
           })
         }
+        setInputText('')
+        if (setReply) {
+          setReply({ show: false, replyText: '' })
+        }
 
         return { previousComments, previousPost }
       },
@@ -187,12 +189,7 @@ export const CommentReplyInput = ({
           queryClient.setQueryData<any>(['post', postId], context.previousPost)
         }
       },
-      onSuccess: () => {
-        setInputText('')
-        if (setReply) {
-          setReply({ show: false, replyText: '' })
-        }
-      },
+      onSuccess: () => {},
       onSettled: () => {
         queryClient.invalidateQueries(['post', { id: postId, comment: true }])
       },
@@ -205,7 +202,6 @@ export const CommentReplyInput = ({
   }
 
   const handleCreateReply = async () => {
-    console.log('from create reply')
     if (inputText.trim() === '') return
     replyMutation.mutate(inputText)
   }
@@ -221,7 +217,7 @@ export const CommentReplyInput = ({
         />
         <button
           onClick={isReply ? handleCreateReply : handleCreateComment}
-          className="absolute top-1/2 transform -translate-y-1/2 right-2 px-2 py-0.5 rounded text-xs text-white bg-indigo-500 font-medium active:bg-indigo-600"
+          className="absolute top-1/2 transform -translate-y-1/2 right-2 px-2 py-0.5 rounded text-xs text-white bg-indigo-500 font-medium active:bg-indigo-600 disabled:opacity-50"
         >
           send
         </button>
