@@ -1,24 +1,30 @@
 import { Request, Response } from 'express'
 import createError from 'http-errors'
 import prisma from '../../prisma'
+import { commentAndReplyUser } from './helpers'
 
 export const getCommentsOfPost = async (req: Request, res: Response) => {
+  const commentCount = 1
+  const replyCount = 1
   const postId = req.params.postId
   const comments = await prisma.comment.findMany({
     where: { post: { id: postId } },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    take: commentCount,
     include: {
-      user: {
-        select: {
-          avatar: true,
-          username: true,
-          profile: {
-            select: {
-              displayName: true,
-            },
-          },
+      user: commentAndReplyUser,
+      reply: {
+        orderBy: {
+          createdAt: 'asc',
+        },
+        take: replyCount,
+        include: {
+          repliedToUser: commentAndReplyUser,
+          user: commentAndReplyUser,
         },
       },
-      reply: true,
     },
   })
   res.json({ comments })

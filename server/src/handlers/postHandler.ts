@@ -3,7 +3,6 @@ import createError from 'http-errors'
 import prisma from '../../prisma/'
 import { cloudinaryPostImageUpload } from '../config/cloudinary'
 import { formatBufferTo64 } from '../config/data-uri'
-import { commentAndReplyUser } from './helpers'
 
 export const createPost = async (req: Request, res: Response) => {
   const { caption }: { caption: string } = req.body
@@ -135,20 +134,6 @@ export const getPostById = async (req: Request, res: Response) => {
     include: {
       _count: { select: { like: true, comment: true, reply: true } },
       like: true,
-      comment: {
-        orderBy: {
-          createdAt: 'desc',
-        },
-        include: {
-          reply: {
-            include: {
-              repliedToUser: commentAndReplyUser,
-              user: commentAndReplyUser,
-            },
-          },
-          user: commentAndReplyUser,
-        },
-      },
       save: true,
       user: {
         include: {

@@ -1,13 +1,12 @@
 import { BaseUser } from './user'
 export interface PostWithBaseUser {
-  caption: string
   id: string
+  caption: string
   url: string
   userId: string
   user: BaseUser
   like: Array<Record<any, any>>
   save: Array<Record<any, any>>
-  comment: Array<Record<any, any>>
   createdAt: string
   updatedAt: string
   _count: {
