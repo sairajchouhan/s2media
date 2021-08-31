@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import React from 'react'
-import { useQuery } from 'react-query'
+import { useInfiniteQuery, useQuery } from 'react-query'
+import { Button } from '../../components/atoms/Button'
 import { NextImage } from '../../components/atoms/Image'
 import { DotsHorizontal } from '../../components/icons'
 import { Comment, CommentReplyInput } from '../../components/molecules/Comment'
@@ -30,14 +31,17 @@ const EachPost = () => {
   })
 
   const {
-    data: commentsData,
+    data: commentData,
     isLoading: isLoadingComments,
     isError: isErrorComments,
-  } = useQuery(
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery(
     ['post', { id: post?.id, comment: true }],
-    async ({ queryKey }) => {
+    async ({ queryKey, pageParam = '' }) => {
       let qk = queryKey[1] as any
-      const { data } = await axios.get(`/post/comment/${qk.id}`, {
+      const { data } = await axios.get(`/post/comment/${qk.id}?cursor=${pageParam}`, {
         headers: {
           Authorization: `Bearer ${user?.idToken}`,
         },
@@ -46,8 +50,15 @@ const EachPost = () => {
     },
     {
       enabled: !!post,
+      getNextPageParam: (lastPage) => {
+        return lastPage.nextCursor ?? false
+      },
     }
   )
+
+  const handleClickMoreComments = () => {
+    fetchNextPage()
+  }
 
   if (isError || !post) return <h1>An error has occured</h1>
 
@@ -64,7 +75,7 @@ const EachPost = () => {
               <NextImage src={post.url} />
             </main>
             <PostFoot post={post} />
-            <section className="px-4 pb-10 border-opacity-80">
+            <section className="px-4 pb-10 mb-20 border-opacity-80">
               <CommentReplyInput isReply={false} postId={post.id} />
               {isLoadingComments ? (
                 <div>Loading...</div>
@@ -72,11 +83,25 @@ const EachPost = () => {
                 <div>Something went wrong</div>
               ) : (
                 <div>
-                  {commentsData &&
-                    commentsData.comments.map((comment: any) => (
-                      <Comment key={comment.id} comment={comment} />
+                  {commentData &&
+                    commentData.pages.map((page: any) => (
+                      <React.Fragment key={page.nextCursor || 'lastPage'}>
+                        {page.comments.map((comment: any) => (
+                          <Comment key={comment.id} comment={comment} />
+                        ))}
+                      </React.Fragment>
                     ))}
                 </div>
+              )}
+              {hasNextPage && (
+                <Button
+                  disabled={isFetchingNextPage}
+                  variant="solid"
+                  colorScheme="gray"
+                  onClick={handleClickMoreComments}
+                >
+                  {isFetchingNextPage ? 'loading more comments..' : 'show more comments'}
+                </Button>
               )}
             </section>
           </>

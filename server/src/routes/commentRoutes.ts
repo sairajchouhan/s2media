@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import ash from 'express-async-handler'
-import { body, param } from 'express-validator'
+import { body, param, query } from 'express-validator'
 import { createComment, deleteComment, editComment, getCommentsOfPost, getOneComment } from '../handlers/commentHandler'
 import auth from '../middlewares/auth'
 import validate from '../middlewares/validate'
@@ -12,7 +12,11 @@ router.get('/:postId', auth, ash(getCommentsOfPost))
 router.post(
   '/:postId',
   auth,
-  [param('postId').notEmpty(), body('commentText').trim().escape().notEmpty()],
+  [
+    param('postId').notEmpty(),
+    body('commentText').trim().escape().notEmpty(),
+    query('cursor').optional().trim().escape(),
+  ],
   validate,
   ash(createComment)
 )

@@ -49,7 +49,7 @@ export const allPosts = async (req: Request, res: Response) => {
       createdAt: 'desc',
     },
     include: {
-      _count: { select: { like: true, comment: true, save: true } },
+      _count: { select: { like: true, comment: true, reply: true } },
       like: true,
       comment: true,
       save: true,

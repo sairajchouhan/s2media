@@ -3,15 +3,21 @@ import createError from 'http-errors'
 import prisma from '../../prisma'
 import { commentAndReplyUser } from './helpers'
 
+const commentCount = 3
+const replyCount = 1
+
 export const getCommentsOfPost = async (req: Request, res: Response) => {
-  const commentCount = 1000
-  const replyCount = 1000
   const postId = req.params.postId
+  const cursor = (req.query.cursor as string) || undefined
+  const cursorObj = cursor ? { id: cursor } : undefined
+
   const comments = await prisma.comment.findMany({
     where: { post: { id: postId } },
+    skip: cursor ? 1 : 0,
     orderBy: {
       createdAt: 'desc',
     },
+    cursor: cursorObj,
     take: commentCount,
     include: {
       user: commentAndReplyUser,
@@ -27,7 +33,7 @@ export const getCommentsOfPost = async (req: Request, res: Response) => {
       },
     },
   })
-  res.json({ comments })
+  res.json({ comments, nextCursor: comments[commentCount - 1]?.id ?? undefined })
 }
 
 export const createComment = async (req: Request, res: Response) => {
