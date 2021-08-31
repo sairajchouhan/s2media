@@ -86,7 +86,7 @@ const EachPost = () => {
                   {commentData &&
                     commentData.pages.map((page: any) => (
                       <React.Fragment key={page.nextCursor || 'lastPage'}>
-                        {page.comments.map((comment: any) => (
+                        {page.comment.map((comment: any) => (
                           <Comment key={comment.id} comment={comment} />
                         ))}
                       </React.Fragment>

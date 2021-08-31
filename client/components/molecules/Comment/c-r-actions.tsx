@@ -5,10 +5,14 @@ export const CommentReplyAction = ({
   crEntity,
   commentId,
   postId,
+  replyCount,
+  isReply,
 }: {
   crEntity: any
   commentId: string
   postId: string
+  replyCount?: number
+  isReply: boolean
 }) => {
   const [reply, setReply] = useState({ show: false, replyText: '' })
   return (
@@ -20,7 +24,7 @@ export const CommentReplyAction = ({
           onClick={() => setReply((reply) => ({ ...reply, show: !reply.show }))}
           className="cursor-pointer hover:bg-gray-100 p-0.5 rounded"
         >
-          Reply
+          Reply {!isReply ? `- ${replyCount} Replies` : ''}
         </p>
       </div>
       {reply.show ? (

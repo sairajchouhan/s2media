@@ -3,7 +3,8 @@ import createError from 'http-errors'
 import prisma from '../../prisma'
 import { commentAndReplyUser } from './helpers'
 
-const commentCount = 3
+// change this later to 3
+const commentCount = 100
 const replyCount = 1
 
 export const getCommentsOfPost = async (req: Request, res: Response) => {
@@ -20,6 +21,11 @@ export const getCommentsOfPost = async (req: Request, res: Response) => {
     cursor: cursorObj,
     take: commentCount,
     include: {
+      _count: {
+        select: {
+          reply: true,
+        },
+      },
       user: commentAndReplyUser,
       reply: {
         orderBy: {
@@ -33,7 +39,7 @@ export const getCommentsOfPost = async (req: Request, res: Response) => {
       },
     },
   })
-  res.json({ comments, nextCursor: comments[commentCount - 1]?.id ?? undefined })
+  res.json({ comment: comments, nextCursor: comments[commentCount - 1]?.id ?? undefined })
 }
 
 export const createComment = async (req: Request, res: Response) => {
