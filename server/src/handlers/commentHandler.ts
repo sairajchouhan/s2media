@@ -5,7 +5,7 @@ import { commentAndReplyUser } from './helpers'
 
 // change this later to 3
 const commentCount = 10
-const replyCount = 6
+// const replyCount = 1
 
 export const getCommentsOfPost = async (req: Request, res: Response) => {
   const postId = req.params.postId
@@ -27,16 +27,16 @@ export const getCommentsOfPost = async (req: Request, res: Response) => {
         },
       },
       user: commentAndReplyUser,
-      reply: {
-        orderBy: {
-          createdAt: 'asc',
-        },
-        take: replyCount,
-        include: {
-          repliedToUser: commentAndReplyUser,
-          user: commentAndReplyUser,
-        },
-      },
+      // reply: {
+      //   orderBy: {
+      //     createdAt: 'desc',
+      //   },
+      //   take: replyCount,
+      //   include: {
+      //     repliedToUser: commentAndReplyUser,
+      //     user: commentAndReplyUser,
+      //   },
+      // },
     },
   })
   res.json({ comment: comments, nextCursor: comments[commentCount - 1]?.id ?? undefined })

@@ -25,7 +25,6 @@ export const createReplyToComment = async (req: Request, res: Response) => {
 const replyTakeCount = 3
 
 export const getReplyForComment = async (req: Request, res: Response) => {
-  console.log('from getReplyForComment')
   const { postId, commentId } = req.params
   const cursor = (req.query.cursor as string) || undefined
   const cursorObj = cursor ? { id: cursor } : undefined
@@ -39,7 +38,7 @@ export const getReplyForComment = async (req: Request, res: Response) => {
       postId,
     },
     orderBy: {
-      createdAt: 'asc',
+      createdAt: 'desc',
     },
     include: {
       repliedToUser: commentAndReplyUser,

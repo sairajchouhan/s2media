@@ -25,9 +25,7 @@ export const CommentReplyInput = ({
 }) => {
   const queryClient = useQueryClient()
   const { user } = useAuth()
-  const [inputText, setInputText] = useState(
-    repliedToUser?.username ? `@${repliedToUser?.username} ` : ''
-  )
+  const [inputText, setInputText] = useState('')
 
   const commentMutation = useMutation(
     (inputText: string) => {
