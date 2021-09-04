@@ -12,7 +12,6 @@ export const Comment = ({ comment }: { comment: any }) => {
   const { user } = useAuth()
   const {
     data: replyData,
-    isLoading,
     isIdle,
     isError,
     isFetchingNextPage,
@@ -21,6 +20,7 @@ export const Comment = ({ comment }: { comment: any }) => {
   } = useInfiniteQuery(
     ['post', { id: comment.postId, commentId: comment.id, reply: true }],
     async ({ pageParam = '' }) => {
+      await new Promise((resolve) => setTimeout(resolve, 1000))
       const { data } = await axios.get(
         `/post/comment/reply/${comment.postId}/${comment.id}?cursor=${pageParam}`,
         {
@@ -36,12 +36,9 @@ export const Comment = ({ comment }: { comment: any }) => {
       getNextPageParam: (lastPage) => {
         return lastPage.nextCursor ?? false
       },
-      refetchOnWindowFocus: false,
       retry: false,
     }
   )
-
-  console.log('++++', replyData)
 
   return (
     <div className="my-3">
@@ -58,7 +55,6 @@ export const Comment = ({ comment }: { comment: any }) => {
             postId={comment.postId}
             crEntity={comment}
             fetchNextPage={fetchNextPage}
-            hasNextPage={hasNextPage}
           />
 
           {replyData &&
@@ -83,15 +79,18 @@ export const Comment = ({ comment }: { comment: any }) => {
               </React.Fragment>
             ))}
 
-          {(isIdle && comment._count.reply > 0) || hasNextPage ? (
-            <div>
-              <button
-                onClick={() => fetchNextPage()}
-                className="text-sm text-gray-500 cursor-pointer hover:underline"
-              >
-                show more replies
-              </button>
-            </div>
+          {isFetchingNextPage && <div className="text-center">Loading...</div>}
+          {!isFetchingNextPage && replyData?.pages.length ? (
+            (isIdle && comment._count.reply > 0) || hasNextPage ? (
+              <>
+                <button
+                  onClick={() => fetchNextPage()}
+                  className="text-sm text-gray-500 cursor-pointer hover:underline"
+                >
+                  show more replies
+                </button>
+              </>
+            ) : null
           ) : null}
         </div>
       </div>

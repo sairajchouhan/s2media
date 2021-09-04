@@ -9,7 +9,6 @@ export const CommentReplyAction = ({
   replyCount,
   isReply,
   fetchNextPage,
-  hasNextPage,
 }: {
   crEntity: any
   commentId: string
@@ -17,22 +16,17 @@ export const CommentReplyAction = ({
   replyCount?: number
   isReply: boolean
   fetchNextPage?: any
-  hasNextPage?: boolean | undefined
 }) => {
   const [reply, setReply] = useState({ show: false, replyText: '' })
   const queryClient = useQueryClient()
 
-  const handleShowReplies = async (checked: boolean) => {
-    const previousReplies = queryClient.getQueryData<any>([
+  const handleShowReplies = async () => {
+    const previousCommentReplies = queryClient.getQueryData([
       'post',
       { id: postId, commentId: commentId, reply: true },
     ])
-    if (!previousReplies && checked) {
-      console.log('I will get replies for first time')
+    if (!previousCommentReplies) {
       fetchNextPage()
-    }
-    if (previousReplies && hasNextPage && checked) {
-      console.log('I will get more replies')
     }
   }
 
@@ -51,21 +45,12 @@ export const CommentReplyAction = ({
         </div>
         {!isReply && replyCount && replyCount > 0 ? (
           <div>
-            <label htmlFor="showHideReply">
-              <p className="cursor-pointer text-xs text-indigo-500 hover:bg-blue-100 p-0.5 rounded">
-                Show Replies
-              </p>
-            </label>
-            <input
-              type="checkbox"
-              onChange={(e) => {
-                const checked = e.target.checked
-                handleShowReplies(checked)
-                console.log(checked)
-              }}
-              id="showHideReply"
-              className="hidden"
-            />
+            <p
+              onClick={() => handleShowReplies()}
+              className="cursor-pointer text-xs text-indigo-500 hover:bg-blue-50 p-0.5 rounded"
+            >
+              Show Replies
+            </p>
           </div>
         ) : null}
       </div>
