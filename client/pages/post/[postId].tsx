@@ -60,7 +60,8 @@ const EachPost = () => {
     fetchNextPage()
   }
 
-  if (isError || !post) return <h1>An error has occured</h1>
+  if (isError) return <h1>An error has occured</h1>
+  if (!post) return null
 
   return (
     <div className="min-h-screen border-l border-r border-opacity-80">

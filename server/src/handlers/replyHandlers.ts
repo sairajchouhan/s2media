@@ -22,9 +22,10 @@ export const createReplyToComment = async (req: Request, res: Response) => {
   return res.json(reply)
 }
 
-const replyTakeCount = 5
+const replyTakeCount = 3
 
 export const getReplyForComment = async (req: Request, res: Response) => {
+  console.log('from getReplyForComment')
   const { postId, commentId } = req.params
   const cursor = (req.query.cursor as string) || undefined
   const cursorObj = cursor ? { id: cursor } : undefined

@@ -4,8 +4,8 @@ import prisma from '../../prisma'
 import { commentAndReplyUser } from './helpers'
 
 // change this later to 3
-const commentCount = 100
-const replyCount = 1
+const commentCount = 10
+const replyCount = 6
 
 export const getCommentsOfPost = async (req: Request, res: Response) => {
   const postId = req.params.postId

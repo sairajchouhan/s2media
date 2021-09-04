@@ -23,7 +23,11 @@ router.post(
 router.get(
   '/:postId/:commentId',
   auth,
-  [param('postId').not().isEmpty(), param('commentId').not().isEmpty(), query('cursor').optional().trim().escape()],
+  [
+    param('postId').not().isEmpty().trim().escape(),
+    param('commentId').not().isEmpty().trim().escape(),
+    query('cursor').optional().trim().escape(),
+  ],
   validate,
   ash(getReplyForComment)
 )

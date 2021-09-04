@@ -50,6 +50,7 @@ export const CommentReplyInput = ({
           'post',
           { id: postId, comment: true },
         ])
+        console.log(previousComments)
         const previousPost: any = queryClient.getQueryData(['post', postId])
         console.log(previousPost)
 
@@ -68,13 +69,19 @@ export const CommentReplyInput = ({
               displayName: user?.profile.displayName,
             },
           },
+          _count: {
+            reply: 0,
+            like: 0,
+          },
           reply: [],
         }
 
         if (previousComments) {
-          queryClient.setQueryData(['post', { id: postId, comment: true }], {
-            comments: [newComment, ...previousComments.comments],
-          })
+          const newCommentsData = previousComments
+          newCommentsData.pages[0].comment.unshift(newComment)
+
+          queryClient.setQueryData(['post', { id: postId, comment: true }], newCommentsData)
+
           queryClient.setQueryData(['post', postId], {
             ...previousPost,
             _count: {
@@ -103,6 +110,7 @@ export const CommentReplyInput = ({
       },
     }
   )
+
   const replyMutation = useMutation(
     (inputText: string) => {
       return axios.post(
@@ -155,14 +163,15 @@ export const CommentReplyInput = ({
 
         if (previousComments) {
           const copyPreviousComments = previousComments
-          const commentIndex = previousComments.comments.findIndex(
-            (comment: any) => comment.id === commentId
-          )
-          copyPreviousComments.comments[commentIndex].reply.push(newReply)
-
-          queryClient.setQueryData(['post', { id: postId, comment: true }], {
-            comments: [...copyPreviousComments.comments],
+          copyPreviousComments.pages.forEach((page: any) => {
+            page.comment.forEach((comment: any) => {
+              if (comment.id === commentId) {
+                comment.reply.push(newReply)
+              }
+            })
           })
+
+          queryClient.setQueryData(['post', { id: postId, comment: true }], copyPreviousComments)
           queryClient.setQueryData(['post', postId], {
             ...previousPost,
             _count: {
@@ -197,6 +206,7 @@ export const CommentReplyInput = ({
   )
 
   const handleCreateComment = () => {
+    console.log('I will create a comment')
     if (inputText.trim() === '') return
     commentMutation.mutate(inputText)
   }
