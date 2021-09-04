@@ -6,7 +6,7 @@ export interface ButtonProps extends React.HtmlHTMLAttributes<HTMLButtonElement>
   variant?: 'solid' | 'outline'
   disabled?: boolean
   loading?: boolean
-  children: React.ReactChild
+  children: React.ReactChild | React.ReactChild[]
 }
 
 const getSolidColorClasses = (colorScheme: string, disabled: boolean) => {

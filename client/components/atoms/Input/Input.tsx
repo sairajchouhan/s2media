@@ -2,7 +2,7 @@ import React from 'react'
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   id: string
-  label: string
+  label?: string
   placeholder: string
   error?: boolean
   errorText?: string
@@ -11,7 +11,9 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 export const Input = ({ id, label, placeholder, error, errorText, ...props }: InputProps) => {
   return (
     <>
-      <label htmlFor={id}>{label}</label>
+      <label className={label ? '' : 'hidden'} htmlFor={id}>
+        {label}
+      </label>
       <input
         id={id}
         type="text"

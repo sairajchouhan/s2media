@@ -1,5 +1,6 @@
 export * from './BackIcon'
 export * from './CancenIcon'
+export * from './CommentIcon'
 export * from './DotsHorizontal'
 export * from './HeartIcon'
 export * from './HomeIcon'

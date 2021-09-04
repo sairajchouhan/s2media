@@ -5,9 +5,7 @@ export const paths = {
   home: '/home',
   messages: '/messages',
   settings: '/settings',
-  saved: '/saved',
   notifications: '/notifications',
-  // profile: 'profile',
   profile: ({
     username,
     query,

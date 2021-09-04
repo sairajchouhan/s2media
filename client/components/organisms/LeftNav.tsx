@@ -3,14 +3,7 @@ import nookies from 'nookies'
 import { useAuth } from '../../context/authContext'
 import { paths } from '../../utils/paths'
 import { LeftNavPostBtn } from '../atoms/LeftNavPostBtn/LeftNavPostBtn'
-import {
-  HomeIcon,
-  MessageIcon,
-  NotificationIcon,
-  ProfileIcon,
-  SavedIcon,
-  SettingsIcon,
-} from '../icons'
+import { HomeIcon, MessageIcon, NotificationIcon, ProfileIcon, SettingsIcon } from '../icons'
 import { LeftNavBrand, LeftNavLink, LeftNavUser } from '../molecules/LeftNav'
 
 const LeftNav = () => {
@@ -62,13 +55,6 @@ const LeftNav = () => {
           onClick={() => push(paths.notifications)}
         >
           Notifications
-        </LeftNavLink>
-        <LeftNavLink
-          active={pathname === paths.saved}
-          icon={SavedIcon}
-          onClick={() => push(paths.saved)}
-        >
-          Saved
         </LeftNavLink>
 
         <LeftNavLink

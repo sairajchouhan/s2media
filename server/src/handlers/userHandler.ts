@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { validationResult } from 'express-validator'
 import createError from 'http-errors'
 import prisma from '../../prisma'
 import { get4RandomChars } from '../utils'
@@ -89,13 +88,6 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
 }
 
 export const updateProfile = async (req: Request, res: Response) => {
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: errors.array(),
-    })
-  }
-
   const { bio, displayName } = req.body
   const user = await prisma.user.findUnique({
     where: {
@@ -142,12 +134,6 @@ export const updateProfile = async (req: Request, res: Response) => {
 }
 
 export const getUserInfo = async (req: Request, res: Response) => {
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: errors.array(),
-    })
-  }
   const uid = req.params.userId
 
   const user = await prisma.user.findUnique({

@@ -1,22 +1,55 @@
 import { Request, Response } from 'express'
-import { validationResult } from 'express-validator'
 import createError from 'http-errors'
 import prisma from '../../prisma'
+import { commentAndReplyUser } from './helpers'
+
+// change this later to 3
+const commentCount = 10
+const replyCount = 6
+
+export const getCommentsOfPost = async (req: Request, res: Response) => {
+  const postId = req.params.postId
+  const cursor = (req.query.cursor as string) || undefined
+  const cursorObj = cursor ? { id: cursor } : undefined
+
+  const comments = await prisma.comment.findMany({
+    where: { post: { id: postId } },
+    skip: cursor ? 1 : 0,
+    orderBy: {
+      createdAt: 'desc',
+    },
+    cursor: cursorObj,
+    take: commentCount,
+    include: {
+      _count: {
+        select: {
+          reply: true,
+        },
+      },
+      user: commentAndReplyUser,
+      reply: {
+        orderBy: {
+          createdAt: 'asc',
+        },
+        take: replyCount,
+        include: {
+          repliedToUser: commentAndReplyUser,
+          user: commentAndReplyUser,
+        },
+      },
+    },
+  })
+  res.json({ comment: comments, nextCursor: comments[commentCount - 1]?.id ?? undefined })
+}
 
 export const createComment = async (req: Request, res: Response) => {
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: errors.array(),
-    })
-  }
-  const { body } = req.body
+  const { commentText } = req.body
   const postId = req.params.postId
   const userId = req.user.uid
 
   const comment = await prisma.comment.create({
     data: {
-      body,
+      commentText,
       userId,
       postId,
     },
@@ -27,17 +60,10 @@ export const createComment = async (req: Request, res: Response) => {
 }
 
 export const editComment = async (req: Request, res: Response) => {
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: errors.array(),
-    })
-  }
-
   const postId = req.params.postId
   const commentId = req.params.commentId
   const userId = req.user.uid
-  const { body } = req.body
+  const { commentText } = req.body
 
   const post = await prisma.post.findUnique({
     where: {
@@ -58,7 +84,7 @@ export const editComment = async (req: Request, res: Response) => {
   const editedComment = await prisma.comment.update({
     where: { id: commentId },
     data: {
-      body,
+      commentText,
     },
   })
 
@@ -66,13 +92,6 @@ export const editComment = async (req: Request, res: Response) => {
 }
 
 export const deleteComment = async (req: Request, res: Response) => {
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: errors.array(),
-    })
-  }
-
   const postId = req.params.postId
   const commentId = req.params.commentId
   const userId = req.user.uid
@@ -98,4 +117,20 @@ export const deleteComment = async (req: Request, res: Response) => {
   })
 
   return res.json({ msg: 'Comment deleted successfully' })
+}
+
+export const getOneComment = async (req: Request, res: Response) => {
+  // const postId = req.params.postId
+  const commentId = req.params.commentId
+
+  const comment = await prisma.comment.findUnique({
+    where: {
+      id: commentId,
+    },
+    include: {
+      reply: true,
+    },
+  })
+
+  return res.json({ comment })
 }
