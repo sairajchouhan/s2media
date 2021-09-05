@@ -34,14 +34,22 @@ export const CommentReplyAction = ({
     <div className="mt-0.5">
       <div className="flex justify-between">
         <div className="flex space-x-2 text-xs text-gray-500">
-          <p className="cursor-pointer hover:bg-gray-100 p-0.5 rounded">Like</p>
+          <div className="flex items-center">
+            <button className="rounded cursor-pointer p-0.5 hover:bg-gray-100">Like</button>
+            <span className="p-0.5"> - 4 Likes</span>
+          </div>
           <span>|</span>
-          <p
-            onClick={() => setReply((reply) => ({ ...reply, show: !reply.show }))}
-            className="cursor-pointer hover:bg-gray-100 p-0.5 rounded"
-          >
-            Reply {!isReply && replyCount && replyCount > 0 ? `- ${replyCount} Replies` : ''}
-          </p>
+          <div className="flex items-center">
+            <button
+              onClick={() => setReply((reply) => ({ ...reply, show: !reply.show }))}
+              className="p-0.5 rounded cursor-pointer hover:bg-gray-100"
+            >
+              Reply
+            </button>
+            {!isReply && replyCount && replyCount > 0 ? (
+              <span className="p-0.5">{`- ${replyCount} Replies`}</span>
+            ) : null}
+          </div>
         </div>
         {!isReply && replyCount && replyCount > 0 ? (
           <div>
