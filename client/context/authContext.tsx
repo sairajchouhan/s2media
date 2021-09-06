@@ -14,6 +14,7 @@ type AuthContextType = {
   signup: (email: string, password: string) => Promise<any>
   logout: () => Promise<any>
   oAuthLogin: (provider: string) => Promise<any>
+  getIdToken: () => Promise<string | undefined>
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType)
@@ -35,7 +36,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
   console.log(user)
 
   useEffect(() => {
-    const unsub = firebase.auth().onIdTokenChanged((user) => {
+    const unsub = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         user
           .getIdToken()
@@ -91,12 +92,18 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     await firebase.auth().signOut()
   }
 
+  const getIdToken = async () => {
+    const idToken = await firebase.auth().currentUser?.getIdToken()
+    return idToken
+  }
+
   const returnObj = {
     user,
     login,
     signup,
     logout,
     oAuthLogin,
+    getIdToken,
   }
 
   return (

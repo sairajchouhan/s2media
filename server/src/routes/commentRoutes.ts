@@ -32,7 +32,11 @@ router.get(
 router.put(
   '/:postId/:commentId',
   auth,
-  [param('postId').isInt().toInt(), param('commentId').isInt().toInt(), body('body').trim().escape().notEmpty()],
+  [
+    param('postId').notEmpty().trim().escape(),
+    param('commentId').notEmpty().trim().escape(),
+    body('body').trim().escape().notEmpty(),
+  ],
   validate,
   ash(editComment)
 )
