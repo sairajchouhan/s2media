@@ -13,7 +13,6 @@ export const Comment = ({ comment }: { comment: any }) => {
   const {
     data: replyData,
     isIdle,
-    isError,
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,

@@ -1,5 +1,7 @@
 import { Menu, Transition } from '@headlessui/react'
 import React from 'react'
+import { useMutation, useQueryClient } from 'react-query'
+import { axios } from '../../../config/axios'
 import { useAuth } from '../../../context/authContext'
 import { paths } from '../../../utils/paths'
 import { IconButton } from '../../atoms/IconButton/icon-button'
@@ -7,7 +9,70 @@ import { DotsHorizontal } from '../../icons'
 import { Link } from '../../Link'
 
 export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply?: boolean }) => {
-  const { user } = useAuth()
+  const { user, getIdToken } = useAuth()
+  const queryClient = useQueryClient()
+
+  const deleteCommentMutation = useMutation(
+    async () => {
+      const idToken = await getIdToken()
+      return axios.delete(`/post/comment/${crEntity.postId}/${crEntity.id}`, {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      })
+    },
+    {
+      onMutate: async () => {
+        const postId = crEntity.postId
+        await queryClient.cancelQueries(['post', { id: postId, comment: true }])
+        await queryClient.cancelQueries(['post', postId])
+
+        const previousComments = queryClient.getQueryData<any>([
+          'post',
+          { id: postId, comment: true },
+        ])
+        console.log(previousComments)
+        const previousPost: any = queryClient.getQueryData(['post', postId])
+        console.log(previousPost)
+
+        if (previousComments) {
+          const newCommentsData = previousComments
+          newCommentsData.pages.forEach((page: any) => {
+            page.comment.filter((comment: any) => comment.id !== crEntity.id)
+          })
+          queryClient.setQueryData(['post', { id: postId, comment: true }], newCommentsData)
+          queryClient.setQueryData(['post', postId], {
+            ...previousPost,
+            _count: {
+              ...previousPost._count,
+              comment: previousPost._count.comment - 1,
+            },
+          })
+        }
+        return { previousComments, previousPost }
+      },
+      onError: (_err, _vars, context) => {
+        if (context?.previousComments) {
+          queryClient.setQueryData<any>(
+            ['post', { id: crEntity.postId, comment: true }],
+            context.previousComments
+          )
+        }
+        if (context?.previousPost) {
+          queryClient.setQueryData<any>(['post', crEntity.postId], context.previousPost)
+        }
+      },
+      onSuccess: () => {},
+      onSettled: () => {
+        queryClient.invalidateQueries(['post', { id: crEntity.postId, comment: true }])
+      },
+    }
+  )
+
+  const handleCommentDelete = () => {
+    deleteCommentMutation.mutate()
+  }
+
   return (
     <div className="px-2 bg-gray-100 rounded-md">
       <div className="flex items-start justify-between">
@@ -59,6 +124,7 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
                       <Menu.Item>
                         {({ active }) => (
                           <button
+                            onClick={handleCommentDelete}
                             className={`${
                               active ? 'bg-red-100' : 'bg-white'
                             } group text-red-500 flex rounded-bl-md rounded-br-md items-center w-full px-2 py-2 text-sm`}
