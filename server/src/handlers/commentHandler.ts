@@ -107,10 +107,21 @@ export const deleteComment = async (req: Request, res: Response) => {
     where: {
       id: commentId,
     },
+    include: {
+      reply: true,
+    },
   })
 
   if (!comment) throw createError(404, 'Comment does not exist')
   if (comment.userId !== userId) throw createError(403, 'Unauthroised')
+
+  if (comment.reply.length > 0) {
+    await prisma.reply.deleteMany({
+      where: {
+        commentId,
+      },
+    })
+  }
 
   await prisma.comment.delete({
     where: { id: commentId },

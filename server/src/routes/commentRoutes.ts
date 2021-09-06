@@ -44,7 +44,7 @@ router.put(
 router.delete(
   '/:postId/:commentId',
   auth,
-  [param('postId').isInt().toInt(), param('commentId').isInt().toInt()],
+  [param('postId').notEmpty().trim().escape(), param('commentId').notEmpty().trim().escape()],
   validate,
   ash(deleteComment)
 )
