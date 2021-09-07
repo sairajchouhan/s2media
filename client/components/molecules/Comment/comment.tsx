@@ -17,7 +17,7 @@ export const Comment = ({ comment }: { comment: any }) => {
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery(
-    ['post', { id: comment.postId, commentId: comment.id, reply: true }],
+    ['reply', { commentId: comment.id }],
     async ({ pageParam = '' }) => {
       await new Promise((resolve) => setTimeout(resolve, 1000))
       const { data } = await axios.get(

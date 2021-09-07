@@ -9,7 +9,7 @@ import { Input } from '../../atoms/Input/Input'
 import { DotsHorizontal } from '../../icons'
 import { Link } from '../../Link'
 
-export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply?: boolean }) => {
+export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply: boolean }) => {
   const { user, getIdToken } = useAuth()
   const queryClient = useQueryClient()
   const [edit, setEdit] = useState({
@@ -36,9 +36,7 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
           'post',
           { id: postId, comment: true },
         ])
-        console.log(previousComments)
         const previousPost: any = queryClient.getQueryData(['post', postId])
-        console.log(previousPost)
 
         if (previousComments) {
           const newCommentsData = previousComments
@@ -133,7 +131,68 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
     }
   )
 
-  const handleCommentDelete = () => deleteCommentMutation.mutate()
+  const deleteReplyMutation = useMutation(
+    async () => {
+      const idToken = await getIdToken()
+      return axios.delete(
+        `/post/comment/reply/${crEntity.postId}/${crEntity.commentId}/${crEntity.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        }
+      )
+    },
+    {
+      onMutate: async () => {
+        const postId = crEntity.postId
+        const commentId = crEntity.commentId
+        await queryClient.cancelQueries(['reply', { commentId }])
+        await queryClient.cancelQueries(['post', postId])
+
+        const previousReplies = queryClient.getQueryData<any>(['reply', { commentId }])
+        const previousPost: any = queryClient.getQueryData(['post', postId])
+
+        if (previousReplies) {
+          const newRepliesCopy = previousReplies
+          newRepliesCopy.pages.forEach((page: any) => {
+            const replyToDelete = page.reply.find((reply: any) => reply.id === crEntity.id)
+            if (replyToDelete) {
+              const index = page.reply.indexOf(replyToDelete)
+              page.reply.splice(index, 1)
+            }
+          })
+          queryClient.setQueryData(['reply', { commentId }], newRepliesCopy)
+          queryClient.setQueryData(['post', postId], {
+            ...previousPost,
+            _count: {
+              ...previousPost._count,
+              comment: previousPost._count.comment - 1,
+            },
+          })
+        }
+        return { previousReplies, previousPost }
+      },
+      onError: (_err, _vars, context) => {
+        if (context?.previousReplies) {
+          queryClient.setQueryData<any>(
+            ['reply', { commentId: crEntity.commentId }],
+            context.previousReplies
+          )
+        }
+        if (context?.previousPost) {
+          queryClient.setQueryData<any>(['post', crEntity.postId], context.previousPost)
+        }
+      },
+      onSuccess: () => {},
+      onSettled: () => {
+        queryClient.invalidateQueries(['reply', { commentId: crEntity.commentId }])
+      },
+    }
+  )
+
+  const handleCommentDelete = () =>
+    isReply ? deleteReplyMutation.mutate() : deleteCommentMutation.mutate()
 
   return (
     <div className="px-2 bg-gray-100 rounded-md">

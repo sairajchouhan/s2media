@@ -21,10 +21,7 @@ export const CommentReplyAction = ({
   const queryClient = useQueryClient()
 
   const handleShowReplies = async () => {
-    const previousCommentReplies = queryClient.getQueryData([
-      'post',
-      { id: postId, commentId: commentId, reply: true },
-    ])
+    const previousCommentReplies = queryClient.getQueryData(['reply', { commentId }])
     if (!previousCommentReplies) {
       fetchNextPage()
     }
