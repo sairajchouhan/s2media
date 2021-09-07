@@ -43,7 +43,11 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
         if (previousComments) {
           const newCommentsData = previousComments
           newCommentsData.pages.forEach((page: any) => {
-            page.comment.filter((comment: any) => comment.id !== crEntity.id)
+            const commentToDelete = page.comment.find((comment: any) => comment.id === crEntity.id)
+            if (commentToDelete) {
+              const index = page.comment.indexOf(commentToDelete)
+              page.comment.splice(index, 1)
+            }
           })
           queryClient.setQueryData(['post', { id: postId, comment: true }], newCommentsData)
           queryClient.setQueryData(['post', postId], {

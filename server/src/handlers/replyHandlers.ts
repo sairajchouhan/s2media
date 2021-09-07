@@ -111,11 +111,11 @@ export const deleteReply = async (req: Request, res: Response) => {
   if (!replyToBeDeleted) throw createError(404, 'reply does not exist')
   if (replyToBeDeleted.userId !== req.user.uid) throw createError(403, 'you are not allowed to delete this reply')
 
-  const reply = await prisma.reply.delete({
+  await prisma.reply.delete({
     where: {
       id: replyId,
     },
   })
 
-  res.json(reply)
+  res.json({ msg: 'reply deleted successfully' })
 }

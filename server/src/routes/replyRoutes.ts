@@ -50,7 +50,7 @@ router.delete(
   auth,
   [
     param('postId').notEmpty().trim().escape(),
-    param('commeneId').notEmpty().trim().escape(),
+    param('commentId').notEmpty().trim().escape(),
     param('replyId').notEmpty().trim().escape(),
   ],
   validate,
