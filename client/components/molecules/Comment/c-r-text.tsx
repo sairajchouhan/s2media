@@ -191,8 +191,61 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
     }
   )
 
-  const handleCommentDelete = () =>
+  const editReplyMutation = useMutation(
+    async () => {
+      const idToken = await getIdToken()
+      return axios.put(
+        `/post/comment/reply/${crEntity.postId}/${crEntity.commentId}/${crEntity.id}`,
+        {
+          replyText: edit.text,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        }
+      )
+    },
+    {
+      onMutate: async () => {
+        const commentId = crEntity.commentId
+        await queryClient.cancelQueries(['reply', { commentId }])
+
+        const previousReplies = queryClient.getQueryData<any>(['reply', { commentId }])
+
+        if (previousReplies) {
+          const newRepliesData = previousReplies
+          newRepliesData.pages.forEach((page: any) => {
+            page.reply.forEach((reply: any) => {
+              if (reply.id === crEntity.id) {
+                reply.replyText = edit.text
+              }
+            })
+          })
+          queryClient.setQueryData(['reply', { commentId }], newRepliesData)
+        }
+        setEdit({ text: edit.text, show: false })
+        return { previousReplies }
+      },
+      onError: (_err, _vars, context) => {
+        if (context?.previousReplies) {
+          queryClient.setQueryData<any>(
+            ['post', { id: crEntity.postId, comment: true }],
+            context.previousReplies
+          )
+        }
+      },
+      onSuccess: () => {},
+      onSettled: () => {
+        queryClient.invalidateQueries(['reply', { commentId: crEntity.commentId }])
+      },
+    }
+  )
+
+  const handleCrDelete = () =>
     isReply ? deleteReplyMutation.mutate() : deleteCommentMutation.mutate()
+
+  const handleCrEdit = () => (isReply ? editReplyMutation.mutate() : editCommentMutation.mutate())
 
   return (
     <div className="px-2 bg-gray-100 rounded-md">
@@ -246,7 +299,7 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
                       <Menu.Item>
                         {({ active }) => (
                           <button
-                            onClick={handleCommentDelete}
+                            onClick={handleCrDelete}
                             className={`${
                               active ? 'bg-red-100' : 'bg-white'
                             } group text-red-500 flex rounded-bl-md rounded-br-md items-center w-full px-2 py-2 text-sm`}
@@ -295,9 +348,7 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
                 Cancel
               </button>
               <button
-                onClick={() => {
-                  editCommentMutation.mutate()
-                }}
+                onClick={handleCrEdit}
                 className="bg-indigo-500 text-xs px-2 py-0.5 text-white rounded-sm"
               >
                 Save
