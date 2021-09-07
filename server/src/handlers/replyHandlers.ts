@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import createError from 'http-errors'
 import prisma from '../../prisma'
 import { commentAndReplyUser } from './helpers'
 
@@ -47,4 +48,74 @@ export const getReplyForComment = async (req: Request, res: Response) => {
   })
 
   return res.json({ reply: replies, nextCursor: replies[replyTakeCount - 1]?.id ?? undefined })
+}
+
+export const editReply = async (req: Request, res: Response) => {
+  const { postId, commentId, replyId } = req.params
+  const { replyText } = req.body
+
+  const comment = await prisma.comment.findUnique({
+    where: {
+      id: commentId,
+    },
+    include: {
+      post: true,
+    },
+  })
+
+  if (!comment) throw createError(404, 'comment does not exist')
+  if (comment.post.id !== postId) throw createError(404, 'post does not exist')
+
+  const replyToBeEdited = await prisma.reply.findUnique({
+    where: {
+      id: replyId,
+    },
+  })
+
+  if (!replyToBeEdited) throw createError(404, 'reply does not exist')
+  if (replyToBeEdited.userId !== req.user.uid) throw createError(403, 'you are not allowed to edit this reply')
+
+  const reply = await prisma.reply.update({
+    where: {
+      id: replyId,
+    },
+    data: {
+      replyText,
+    },
+  })
+
+  res.json(reply)
+}
+
+export const deleteReply = async (req: Request, res: Response) => {
+  const { postId, commentId, replyId } = req.params
+
+  const comment = await prisma.comment.findUnique({
+    where: {
+      id: commentId,
+    },
+    include: {
+      post: true,
+    },
+  })
+
+  if (!comment) throw createError(404, 'comment does not exist')
+  if (comment.post.id !== postId) throw createError(404, 'post does not exist')
+
+  const replyToBeDeleted = await prisma.reply.findUnique({
+    where: {
+      id: replyId,
+    },
+  })
+
+  if (!replyToBeDeleted) throw createError(404, 'reply does not exist')
+  if (replyToBeDeleted.userId !== req.user.uid) throw createError(403, 'you are not allowed to delete this reply')
+
+  const reply = await prisma.reply.delete({
+    where: {
+      id: replyId,
+    },
+  })
+
+  res.json(reply)
 }
