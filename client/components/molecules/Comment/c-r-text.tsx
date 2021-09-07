@@ -1,16 +1,21 @@
 import { Menu, Transition } from '@headlessui/react'
-import React from 'react'
+import React, { useState } from 'react'
 import { useMutation, useQueryClient } from 'react-query'
 import { axios } from '../../../config/axios'
 import { useAuth } from '../../../context/authContext'
 import { paths } from '../../../utils/paths'
 import { IconButton } from '../../atoms/IconButton/icon-button'
+import { Input } from '../../atoms/Input/Input'
 import { DotsHorizontal } from '../../icons'
 import { Link } from '../../Link'
 
 export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply?: boolean }) => {
   const { user, getIdToken } = useAuth()
   const queryClient = useQueryClient()
+  const [edit, setEdit] = useState({
+    show: false,
+    text: isReply ? crEntity.replyText : crEntity.commentText,
+  })
 
   const deleteCommentMutation = useMutation(
     async () => {
@@ -69,9 +74,62 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
     }
   )
 
-  const handleCommentDelete = () => {
-    deleteCommentMutation.mutate()
-  }
+  const editCommentMutation = useMutation(
+    async () => {
+      const idToken = await getIdToken()
+      return axios.put(
+        `/post/comment/${crEntity.postId}/${crEntity.id}`,
+        {
+          commentText: edit.text,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        }
+      )
+    },
+    {
+      onMutate: async () => {
+        const postId = crEntity.postId
+        await queryClient.cancelQueries(['post', { id: postId, comment: true }])
+        await queryClient.cancelQueries(['post', postId])
+
+        const previousComments = queryClient.getQueryData<any>([
+          'post',
+          { id: postId, comment: true },
+        ])
+
+        if (previousComments) {
+          const newCommentsData = previousComments
+          newCommentsData.pages.forEach((page: any) => {
+            page.comment.forEach((comment: any) => {
+              if (comment.id === crEntity.id) {
+                comment.commentText = edit.text
+              }
+            })
+          })
+          queryClient.setQueryData(['post', { id: postId, comment: true }], newCommentsData)
+        }
+        setEdit({ text: edit.text, show: false })
+        return { previousComments }
+      },
+      onError: (_err, _vars, context) => {
+        if (context?.previousComments) {
+          queryClient.setQueryData<any>(
+            ['post', { id: crEntity.postId, comment: true }],
+            context.previousComments
+          )
+        }
+      },
+      onSuccess: () => {},
+      onSettled: () => {
+        queryClient.invalidateQueries(['post', { id: crEntity.postId, comment: true }])
+      },
+    }
+  )
+
+  const handleCommentDelete = () => deleteCommentMutation.mutate()
 
   return (
     <div className="px-2 bg-gray-100 rounded-md">
@@ -113,6 +171,7 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
                       <Menu.Item>
                         {({ active }) => (
                           <button
+                            onClick={() => setEdit((edit) => ({ ...edit, show: true }))}
                             className={`${
                               active ? 'bg-gray-100' : 'bg-white'
                             } group flex rounded-tl-md rounded-tr-md items-center w-full px-2 py-2 text-sm`}
@@ -156,7 +215,35 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
         </div>
       </div>
       <div className="pb-2 mt-1">
-        <p className="text-sm">{isReply ? crEntity.replyText : crEntity.commentText}</p>
+        {edit.show ? (
+          <div>
+            <Input
+              name="editComment"
+              id="editComment"
+              placeholder="Your comment"
+              value={edit.text}
+              onChange={(e) => setEdit((edit) => ({ ...edit, text: e.target.value }))}
+            />
+            <div className="mt-1">
+              <button
+                onClick={() => setEdit(() => ({ text: '', show: false }))}
+                className="bg-red-500 mr-2 text-xs px-2 py-0.5 text-white rounded-sm"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  editCommentMutation.mutate()
+                }}
+                className="bg-indigo-500 text-xs px-2 py-0.5 text-white rounded-sm"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        ) : (
+          <p className="text-sm">{isReply ? crEntity.replyText : crEntity.commentText}</p>
+        )}
       </div>
     </div>
   )

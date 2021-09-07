@@ -35,7 +35,7 @@ router.put(
   [
     param('postId').notEmpty().trim().escape(),
     param('commentId').notEmpty().trim().escape(),
-    body('body').trim().escape().notEmpty(),
+    body('commentText').trim().escape().notEmpty(),
   ],
   validate,
   ash(editComment)
