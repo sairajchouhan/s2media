@@ -9,6 +9,7 @@ export const CommentReplyAction = ({
   replyCount,
   isReply,
   fetchNextPage,
+  refetchIfNoReplies,
 }: {
   crEntity: any
   commentId: string
@@ -16,6 +17,7 @@ export const CommentReplyAction = ({
   replyCount?: number
   isReply: boolean
   fetchNextPage?: any
+  refetchIfNoReplies: any
 }) => {
   const [reply, setReply] = useState({ show: false, replyText: '' })
   const queryClient = useQueryClient()
@@ -67,6 +69,7 @@ export const CommentReplyAction = ({
             postId={postId}
             commentId={commentId}
             repliedToUser={crEntity.user}
+            refetchIfNoReplies={refetchIfNoReplies}
           />
         </div>
       ) : null}

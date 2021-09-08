@@ -11,11 +11,13 @@ export const CommentReplyInput = ({
   isReply,
   repliedToUser,
   setReply,
+  refetchIfNoReplies,
 }: {
   postId: string
   commentId?: string
   isReply: boolean
   repliedToUser?: any
+  refetchIfNoReplies: any
   setReply?: React.Dispatch<
     React.SetStateAction<{
       show: boolean
@@ -158,7 +160,7 @@ export const CommentReplyInput = ({
 
         if (previousReplies) {
           const copyPreviousReplies = previousReplies
-          copyPreviousReplies.pages[0].reply.push(newReply)
+          copyPreviousReplies.pages[copyPreviousReplies.pages.length - 1].reply.push(newReply)
 
           queryClient.setQueryData(['reply', { commentId: commentId }], copyPreviousReplies)
           queryClient.setQueryData(['post', postId], {
@@ -168,10 +170,9 @@ export const CommentReplyInput = ({
               comment: previousPost._count.comment + 1,
             },
           })
-        }
-        setInputText('')
-        if (setReply) {
-          setReply({ show: false, replyText: '' })
+        } else {
+          refetchIfNoReplies()
+          console.log('no replies dude')
         }
 
         return { previousReplies, previousPost }
@@ -187,12 +188,22 @@ export const CommentReplyInput = ({
           queryClient.setQueryData<any>(['post', postId], context.previousPost)
         }
       },
-      onSuccess: () => {},
+      onSuccess: (data) => {
+        console.log(data)
+      },
       onSettled: () => {
-        queryClient.invalidateQueries(['reply', { commentId: commentId }])
+        //!! this will not work becuase useInfiniteQuery for replies is not enabled
+        // queryClient.invalidateQueries(['reply', { commentId: commentId }])
+
+        setInputText('')
+        if (setReply) {
+          setReply({ show: false, replyText: '' })
+        }
       },
     }
   )
+
+  console.log(replyMutation.isLoading)
 
   const handleCreateComment = () => {
     console.log('I will create a comment')

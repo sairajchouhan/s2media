@@ -16,6 +16,8 @@ export const Comment = ({ comment }: { comment: any }) => {
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
+    refetch,
+    isFetching,
   } = useInfiniteQuery(
     ['reply', { commentId: comment.id }],
     async ({ pageParam = '' }) => {
@@ -54,6 +56,7 @@ export const Comment = ({ comment }: { comment: any }) => {
             postId={comment.postId}
             crEntity={comment}
             fetchNextPage={fetchNextPage}
+            refetchIfNoReplies={refetch}
           />
 
           {replyData &&
@@ -71,6 +74,7 @@ export const Comment = ({ comment }: { comment: any }) => {
                         commentId={comment.id}
                         postId={comment.postId}
                         crEntity={reply}
+                        refetchIfNoReplies={refetch}
                       />
                     </div>
                   </div>
@@ -78,7 +82,7 @@ export const Comment = ({ comment }: { comment: any }) => {
               </React.Fragment>
             ))}
 
-          {isFetchingNextPage && <div className="text-center">Loading...</div>}
+          {isFetchingNextPage || isFetching ? <div className="text-center">Loading...</div> : null}
           {!isFetchingNextPage && replyData?.pages.length ? (
             (isIdle && comment._count.reply > 0) || hasNextPage ? (
               <>

@@ -39,7 +39,7 @@ export const getReplyForComment = async (req: Request, res: Response) => {
       postId,
     },
     orderBy: {
-      createdAt: 'desc',
+      createdAt: 'asc',
     },
     include: {
       repliedToUser: commentAndReplyUser,
