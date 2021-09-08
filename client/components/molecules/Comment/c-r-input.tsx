@@ -125,6 +125,7 @@ export const CommentReplyInput = ({
     },
     {
       onMutate: async (inputText: string) => {
+        const shouldRefetch = { value: false }
         await queryClient.cancelQueries(['reply', { commentId: commentId }])
         await queryClient.cancelQueries(['post', postId])
 
@@ -171,11 +172,10 @@ export const CommentReplyInput = ({
             },
           })
         } else {
-          refetchIfNoReplies()
-          console.log('no replies dude')
+          shouldRefetch.value = true
         }
 
-        return { previousReplies, previousPost }
+        return { previousReplies, previousPost, shouldRefetch: shouldRefetch.value }
       },
       onError: (_err, _vars, context) => {
         if (context?.previousReplies) {
@@ -188,8 +188,10 @@ export const CommentReplyInput = ({
           queryClient.setQueryData<any>(['post', postId], context.previousPost)
         }
       },
-      onSuccess: (data) => {
-        console.log(data)
+      onSuccess: (data, _vars, context) => {
+        if (context?.shouldRefetch) {
+          refetchIfNoReplies()
+        }
       },
       onSettled: () => {
         //!! this will not work becuase inside useInfiniteQuery I passed {enabled: false}

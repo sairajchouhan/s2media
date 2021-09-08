@@ -23,7 +23,7 @@ export const createReplyToComment = async (req: Request, res: Response) => {
   return res.json(reply)
 }
 
-const replyTakeCount = 3
+const replyTakeCount = 10
 
 export const getReplyForComment = async (req: Request, res: Response) => {
   const { postId, commentId } = req.params
