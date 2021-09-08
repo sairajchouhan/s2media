@@ -123,13 +123,10 @@ export const CommentReplyInput = ({
     },
     {
       onMutate: async (inputText: string) => {
-        await queryClient.cancelQueries(['post', { id: postId, commentId: commentId, reply: true }])
+        await queryClient.cancelQueries(['reply', { commentId: commentId }])
         await queryClient.cancelQueries(['post', postId])
 
-        const previousReplies = queryClient.getQueryData<any>([
-          'post',
-          { id: postId, commentId: commentId, reply: true },
-        ])
+        const previousReplies = queryClient.getQueryData<any>(['reply', { commentId: commentId }])
         const previousPost: any = queryClient.getQueryData(['post', postId])
 
         const newReply = {
@@ -161,12 +158,9 @@ export const CommentReplyInput = ({
 
         if (previousReplies) {
           const copyPreviousReplies = previousReplies
-          copyPreviousReplies.pages[previousReplies.pages.length - 1].reply.push(newReply)
+          copyPreviousReplies.pages[0].reply.push(newReply)
 
-          queryClient.setQueryData(
-            ['post', { id: postId, commentId: commentId, reply: true }],
-            copyPreviousReplies
-          )
+          queryClient.setQueryData(['reply', { commentId: commentId }], copyPreviousReplies)
           queryClient.setQueryData(['post', postId], {
             ...previousPost,
             _count: {
@@ -195,7 +189,7 @@ export const CommentReplyInput = ({
       },
       onSuccess: () => {},
       onSettled: () => {
-        queryClient.invalidateQueries(['post', { id: postId, commentId: commentId, reply: true }])
+        queryClient.invalidateQueries(['reply', { commentId: commentId }])
       },
     }
   )
