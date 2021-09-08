@@ -21,7 +21,6 @@ export const Comment = ({ comment }: { comment: any }) => {
   } = useInfiniteQuery(
     ['reply', { commentId: comment.id }],
     async ({ pageParam = '' }) => {
-      await new Promise((resolve) => setTimeout(resolve, 1000))
       const { data } = await axios.get(
         `/post/comment/reply/${comment.postId}/${comment.id}?cursor=${pageParam}`,
         {

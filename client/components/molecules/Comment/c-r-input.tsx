@@ -17,7 +17,7 @@ export const CommentReplyInput = ({
   commentId?: string
   isReply: boolean
   repliedToUser?: any
-  refetchIfNoReplies: any
+  refetchIfNoReplies?: any
   setReply?: React.Dispatch<
     React.SetStateAction<{
       show: boolean
@@ -192,7 +192,7 @@ export const CommentReplyInput = ({
         console.log(data)
       },
       onSettled: () => {
-        //!! this will not work becuase useInfiniteQuery for replies is not enabled
+        //!! this will not work becuase inside useInfiniteQuery I passed {enabled: false}
         // queryClient.invalidateQueries(['reply', { commentId: commentId }])
 
         setInputText('')
@@ -202,8 +202,6 @@ export const CommentReplyInput = ({
       },
     }
   )
-
-  console.log(replyMutation.isLoading)
 
   const handleCreateComment = () => {
     console.log('I will create a comment')

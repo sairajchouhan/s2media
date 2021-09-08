@@ -342,13 +342,20 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
             />
             <div className="mt-1">
               <button
-                onClick={() => setEdit(() => ({ text: '', show: false }))}
+                onClick={() =>
+                  setEdit((edit) => ({
+                    ...edit,
+                    show: false,
+                    text: isReply ? crEntity.replyText : crEntity.commentText,
+                  }))
+                }
                 className="bg-red-500 mr-2 text-xs px-2 py-0.5 text-white rounded-sm"
               >
                 Cancel
               </button>
               <button
                 onClick={handleCrEdit}
+                disabled={edit.text.trim() === ''}
                 className="bg-indigo-500 text-xs px-2 py-0.5 text-white rounded-sm"
               >
                 Save
