@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import ash from 'express-async-handler'
 import { body, param, query } from 'express-validator'
-import { createReplyToComment, getReplyForComment } from '../handlers/replyHandlers'
+import { createReplyToComment, deleteReply, editReply, getReplyForComment } from '../handlers/replyHandlers'
 import auth from '../middlewares/auth'
 import validate from '../middlewares/validate'
 
@@ -30,6 +30,31 @@ router.get(
   ],
   validate,
   ash(getReplyForComment)
+)
+
+router.put(
+  '/:postId/:commentId/:replyId',
+  auth,
+  [
+    param('postId').notEmpty().trim().escape(),
+    param('commentId').notEmpty().trim().escape(),
+    param('replyId').notEmpty().trim().escape(),
+    body('replyText').trim().escape().notEmpty(),
+  ],
+  validate,
+  ash(editReply)
+)
+
+router.delete(
+  '/:postId/:commentId/:replyId',
+  auth,
+  [
+    param('postId').notEmpty().trim().escape(),
+    param('commentId').notEmpty().trim().escape(),
+    param('replyId').notEmpty().trim().escape(),
+  ],
+  validate,
+  ash(deleteReply)
 )
 
 export default router

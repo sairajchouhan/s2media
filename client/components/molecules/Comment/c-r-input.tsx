@@ -11,11 +11,13 @@ export const CommentReplyInput = ({
   isReply,
   repliedToUser,
   setReply,
+  refetchIfNoReplies,
 }: {
   postId: string
   commentId?: string
   isReply: boolean
   repliedToUser?: any
+  refetchIfNoReplies?: any
   setReply?: React.Dispatch<
     React.SetStateAction<{
       show: boolean
@@ -25,9 +27,7 @@ export const CommentReplyInput = ({
 }) => {
   const queryClient = useQueryClient()
   const { user } = useAuth()
-  const [inputText, setInputText] = useState(
-    repliedToUser?.username ? `@${repliedToUser?.username} ` : ''
-  )
+  const [inputText, setInputText] = useState('')
 
   const commentMutation = useMutation(
     (inputText: string) => {
@@ -125,13 +125,11 @@ export const CommentReplyInput = ({
     },
     {
       onMutate: async (inputText: string) => {
-        await queryClient.cancelQueries(['post', { id: postId, comment: true }])
+        const shouldRefetch = { value: false }
+        await queryClient.cancelQueries(['reply', { commentId: commentId }])
         await queryClient.cancelQueries(['post', postId])
 
-        const previousComments = queryClient.getQueryData<any>([
-          'post',
-          { id: postId, comment: true },
-        ])
+        const previousReplies = queryClient.getQueryData<any>(['reply', { commentId: commentId }])
         const previousPost: any = queryClient.getQueryData(['post', postId])
 
         const newReply = {
@@ -161,17 +159,11 @@ export const CommentReplyInput = ({
           },
         }
 
-        if (previousComments) {
-          const copyPreviousComments = previousComments
-          copyPreviousComments.pages.forEach((page: any) => {
-            page.comment.forEach((comment: any) => {
-              if (comment.id === commentId) {
-                comment.reply.push(newReply)
-              }
-            })
-          })
+        if (previousReplies) {
+          const copyPreviousReplies = previousReplies
+          copyPreviousReplies.pages[copyPreviousReplies.pages.length - 1].reply.push(newReply)
 
-          queryClient.setQueryData(['post', { id: postId, comment: true }], copyPreviousComments)
+          queryClient.setQueryData(['reply', { commentId: commentId }], copyPreviousReplies)
           queryClient.setQueryData(['post', postId], {
             ...previousPost,
             _count: {
@@ -179,28 +171,36 @@ export const CommentReplyInput = ({
               comment: previousPost._count.comment + 1,
             },
           })
-        }
-        setInputText('')
-        if (setReply) {
-          setReply({ show: false, replyText: '' })
+        } else {
+          shouldRefetch.value = true
         }
 
-        return { previousComments, previousPost }
+        return { previousReplies, previousPost, shouldRefetch: shouldRefetch.value }
       },
       onError: (_err, _vars, context) => {
-        if (context?.previousComments) {
+        if (context?.previousReplies) {
           queryClient.setQueryData<any>(
             ['post', { id: postId, comment: true }],
-            context.previousComments
+            context.previousReplies
           )
         }
         if (context?.previousPost) {
           queryClient.setQueryData<any>(['post', postId], context.previousPost)
         }
       },
-      onSuccess: () => {},
+      onSuccess: (data, _vars, context) => {
+        if (context?.shouldRefetch) {
+          refetchIfNoReplies()
+        }
+      },
       onSettled: () => {
-        queryClient.invalidateQueries(['post', { id: postId, comment: true }])
+        //!! this will not work becuase inside useInfiniteQuery I passed {enabled: false}
+        // queryClient.invalidateQueries(['reply', { commentId: commentId }])
+
+        setInputText('')
+        if (setReply) {
+          setReply({ show: false, replyText: '' })
+        }
       },
     }
   )

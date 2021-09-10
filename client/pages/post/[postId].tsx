@@ -15,16 +15,17 @@ import { PostWithBaseUser } from '../../types/post'
 const EachPost = () => {
   const router = useRouter()
   const params = router.query
-  const { user } = useAuth()
+  const { user, getIdToken } = useAuth()
 
   const {
     data: post,
     isError,
     isLoading,
   } = useQuery<PostWithBaseUser>(['post', params.postId], async ({ queryKey }) => {
+    const idToken = await getIdToken()
     const { data } = await axios.get(`/post/${queryKey[1]}`, {
       headers: {
-        Authorization: `Bearer ${user?.idToken}`,
+        Authorization: `Bearer ${idToken}`,
       },
     })
     return data

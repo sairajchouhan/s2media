@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from '../../components/Link'
 import { PageNav } from '../../components/molecules/Page/page-nav'
 import { ProfileCard } from '../../components/molecules/Profile'
@@ -12,7 +12,7 @@ import { paths } from '../../utils/paths'
 
 const Profile = () => {
   const router = useRouter()
-  const { user: userFullDetails } = useAuth()
+  const { user: userFullDetails, getIdToken } = useAuth()
   const [posts, setPosts] = useState<any>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
@@ -36,9 +36,10 @@ const Profile = () => {
       setActive(nowActive)
       try {
         setLoading(true)
+        const idToken = await getIdToken()
         const { data } = await axios.get(`/post${qs}`, {
           headers: {
-            Authorization: `Bearer ${userFullDetails?.idToken}`,
+            Authorization: `Bearer ${idToken}`,
           },
         })
         setPosts(data)
@@ -49,7 +50,7 @@ const Profile = () => {
       setLoading(false)
     }
     func()
-  }, [router.query, userFullDetails?.uid, userFullDetails?.idToken])
+  }, [router.query, userFullDetails?.uid, userFullDetails?.idToken, getIdToken])
 
   if (!userFullDetails) return
   if (error) return <div>Error</div>

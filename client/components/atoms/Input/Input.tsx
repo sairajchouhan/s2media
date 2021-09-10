@@ -15,6 +15,7 @@ export const Input = ({ id, label, placeholder, error, errorText, ...props }: In
         {label}
       </label>
       <input
+        autoComplete="off"
         id={id}
         type="text"
         placeholder={placeholder}
