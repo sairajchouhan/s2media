@@ -5,7 +5,6 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["selectRelationCount"]
 }
 
 model User {
@@ -23,6 +22,7 @@ model User {
   followers Follow[] @relation("followed")
   following Follow[] @relation("follower")
   comment Comment[]
+  crLikes CommentReplyLike[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -81,6 +81,7 @@ model Comment {
   user User @relation(fields: [userId], references: [uid])
   post Post @relation(fields: [postId], references: [id])
   reply Reply[]
+  like CommentReplyLike[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -97,6 +98,19 @@ model Reply {
   post Post @relation(fields: [postId], references: [id])
   comment Comment @relation(fields: [commentId], references: [id])
   repliedToUser User? @relation("repliedToUser",fields: [repliedToUserUid], references: [uid])
+  like CommentReplyLike[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CommentReplyLike {
+  id String @id @default(cuid())
+  userId String
+  commentId String?
+  replyId String?
+  user User @relation(fields: [userId], references: [uid])
+  comment Comment? @relation(fields: [commentId], references: [id])
+  reply Reply? @relation(fields: [replyId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -110,4 +124,3 @@ model Follow {
   createdAt DateTime @default(now())
   @@unique([followedId, followerId])
 }
-//

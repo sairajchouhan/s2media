@@ -159,7 +159,6 @@ export const getAllPostsOfUser = async (req: Request, res: Response) => {
       userId: id,
     },
     include: {
-      _count: { select: { like: true, comment: true } },
       user: {
         include: {
           profile: true,

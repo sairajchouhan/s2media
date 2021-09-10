@@ -4,6 +4,7 @@ import morgan from 'morgan'
 import { initAdmin } from './config/firebase-admin'
 import errorMiddleware from './middlewares/error'
 import authRoutes from './routes/authRoutes'
+import commentLikeRoutes from './routes/commentLikeRoutes'
 import commentRoutes from './routes/commentRoutes'
 import followRoutes from './routes/followRoutes'
 import likeRoutes from './routes/likeRoutes'
@@ -35,8 +36,9 @@ app.use('/api/v1/post/save', saveRoutes)
 app.use('/api/v1/post/comment', commentRoutes)
 app.use('/api/v1/post/comment/reply', replyRoutes)
 app.use('/api/v1/user/follow', followRoutes)
-app.use(errorMiddleware)
+app.use('/api/v1/post/comment/like', commentLikeRoutes)
 
+app.use(errorMiddleware)
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => {
   console.log(`server is up and running at http://localhost:${PORT}`)

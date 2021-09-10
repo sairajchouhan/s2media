@@ -1,4 +1,3 @@
-import React from 'react'
 import { AuthUser } from '../../../types/user'
 import { Avatar } from '../../atoms/Avatar'
 import { DotsHorizontal } from '../../icons'
@@ -7,13 +6,7 @@ export interface LeftNavUserProps {
   user: AuthUser
 }
 
-export const LeftNavUser = ({
-  user: {
-    username,
-    profile: { displayName },
-    avatar,
-  },
-}: LeftNavUserProps) => {
+export const LeftNavUser = ({ user: { username, profile, avatar } }: LeftNavUserProps) => {
   return (
     <li className="flex items-center px-4 py-4 mt-auto mb-3 rounded-lg cursor-pointer select-none hover:bg-indigo-50">
       <div className="flex items-center w-full ">
@@ -22,7 +15,7 @@ export const LeftNavUser = ({
         </div>
         <div className="flex items-center justify-between flex-1 pl-3">
           <div>
-            <p className="text-base font-bold leading-5">{displayName}</p>
+            <p className="text-base font-bold leading-5">{profile.displayName}</p>
             <p className="text-base font-semibold text-gray-600">@{username}</p>
           </div>
           <div className="w-4 h-4 text-gray-600">
