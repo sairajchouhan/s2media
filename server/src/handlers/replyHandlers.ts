@@ -42,6 +42,11 @@ export const getReplyForComment = async (req: Request, res: Response) => {
       createdAt: 'asc',
     },
     include: {
+      _count: {
+        select: {
+          like: true,
+        },
+      },
       repliedToUser: commentAndReplyUser,
       user: commentAndReplyUser,
     },

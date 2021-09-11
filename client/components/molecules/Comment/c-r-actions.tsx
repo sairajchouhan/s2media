@@ -35,7 +35,7 @@ export const CommentReplyAction = ({
         <div className="flex space-x-2 text-xs text-gray-500">
           <div className="flex items-center">
             <button className="rounded cursor-pointer p-0.5 hover:bg-gray-100">Like</button>
-            <span className="p-0.5"> - 4 Likes</span>
+            <span className="p-0.5">- {crEntity._count?.like ?? 0} Likes</span>
           </div>
           <span>|</span>
           <div className="flex items-center">

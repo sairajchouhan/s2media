@@ -24,6 +24,7 @@ export const getCommentsOfPost = async (req: Request, res: Response) => {
       _count: {
         select: {
           reply: true,
+          like: true,
         },
       },
       user: commentAndReplyUser,
