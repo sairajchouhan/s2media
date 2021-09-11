@@ -9,6 +9,7 @@ import commentRoutes from './routes/commentRoutes'
 import followRoutes from './routes/followRoutes'
 import likeRoutes from './routes/likeRoutes'
 import postRoutes from './routes/postRoutes'
+import replyLikeRoutes from './routes/replyLikeRoutes'
 import replyRoutes from './routes/replyRoutes'
 import saveRoutes from './routes/saveRoutes'
 import userRoutes from './routes/userRoutes'
@@ -35,8 +36,9 @@ app.use('/api/v1/post/like', likeRoutes)
 app.use('/api/v1/post/save', saveRoutes)
 app.use('/api/v1/post/comment', commentRoutes)
 app.use('/api/v1/post/comment/reply', replyRoutes)
-app.use('/api/v1/user/follow', followRoutes)
 app.use('/api/v1/post/comment/like', commentLikeRoutes)
+app.use('/api/v1/post/comment/reply/like', replyLikeRoutes)
+app.use('/api/v1/user/follow', followRoutes)
 
 app.use(errorMiddleware)
 const PORT = process.env.PORT || 5000
