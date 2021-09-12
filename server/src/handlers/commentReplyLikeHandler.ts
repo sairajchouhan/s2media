@@ -3,6 +3,7 @@ import createError from 'http-errors'
 import prisma from '../../prisma'
 
 export const likeOrUnlikeComment = async (req: Request, res: Response) => {
+  console.log('req received')
   const commentId = req.params.commentId
   const userId = req.user.uid
 
@@ -38,6 +39,7 @@ export const likeOrUnlikeComment = async (req: Request, res: Response) => {
 }
 
 export const likeOrUnlikeReply = async (req: Request, res: Response) => {
+  console.log('Like or Unlike Reply')
   const replyId = req.params.replyId
   const userId = req.user.uid
 

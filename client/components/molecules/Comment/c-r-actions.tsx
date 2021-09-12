@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useQueryClient } from 'react-query'
 import { CommentReplyInput } from './c-r-input'
+import CommentReplyLikeAction from './c-r-like-actions'
 
 export const CommentReplyAction = ({
   crEntity,
@@ -34,8 +35,7 @@ export const CommentReplyAction = ({
       <div className="flex justify-between">
         <div className="flex space-x-2 text-xs text-gray-500">
           <div className="flex items-center">
-            <button className="rounded cursor-pointer p-0.5 hover:bg-gray-100">Like</button>
-            <span className="p-0.5">- {crEntity._count?.like ?? 0} Likes</span>
+            <CommentReplyLikeAction isReply={isReply} crEntity={crEntity} />
           </div>
           <span>|</span>
           <div className="flex items-center">

@@ -21,6 +21,11 @@ export const getCommentsOfPost = async (req: Request, res: Response) => {
     cursor: cursorObj,
     take: commentCount,
     include: {
+      like: {
+        select: {
+          userId: true,
+        },
+      },
       _count: {
         select: {
           reply: true,
@@ -28,16 +33,6 @@ export const getCommentsOfPost = async (req: Request, res: Response) => {
         },
       },
       user: commentAndReplyUser,
-      // reply: {
-      //   orderBy: {
-      //     createdAt: 'desc',
-      //   },
-      //   take: replyCount,
-      //   include: {
-      //     repliedToUser: commentAndReplyUser,
-      //     user: commentAndReplyUser,
-      //   },
-      // },
     },
   })
   res.json({ comment: comments, nextCursor: comments[commentCount - 1]?.id ?? undefined })
