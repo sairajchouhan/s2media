@@ -33,15 +33,15 @@ export const CommentReplyAction = ({
   return (
     <div className="mt-0.5">
       <div className="flex justify-between">
-        <div className="flex space-x-2 text-xs text-gray-500">
+        <div className="flex space-x-2 text-xs">
           <div className="flex items-center">
             <CommentReplyLikeAction isReply={isReply} crEntity={crEntity} />
           </div>
-          <span>|</span>
-          <div className="flex items-center">
+          <span className="text-gray-500">|</span>
+          <div className="flex items-center text-gray-500">
             <button
               onClick={() => setReply((reply) => ({ ...reply, show: !reply.show }))}
-              className="p-0.5 rounded cursor-pointer hover:bg-gray-100"
+              className="p-0.5 rounded cursor-pointer hover:bg-gray-100 "
             >
               Reply
             </button>

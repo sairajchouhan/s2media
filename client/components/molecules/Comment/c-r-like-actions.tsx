@@ -4,9 +4,9 @@ import { useAuth } from '../../../context/authContext'
 
 const CommentReplyLikeAction = ({ isReply, crEntity }: { isReply: boolean; crEntity: any }) => {
   const { user, getIdToken } = useAuth()
-  const [crLikeCount, setCrLikeCount] = useState<number>(() => crEntity._count.like ?? 0)
+  const [crLikeCount, setCrLikeCount] = useState<number>(() => crEntity?._count?.like ?? 0)
   const [userLiked, setUserLiked] = useState<boolean>(
-    crEntity.like.some((like: any) => like.userId === user?.uid)
+    crEntity?.like?.some((like: any) => like.userId === user?.uid) ?? false
   )
 
   const handleCommentLike = async () => {
@@ -71,9 +71,9 @@ const CommentReplyLikeAction = ({ isReply, crEntity }: { isReply: boolean; crEnt
         className="rounded cursor-pointer p-0.5 hover:bg-gray-100"
         onClick={() => (isReply ? handleReplyLike() : handleCommentLike())}
       >
-        Like
+        <span className={userLiked ? 'text-red-500' : 'text-gray-500'}>Like</span>
       </button>
-      <span className="p-0.5">- {crLikeCount} Likes</span>
+      <span className="p-0.5 text-gray-500">- {crLikeCount} Likes</span>
     </>
   )
 }
