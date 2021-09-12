@@ -9,7 +9,7 @@ import { CommentReplyAction } from './c-r-actions'
 import { CommentReplyText } from './c-r-text'
 
 export const Comment = ({ comment }: { comment: any }) => {
-  const { user } = useAuth()
+  const { getIdToken } = useAuth()
   const {
     data: replyData,
     isIdle,
@@ -21,11 +21,12 @@ export const Comment = ({ comment }: { comment: any }) => {
   } = useInfiniteQuery(
     ['reply', { commentId: comment.id }],
     async ({ pageParam = '' }) => {
+      const token = await getIdToken()
       const { data } = await axios.get(
         `/post/comment/reply/${comment.postId}/${comment.id}?cursor=${pageParam}`,
         {
           headers: {
-            Authorization: `Bearer ${user?.idToken}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       )

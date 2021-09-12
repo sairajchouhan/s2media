@@ -73,7 +73,9 @@ const CommentReplyLikeAction = ({ isReply, crEntity }: { isReply: boolean; crEnt
       >
         <span className={userLiked ? 'text-red-500' : 'text-gray-500'}>Like</span>
       </button>
-      <span className="p-0.5 text-gray-500">- {crLikeCount} Likes</span>
+      {crEntity?.like && crEntity?.like.length > 0 ? (
+        <span className="p-0.5 text-gray-500">- {crLikeCount} Likes</span>
+      ) : null}
     </>
   )
 }
