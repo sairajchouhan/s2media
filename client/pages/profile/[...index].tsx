@@ -78,9 +78,10 @@ const Profile = () => {
     refetch,
   } = useQuery(
     ['user', 'post', (router as any).query.index[0]],
-    async () => {
+    async ({ queryKey }) => {
+      console.log(queryKey)
       const idToken = await getIdToken()
-      const qsObj: Record<string, any> = { userId: user?.uid }
+      const qsObj: Record<string, any> = { username: queryKey[2] }
       const { index: query } = router.query
       if (!query) return
       if (query.includes('liked')) {

@@ -26,14 +26,15 @@ export const createPost = async (req: Request, res: Response) => {
 }
 
 export const allPosts = async (req: Request, res: Response) => {
-  const userId = (req.query.userId as string) ?? undefined
+  const username = (req.query.username as string) ?? undefined
   const likeBool = req.query.like ?? undefined
   const saveBool = req.query.save ?? undefined
 
   const where: Record<string, any> = {}
 
-  if (userId) {
-    where.userId = userId
+  if (username) {
+    where.user = {}
+    where.user.username = username
   }
   if (likeBool) {
     where['like'] = { some: {} }
@@ -55,12 +56,6 @@ export const allPosts = async (req: Request, res: Response) => {
       save: true,
       user: {
         include: {
-          // _count: {
-          //   select: {
-          //     followers: true,
-          //     following: true,
-          //   },
-          // },
           profile: true,
         },
       },

@@ -8,7 +8,16 @@ import validate from '../middlewares/validate'
 
 const router = Router()
 
-router.get('/', [query('userId').optional().trim(), query('like').optional().toBoolean()], validate, ash(allPosts))
+router.get(
+  '/',
+  [
+    query('username').optional().trim().escape(),
+    query('like').optional().toBoolean(),
+    query('save').optional().toBoolean(),
+  ],
+  validate,
+  ash(allPosts)
+)
 
 // Post CRUD
 router.post(
