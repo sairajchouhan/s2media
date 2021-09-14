@@ -134,22 +134,32 @@ export const updateProfile = async (req: Request, res: Response) => {
 }
 
 export const getUserInfo = async (req: Request, res: Response) => {
-  const uid = req.params.userId
+  const username = req.params.username
+  const includeObj = {
+    _count: {
+      select: {
+        post: true,
+        save: true,
+        followers: true,
+        following: true,
+      },
+    },
+    profile: true,
+    save: true,
+  }
 
   const user = await prisma.user.findUnique({
     where: {
-      uid,
+      username,
     },
-    include: {
-      profile: true,
-    },
+    include: includeObj,
   })
 
   if (!user) {
     throw createError(403, 'User not found')
   }
 
-  return res.json(user)
+  res.json(user)
 }
 
 export const getAllPostsOfUser = async (req: Request, res: Response) => {

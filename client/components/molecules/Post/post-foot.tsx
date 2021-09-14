@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { axios } from '../../../config/axios'
 import { useAuth } from '../../../context/authContext'
 import { PostWithBaseUser } from '../../../types/post'
@@ -95,7 +95,9 @@ export const PostFoot = ({ post }: PostFootInterface) => {
             hoverBgColor="bg-gray-100"
             icon={CommentIcon}
             onClick={() => {
-              router.pathname === '/home' ? router.push(`/post/${post.id}`) : null
+              router.pathname === '/home' || router.pathname.startsWith('/profile')
+                ? router.push(`/post/${post.id}`)
+                : null
             }}
           />
         </div>

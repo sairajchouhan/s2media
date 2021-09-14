@@ -9,8 +9,8 @@ const router = Router()
 
 router.get('/me', auth, ash(getAuthUserInfo))
 router.get('/all', ash(getAllUsers))
-router.get('/:userId', [param('userId').exists()], validate, ash(getUserInfo))
-router.get('/:userId/posts', [param('userId').exists()], validate, ash(getAllPostsOfUser))
+router.get('/:username', auth, [param('username').exists().trim().escape()], validate, ash(getUserInfo))
+router.get('/:username/post', [param('username').exists()], validate, ash(getAllPostsOfUser))
 
 router.put(
   '/profile',

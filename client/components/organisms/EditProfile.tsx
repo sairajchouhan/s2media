@@ -9,9 +9,9 @@ import { Model } from '../molecules/Model'
 export interface EditProfileProps {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
-  userFullDetails: AuthUser
+  user: AuthUser
 }
-export const EditProfile = ({ open, setOpen, userFullDetails: user }: EditProfileProps) => {
+export const EditProfile = ({ open, setOpen, user: user }: EditProfileProps) => {
   const { handleFileChange, previewUrl, resetFile, selectedFile } = useFileUpload()
   const [profile, setProfile] = useState<{ name: string; bio: string }>({ name: '', bio: '' })
 
@@ -50,7 +50,7 @@ export const EditProfile = ({ open, setOpen, userFullDetails: user }: EditProfil
       toggleOpen()
     } catch (err) {
       console.log('err in updating user profile')
-      console.log(err.response.data)
+      console.log((err as any).response.data)
     }
   }
 

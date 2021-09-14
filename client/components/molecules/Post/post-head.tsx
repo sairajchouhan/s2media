@@ -1,7 +1,7 @@
 import Link from 'next/link'
-import React from 'react'
 import { IconComp } from '../../../types'
 import { PostWithBaseUser } from '../../../types/post'
+import { paths } from '../../../utils/paths'
 import { Avatar } from '../../atoms/Avatar/avatar'
 import { IconButton } from '../../atoms/IconButton'
 
@@ -15,13 +15,13 @@ export const PostHead = ({ post: { user, caption, createdAt }, icon }: PostHeadP
     <div>
       <div className="flex items-center justify-between px-2 py-2">
         <div className="flex items-center">
-          <Link href={'/profile'}>
+          <Link href={paths.profile({ username: user.username }).href}>
             <a className="flex items-center">
               <Avatar src={user.avatar} w="w-10" h="h-10" alt="user profile image" />
             </a>
           </Link>
           <div className="flex flex-col pl-2">
-            <Link href={'/profile'}>
+            <Link href={paths.profile({ username: user.username }).href}>
               <a>
                 <div className="flex items-center">
                   <div className="font-semibold leading-4 text-gray-800 cursor-pointer text-md hover:underline">

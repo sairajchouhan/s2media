@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { useQuery } from 'react-query'
 import { Link } from '../../components/Link'
 import { PageNav } from '../../components/molecules/Page/page-nav'
 import { ProfileCard } from '../../components/molecules/Profile'
@@ -12,17 +13,74 @@ import { paths } from '../../utils/paths'
 
 const Profile = () => {
   const router = useRouter()
-  const { user: userFullDetails, getIdToken } = useAuth()
-  const [posts, setPosts] = useState<any>([])
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(false)
+  const { getIdToken } = useAuth()
   const [active, setActive] = useState('all')
-  console.log(active)
 
-  useEffect(() => {
-    const func = async () => {
-      setError(false)
-      const qsObj: Record<string, any> = { userId: userFullDetails?.uid }
+  // useEffect(() => {
+  //   const func = async () => {
+  //     setError(false)
+  //     const qsObj: Record<string, any> = { userId: user?.uid }
+  //     const { index: query } = router.query
+  //     if (!query) return
+  //     if (query.includes('liked')) {
+  //       qsObj.like = true
+  //     }
+  //     if (query.includes('saved')) {
+  //       qsObj.save = true
+  //     }
+  //     const qs = formQueryString(qsObj)
+  //     const nowActive = qsObj.like ? 'liked' : qsObj.save ? 'saved' : 'all'
+  //     setActive(nowActive)
+  //     try {
+  //       setLoading(true)
+  //       const idToken = await getIdToken()
+  //       const { data } = await axios.get(`/post${qs}`, {
+  //         headers: {
+  //           Authorization: `Bearer ${idToken}`,
+  //         },
+  //       })
+  //       setPosts(data)
+  //     } catch (err) {
+  //       console.error(err)
+  //       setError(true)
+  //     }
+  //     setLoading(false)
+  //   }
+  //   func()
+  // }, [router.query,  getIdToken])
+
+  // `/user/${(router as any).query.index[0]}`
+
+  const {
+    data: user,
+    isLoading,
+    isError,
+  } = useQuery(
+    ['user', (router as any).query.index[0]],
+    async ({ queryKey }) => {
+      const idToken = await getIdToken()
+      const { data } = await axios.get(`/user/${queryKey[1]}`, {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      })
+      return data
+    },
+    {
+      enabled: !!(router as any).query.index[0],
+    }
+  )
+
+  const {
+    data: posts,
+    isLoading: isLoadingPosts,
+    isError: isErrorPosts,
+    refetch,
+  } = useQuery(
+    ['user', 'post', (router as any).query.index[0]],
+    async () => {
+      const idToken = await getIdToken()
+      const qsObj: Record<string, any> = { userId: user?.uid }
       const { index: query } = router.query
       if (!query) return
       if (query.includes('liked')) {
@@ -34,31 +92,37 @@ const Profile = () => {
       const qs = formQueryString(qsObj)
       const nowActive = qsObj.like ? 'liked' : qsObj.save ? 'saved' : 'all'
       setActive(nowActive)
-      try {
-        setLoading(true)
-        const idToken = await getIdToken()
-        const { data } = await axios.get(`/post${qs}`, {
-          headers: {
-            Authorization: `Bearer ${idToken}`,
-          },
-        })
-        setPosts(data)
-      } catch (err) {
-        console.error(err)
-        setError(true)
-      }
-      setLoading(false)
+      const { data } = await axios.get(`/post${qs}`, {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      })
+      return data
+    },
+    {
+      enabled: !!user,
     }
-    func()
-  }, [router.query, userFullDetails?.uid, userFullDetails?.idToken, getIdToken])
+  )
+  console.log(router.query)
 
-  if (!userFullDetails) return
-  if (error) return <div>Error</div>
+  useEffect(() => {
+    if (router.query) {
+      const routeType = (router as any).query.index[1]
+      const baseRoute = (router as any).query.index[0]
+      if (routeType === 'liked' || routeType === 'saved' || baseRoute) {
+        refetch()
+      }
+    }
+  }, [router, refetch])
+
+  if (isError || isErrorPosts) return <div>Something went wrong</div>
+  if (isLoading || isLoadingPosts) return <div>Loading...</div>
+
   return (
     <div className="min-h-screen border-l border-r border-opacity-80">
-      <PageNav title="Profile" subtitle={`@${userFullDetails.username}`} />
+      <PageNav title="Profile" subtitle={`@${user.username}`} />
       <main className="flex flex-col mt-4">
-        <ProfileCard userFullDetails={userFullDetails} />
+        <ProfileCard user={user} />
 
         <section className="mt-4">
           <nav className="border-t border-b border-opacity-80">
@@ -70,7 +134,7 @@ const Profile = () => {
               >
                 <Link
                   className="flex items-center justify-center w-full h-full"
-                  to={paths.profile({ username: userFullDetails.username })}
+                  to={paths.profile({ username: user.username })}
                 >
                   Your Posts
                 </Link>
@@ -82,7 +146,7 @@ const Profile = () => {
               >
                 <Link
                   className="flex items-center justify-center w-full h-full"
-                  to={paths.profile({ username: userFullDetails.username, query: { like: true } })}
+                  to={paths.profile({ username: user.username, query: { like: true } })}
                 >
                   Liked
                 </Link>
@@ -94,7 +158,7 @@ const Profile = () => {
               >
                 <Link
                   className="flex items-center justify-center w-full h-full"
-                  to={paths.profile({ username: userFullDetails.username, query: { save: true } })}
+                  to={paths.profile({ username: user.username, query: { save: true } })}
                 >
                   Saved
                 </Link>
@@ -102,8 +166,9 @@ const Profile = () => {
             </ul>
           </nav>
         </section>
+
         <section className="mb-4">
-          {loading ? (
+          {isLoading || isLoadingPosts ? (
             <h1 className="mt-5 text-4xl text-center text-indigo-500">Loading...</h1>
           ) : posts.length > 0 ? (
             posts.map((post: PostWithBaseUser) => <Post key={post.id} post={post} />)
