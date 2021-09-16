@@ -4,6 +4,7 @@
     "source.fixAll.eslint": true,
     "source.organizeImports": true
   },
+  "eslint.workingDirectories": ["./client", "./server"],
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,
