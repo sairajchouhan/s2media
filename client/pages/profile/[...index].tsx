@@ -91,13 +91,13 @@ const Profile = () => {
         qsObj.save = true
       }
       const qs = formQueryString(qsObj)
-      const nowActive = qsObj.like ? 'liked' : qsObj.save ? 'saved' : 'all'
-      setActive(nowActive)
       const { data } = await axios.get(`/post${qs}`, {
         headers: {
           Authorization: `Bearer ${idToken}`,
         },
       })
+      const nowActive = qsObj.like ? 'liked' : qsObj.save ? 'saved' : 'all'
+      setActive(nowActive)
       return data
     },
     {

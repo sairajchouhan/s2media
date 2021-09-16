@@ -37,10 +37,22 @@ export const allPosts = async (req: Request, res: Response) => {
     where.user.username = username
   }
   if (likeBool) {
-    where['like'] = { some: {} }
+    where['like'] = {
+      some: {
+        user: {
+          username,
+        },
+      },
+    }
   }
   if (saveBool) {
-    where['save'] = { some: {} }
+    where['save'] = {
+      some: {
+        user: {
+          username,
+        },
+      },
+    }
   }
 
   const posts = await prisma.post.findMany({
