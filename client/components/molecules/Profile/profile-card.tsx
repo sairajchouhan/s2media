@@ -11,7 +11,6 @@ export interface ProfileCardProps {
 export const ProfileCard = ({ user }: ProfileCardProps) => {
   const [open, setOpen] = useState(false)
 
-  // write a toggle open function
   const toggleOpen = () => {
     setOpen((open) => !open)
   }
