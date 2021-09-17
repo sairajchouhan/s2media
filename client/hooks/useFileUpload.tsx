@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react'
 
+const allowedImageTypes = ['image/jpeg', 'image/png']
+
 export const useFileUpload = () => {
   const [selectedFile, setSelectedFile] = useState<Blob | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (selectedFile) {
@@ -13,7 +16,13 @@ export const useFileUpload = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     if (files) {
-      setSelectedFile(files[0])
+      const file = files[0]
+      console.log(file.type)
+      if (file && allowedImageTypes.includes(file.type)) {
+        setSelectedFile(file)
+      } else {
+        setError('*Please select a valid image file')
+      }
     }
   }
 
@@ -21,6 +30,7 @@ export const useFileUpload = () => {
     setTimeout(() => {
       setSelectedFile(null)
       setPreviewUrl(null)
+      setError(null)
     }, 200)
   }
 
@@ -29,5 +39,6 @@ export const useFileUpload = () => {
     previewUrl,
     handleFileChange,
     resetFile,
+    error,
   }
 }

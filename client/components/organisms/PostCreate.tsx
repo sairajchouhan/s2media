@@ -43,7 +43,6 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
   }
 
   const handleRemoveSelectedImage = () => {
-    console.log('I will remove')
     setSelectedFile(null)
     setPreviewUrl(null)
   }

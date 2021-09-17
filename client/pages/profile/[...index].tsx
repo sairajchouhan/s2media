@@ -69,7 +69,6 @@ const Profile = () => {
       enabled: !!user,
     }
   )
-  console.log(router.query)
 
   useEffect(() => {
     if (router.query) {

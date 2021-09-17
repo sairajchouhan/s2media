@@ -1,11 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { Dispatch, SetStateAction, useState } from 'react'
-import { axios } from '../../config/axios'
 import { useFileUpload } from '../../hooks/useFileUpload'
 import { AuthUser } from '../../types/user'
 import { Avatar } from '../atoms/Avatar'
+import { Button } from '../atoms/Button'
+import { Input } from '../atoms/Input'
+import { EditIcon } from '../icons'
 import { Model } from '../molecules/Model'
 
+const maxBioLength = 120
 export interface EditProfileProps {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
@@ -32,26 +35,31 @@ export const EditProfile = ({ open, setOpen, user: user }: EditProfileProps) => 
       return
     }
 
-    try {
-      const res = await axios.put(
-        '/user/profile',
-        {
-          displayName: profile.name,
-          bio: profile.bio,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${user.idToken}`,
-          },
-        }
-      )
-      console.log(res.data)
-      setProfile({ name: '', bio: '' })
-      toggleOpen()
-    } catch (err) {
-      console.log('err in updating user profile')
-      console.log((err as any).response.data)
-    }
+    // try {
+    //   const res = await axios.put(
+    //     '/user/profile',
+    //     {
+    //       displayName: profile.name,
+    //       bio: profile.bio,
+    //     },
+    //     {
+    //       headers: {
+    //         Authorization: `Bearer ${user.idToken}`,
+    //       },
+    //     }
+    //   )
+    //   console.log(res.data)
+    //   setProfile({ name: '', bio: '' })
+    //   toggleOpen()
+    // } catch (err) {
+    //   console.log('err in updating user profile')
+    //   console.log((err as any).response.data)
+    // }
+  }
+
+  const handleProfileEditClose = () => {
+    toggleOpen()
+    setProfile({ name: '', bio: '' })
   }
 
   return (
@@ -59,7 +67,7 @@ export const EditProfile = ({ open, setOpen, user: user }: EditProfileProps) => 
       <Model.Head title="Edit Profile" toggleOpen={toggleOpen} />
       <Model.Body>
         <div className="flex flex-col items-center mt-5 ">
-          <div className="">
+          <div className="relative">
             {previewUrl ? (
               <div className="w-40 h-40 overflow-hidden rounded-full text-">
                 <img
@@ -71,26 +79,27 @@ export const EditProfile = ({ open, setOpen, user: user }: EditProfileProps) => 
             ) : (
               <Avatar src={user.avatar} alt="user profile avatar" w="w-40" h="h-40" />
             )}
-          </div>
-          <div role="button" className="mt-3">
-            <label
-              className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md cursor-pointer hover:bg-blue-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-              htmlFor="avatarFile"
-            >
-              Change Profile Pic
-            </label>
-            <input onChange={handleFileChange} id="avatarFile" type="file" className="hidden" />
+            <div className="absolute bottom-2 right-2">
+              <div role="button">
+                <label
+                  className="inline-flex items-center justify-center p-1 text-gray-600 bg-blue-100 border border-transparent rounded-full cursor-pointer hover:bg-blue-200 d-flex focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                  htmlFor="avatarFile"
+                >
+                  <EditIcon />
+                </label>
+                <input onChange={handleFileChange} id="avatarFile" type="file" className="hidden" />
+              </div>
+            </div>
           </div>
           <div className="w-full mt-4 space-y-5">
             <div className="">
-              <label htmlFor="name">Name</label>
-              <input
-                onChange={handleProfileInputChange}
-                value={profile.name}
-                name="name"
-                type="text"
+              <Input
                 id="name"
-                className="w-full border rounded-md "
+                name="name"
+                label="Name"
+                placeholder="Your new Name :)"
+                value={profile.name}
+                onChange={handleProfileInputChange}
               />
             </div>
             <div className="">
@@ -98,23 +107,34 @@ export const EditProfile = ({ open, setOpen, user: user }: EditProfileProps) => 
               <textarea
                 name="bio"
                 id="bio"
-                onChange={handleProfileInputChange}
+                onChange={(e) => {
+                  if (e.target.value.length <= maxBioLength) {
+                    setProfile((profile) => ({ ...profile, bio: e.target.value }))
+                  }
+                }}
                 value={profile.bio}
-                className="block w-full rounded-md"
+                className="w-full text-sm border-gray-400 rounded outline-none focus:outline-none focus:ring-2 focus:ring-indigo-400"
                 style={{ resize: 'none' }}
+                placeholder="Your new Bio :)"
               ></textarea>
+              <div className="flex justify-end">
+                <div className="text-xs leading-3">
+                  <span className={maxBioLength - profile.bio.length <= 20 ? 'text-red-500' : ''}>
+                    {profile.bio.length}
+                  </span>
+                  /{maxBioLength}
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </Model.Body>
       <Model.Foot>
-        <div className="flex items-center justify-end mt-6">
-          <button
-            className="px-3 py-2 text-sm font-medium text-green-900 transition-all bg-green-100 rounded-lg hover:bg-green-200"
-            onClick={() => handleUpdateProfile()}
-          >
-            Update
-          </button>
+        <div className="flex items-center justify-end mt-6 space-x-3">
+          <Button colorScheme="red" onClick={() => handleProfileEditClose()}>
+            Cancel
+          </Button>
+          <Button colorScheme="green">Update</Button>
         </div>
       </Model.Foot>
     </Model>

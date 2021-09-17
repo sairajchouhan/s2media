@@ -79,7 +79,7 @@ const baseClasses = [
   'py-1.5',
   'font-semibold',
   'font-base',
-  'rounded-lg',
+  'rounded-md',
   'focus:outline-none',
   'focus:ring-2',
   'focus:ring-opacity-80',
