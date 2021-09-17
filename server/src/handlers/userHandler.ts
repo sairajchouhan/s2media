@@ -1,6 +1,8 @@
 import { Request, Response } from 'express'
 import createError from 'http-errors'
 import prisma from '../../prisma'
+import { cloudinaryUserProfileImageUpload } from '../config/cloudinary'
+import { formatBufferTo64 } from '../config/data-uri'
 import { get4RandomChars } from '../utils'
 
 export const getAllUsers = async (_req: Request, res: Response) => {
@@ -112,13 +114,23 @@ export const updateProfile = async (req: Request, res: Response) => {
     return res.json(profile)
   }
 
-  const updateObj: { bio: string; displayName: string } | Record<string, string> = {}
+  const updateObj: Record<string, any> = {}
 
   if (bio) {
     updateObj.bio = bio
   }
   if (displayName) {
     updateObj.displayName = displayName
+  }
+
+  if (req.file) {
+    const base64file = formatBufferTo64(req.file)
+    const imageUploadRes = await cloudinaryUserProfileImageUpload(base64file.content as string)
+    updateObj.user = {
+      update: {
+        avatar: imageUploadRes.secure_url,
+      },
+    }
   }
 
   const profile = await prisma.profile.update({

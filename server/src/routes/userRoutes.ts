@@ -3,6 +3,7 @@ import ash from 'express-async-handler'
 import { body, param } from 'express-validator'
 import { getAllPostsOfUser, getAllUsers, getAuthUserInfo, getUserInfo, updateProfile } from '../handlers/userHandler'
 import auth from '../middlewares/auth'
+import { singleImageUploadMiddleware } from '../middlewares/singleImageUpload'
 import validate from '../middlewares/validate'
 
 const router = Router()
@@ -30,6 +31,7 @@ router.put(
       }),
   ],
   validate,
+  singleImageUploadMiddleware,
   ash(updateProfile)
 )
 

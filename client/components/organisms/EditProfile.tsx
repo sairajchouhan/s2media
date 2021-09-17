@@ -1,5 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { Dispatch, SetStateAction, useState } from 'react'
+import { axios } from '../../config/axios'
+import { useAuth } from '../../context/authContext'
 import { useFileUpload } from '../../hooks/useFileUpload'
 import { AuthUser } from '../../types/user'
 import { Avatar } from '../atoms/Avatar'
@@ -12,11 +14,15 @@ const maxBioLength = 120
 export interface EditProfileProps {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
-  user: AuthUser
+  profileUser: AuthUser
 }
-export const EditProfile = ({ open, setOpen, user: user }: EditProfileProps) => {
+export const EditProfile = ({ open, setOpen, profileUser }: EditProfileProps) => {
+  const { user, getIdToken } = useAuth()
   const { handleFileChange, previewUrl, resetFile, selectedFile } = useFileUpload()
-  const [profile, setProfile] = useState<{ name: string; bio: string }>({ name: '', bio: '' })
+  const [profile, setProfile] = useState<{ name: string; bio: string }>({
+    name: user?.profile.displayName ?? '',
+    bio: user?.profile.bio ?? '',
+  })
 
   const handleProfileInputChange = (
     e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>
@@ -30,31 +36,31 @@ export const EditProfile = ({ open, setOpen, user: user }: EditProfileProps) => 
   }
 
   const handleUpdateProfile = async () => {
-    // return from the function if profile.name is trimmed and empty
     if (profile.name.trim() === '' && profile.name.trim() === '') {
       return
     }
+    const idToken = await getIdToken()
 
-    // try {
-    //   const res = await axios.put(
-    //     '/user/profile',
-    //     {
-    //       displayName: profile.name,
-    //       bio: profile.bio,
-    //     },
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${user.idToken}`,
-    //       },
-    //     }
-    //   )
-    //   console.log(res.data)
-    //   setProfile({ name: '', bio: '' })
-    //   toggleOpen()
-    // } catch (err) {
-    //   console.log('err in updating user profile')
-    //   console.log((err as any).response.data)
-    // }
+    const formData = new FormData()
+    if (selectedFile) {
+      formData.append('image', selectedFile as Blob)
+    }
+    formData.append('displayName', profile.name)
+    formData.append('bio', profile.bio)
+
+    try {
+      const res = await axios.put('/user/profile', formData, {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      })
+      console.log(res.data)
+      setProfile({ name: '', bio: '' })
+      toggleOpen()
+    } catch (err) {
+      console.log('err in updating user profile')
+      console.log((err as any).response.data)
+    }
   }
 
   const handleProfileEditClose = () => {
@@ -77,7 +83,7 @@ export const EditProfile = ({ open, setOpen, user: user }: EditProfileProps) => 
                 />
               </div>
             ) : (
-              <Avatar src={user.avatar} alt="user profile avatar" w="w-40" h="h-40" />
+              <Avatar src={profileUser.avatar} alt="user profile avatar" w="w-40" h="h-40" />
             )}
             <div className="absolute bottom-2 right-2">
               <div role="button">
@@ -134,7 +140,9 @@ export const EditProfile = ({ open, setOpen, user: user }: EditProfileProps) => 
           <Button colorScheme="red" onClick={() => handleProfileEditClose()}>
             Cancel
           </Button>
-          <Button colorScheme="green">Update</Button>
+          <Button colorScheme="green" onClick={handleUpdateProfile}>
+            Update
+          </Button>
         </div>
       </Model.Foot>
     </Model>

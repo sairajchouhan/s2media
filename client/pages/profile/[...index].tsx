@@ -88,7 +88,7 @@ const Profile = () => {
     <div className="min-h-screen border-l border-r border-opacity-80">
       <PageNav title="Profile" subtitle={`@${user.username}`} />
       <main className="flex flex-col mt-4">
-        <ProfileCard user={user} />
+        <ProfileCard profileUser={user} />
         <ProfileNav active={active} username={user.username} />
 
         <section className="mb-4">
