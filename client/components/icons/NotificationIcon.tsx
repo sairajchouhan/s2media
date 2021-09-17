@@ -1,4 +1,3 @@
-import React from 'react'
 import { LeftNavIconProps } from '../../types'
 
 export const NotificationIcon = ({ variant, styling }: LeftNavIconProps) => {

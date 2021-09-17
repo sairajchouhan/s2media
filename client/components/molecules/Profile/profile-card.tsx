@@ -42,7 +42,12 @@ export const ProfileCard = ({ profileUser }: ProfileCardProps) => {
           <p>{profileUser._count.followers} followers</p>
           <p>{profileUser._count.following} following</p>
         </div>
-        <div>{profileUser.profile.bio && <p>{profileUser.profile.bio}</p>}</div>
+        <div>
+          {profileUser.profile.bio &&
+            profileUser.profile.bio
+              .split(',')
+              .map((para) => <p key={para.length * Math.random()}>{para}</p>)}
+        </div>
       </div>
     </div>
   )
