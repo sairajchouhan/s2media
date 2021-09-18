@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { Dispatch, SetStateAction, useState } from 'react'
+import { useMutation, useQueryClient } from 'react-query'
 import { axios } from '../../config/axios'
 import { useAuth } from '../../context/authContext'
 import { useFileUpload } from '../../hooks/useFileUpload'
@@ -17,6 +18,7 @@ export interface EditProfileProps {
   profileUser: AuthUser
 }
 export const EditProfile = ({ open, setOpen, profileUser }: EditProfileProps) => {
+  const queryClient = useQueryClient()
   const { user, getIdToken } = useAuth()
   const { handleFileChange, previewUrl, resetFile, selectedFile } = useFileUpload()
   const [profile, setProfile] = useState<{ name: string; bio: string }>({
@@ -35,37 +37,53 @@ export const EditProfile = ({ open, setOpen, profileUser }: EditProfileProps) =>
     resetFile()
   }
 
-  const handleUpdateProfile = async () => {
-    if (profile.name.trim() === '' && profile.name.trim() === '') {
-      return
-    }
-    const idToken = await getIdToken()
-
-    const formData = new FormData()
-    if (selectedFile) {
-      formData.append('image', selectedFile as Blob)
-    }
-    formData.append('displayName', profile.name)
-    formData.append('bio', profile.bio)
-
-    try {
-      const res = await axios.put('/user/profile', formData, {
+  const profileUpdateMutation = useMutation(
+    async () => {
+      const idToken = await getIdToken()
+      const formData = new FormData()
+      if (selectedFile) {
+        formData.append('image', selectedFile as Blob)
+      }
+      formData.append('displayName', profile.name)
+      formData.append('bio', profile.bio)
+      await new Promise((res) => setTimeout(res, 3000))
+      return axios.put(`/user/profile`, formData, {
         headers: {
           Authorization: `Bearer ${idToken}`,
         },
       })
-      console.log(res.data)
-      setProfile({ name: '', bio: '' })
-      toggleOpen()
-    } catch (err) {
-      console.log('err in updating user profile')
-      console.log((err as any).response.data)
+    },
+    {
+      onSuccess: (_data, _vars, _context) => {
+        queryClient.invalidateQueries(['user', profileUser.username])
+        toggleOpen()
+      },
+      onError: (error, _vars, _context) => {
+        console.log(error)
+      },
     }
+  )
+
+  const handleUpdateProfile = async () => {
+    if (profile.name.trim() === '' && profile.name.trim() === '') {
+      setProfile({
+        name: profileUser.profile.displayName as string,
+        bio: profileUser.profile.bio as string,
+      })
+      return toggleOpen()
+    }
+    if (
+      profile.name === profileUser.profile.displayName &&
+      profile.bio === profileUser.profile.bio &&
+      !selectedFile
+    ) {
+      return toggleOpen()
+    }
+    profileUpdateMutation.mutate()
   }
 
   const handleProfileEditClose = () => {
     toggleOpen()
-    setProfile({ name: '', bio: '' })
   }
 
   return (
@@ -137,10 +155,18 @@ export const EditProfile = ({ open, setOpen, profileUser }: EditProfileProps) =>
       </Model.Body>
       <Model.Foot>
         <div className="flex items-center justify-end mt-6 space-x-3">
-          <Button colorScheme="red" onClick={() => handleProfileEditClose()}>
+          <Button
+            disabled={profileUpdateMutation.isLoading}
+            colorScheme="red"
+            onClick={() => handleProfileEditClose()}
+          >
             Cancel
           </Button>
-          <Button colorScheme="green" onClick={handleUpdateProfile}>
+          <Button
+            loading={profileUpdateMutation.isLoading}
+            colorScheme="green"
+            onClick={handleUpdateProfile}
+          >
             Update
           </Button>
         </div>
