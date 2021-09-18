@@ -1,7 +1,8 @@
+import Image from 'next/image'
 import { useState } from 'react'
 import { useAuth } from '../../../context/authContext'
 import { AuthUser } from '../../../types/'
-import { Avatar } from '../../atoms/Avatar/avatar'
+import DummyUser from '../../atoms/Avatar/dummyUser.svg'
 import { Button } from '../../atoms/Button'
 import { EditProfile } from '../../organisms/EditProfile'
 
@@ -20,7 +21,13 @@ export const ProfileCard = ({ profileUser }: ProfileCardProps) => {
   return (
     <div className="flex flex-wrap px-2 py-2">
       <div className="flex-shrink block mx-auto">
-        <Avatar src={profileUser.avatar} alt="profileUser profile avatar" w="w-40" h="h-40" />
+        <Image
+          src={profileUser.avatar ?? DummyUser}
+          alt={profileUser.username}
+          className="rounded-full"
+          width="120"
+          height="120"
+        />
       </div>
       <div className="flex-1 p-2 ml-5 space-y-2">
         <div>
