@@ -25,8 +25,10 @@ export const ProfileCard = ({ profileUser }: ProfileCardProps) => {
           src={profileUser.avatar ?? DummyUser}
           alt={profileUser.username}
           className="rounded-full"
-          width="120"
-          height="120"
+          width="150"
+          height="150"
+          objectFit="cover"
+          objectPosition="center"
         />
       </div>
       <div className="flex-1 p-2 ml-5 space-y-2">
