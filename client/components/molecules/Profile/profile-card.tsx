@@ -1,17 +1,15 @@
 import Image from 'next/image'
 import { useState } from 'react'
-import { useAuth } from '../../../context/authContext'
 import { AuthUser } from '../../../types/'
 import DummyUser from '../../atoms/Avatar/dummyUser.svg'
-import { Button } from '../../atoms/Button'
 import { EditProfile } from '../../organisms/EditProfile'
+import { ProfileCardAction } from './profile-card-action'
 
 export interface ProfileCardProps {
   profileUser: AuthUser
 }
 
 export const ProfileCard = ({ profileUser }: ProfileCardProps) => {
-  const { user } = useAuth()
   const [open, setOpen] = useState(false)
 
   const toggleOpen = () => {
@@ -35,14 +33,7 @@ export const ProfileCard = ({ profileUser }: ProfileCardProps) => {
         <div>
           <div className="flex items-center justify-between ">
             <h1 className="text-xl font-bold">{profileUser.profile.displayName}</h1>
-            {user?.username === profileUser.username ? (
-              <Button variant="outline" colorScheme="gray" onClick={toggleOpen}>
-                Edit Profile
-              </Button>
-            ) : (
-              <div>Sucker</div>
-            )}
-            <EditProfile profileUser={profileUser} open={open} setOpen={setOpen} />
+            <ProfileCardAction profileUser={profileUser} toggleOpen={toggleOpen} />
           </div>
           <h3 className="text-gray-500">@{profileUser.username}</h3>
         </div>
@@ -58,6 +49,7 @@ export const ProfileCard = ({ profileUser }: ProfileCardProps) => {
               .map((para) => <p key={para.length * Math.random()}>{para}</p>)}
         </div>
       </div>
+      <EditProfile profileUser={profileUser} open={open} setOpen={setOpen} />
     </div>
   )
 }
