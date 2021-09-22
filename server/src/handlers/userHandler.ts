@@ -34,6 +34,8 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
     },
     profile: true,
     save: true,
+    followers: true,
+    following: true,
   }
 
   user = await prisma.user.findUnique({
@@ -158,6 +160,8 @@ export const getUserInfo = async (req: Request, res: Response) => {
     },
     profile: true,
     save: true,
+    followers: true,
+    following: true,
   }
 
   const user = await prisma.user.findUnique({

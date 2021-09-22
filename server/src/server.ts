@@ -31,6 +31,7 @@ app.use(
 // Routes
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/user', userRoutes)
+app.use('/api/v1/user/follow', followRoutes)
 app.use('/api/v1/post', postRoutes)
 app.use('/api/v1/post/like', likeRoutes)
 app.use('/api/v1/post/save', saveRoutes)
@@ -38,7 +39,6 @@ app.use('/api/v1/post/comment', commentRoutes)
 app.use('/api/v1/post/comment/reply', replyRoutes)
 app.use('/api/v1/post/comment/like', commentLikeRoutes)
 app.use('/api/v1/post/reply/like', replyLikeRoutes)
-app.use('/api/v1/user/follow', followRoutes)
 
 app.use(errorMiddleware)
 const PORT = process.env.PORT || 5000

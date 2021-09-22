@@ -93,7 +93,7 @@ export const EditProfile = ({ open, setOpen, profileUser }: EditProfileProps) =>
         <div className="flex flex-col items-center mt-5 ">
           <div className="relative">
             {previewUrl ? (
-              <div className="w-40 h-40 overflow-hidden rounded-full text-">
+              <div className="w-40 h-40 overflow-hidden rounded-full ">
                 <img
                   src={previewUrl}
                   className="object-cover object-center w-full h-full"

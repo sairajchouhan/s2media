@@ -1,6 +1,5 @@
 import React from 'react'
 import { Post } from '../../components/organisms/Post'
-import Stories from '../../components/organisms/Stories'
 import { useQuery } from '../../hooks/useQuery'
 import { PostWithBaseUser } from '../../types/post'
 
@@ -12,7 +11,8 @@ const Home = () => {
   return (
     <>
       <div className="h-full border-l border-r border-opacity-80">
-        <Stories />
+        {/* <Stories /> */}
+
         <main>
           {loading ? (
             <h1 className="text-4xl text-center text-indigo-500">Loading...</h1>

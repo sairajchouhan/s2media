@@ -21,6 +21,8 @@ export interface BaseUser {
     followers: number
     following: number
   }
+  followers: Array<Record<any, any>>
+  following: Array<Record<any, any>>
 }
 
 export interface AuthUser extends BaseUser {
