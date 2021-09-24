@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useQueryClient } from 'react-query'
 import { CommentReplyInput } from './c-r-input'
 import CommentReplyLikeAction from './c-r-like-actions'
@@ -22,6 +22,7 @@ export const CommentReplyAction = ({
 }) => {
   const [reply, setReply] = useState({ show: false, replyText: '' })
   const queryClient = useQueryClient()
+  const inputRef = useRef<HTMLInputElement | null>(null)
 
   const handleShowReplies = async () => {
     const previousCommentReplies = queryClient.getQueryData(['reply', { commentId }])
@@ -29,6 +30,12 @@ export const CommentReplyAction = ({
       fetchNextPage()
     }
   }
+
+  useEffect(() => {
+    if (reply.show && inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [reply.show])
 
   return (
     <div className="mt-0.5">
@@ -40,7 +47,9 @@ export const CommentReplyAction = ({
           <span className="text-gray-500">|</span>
           <div className="flex items-center text-gray-500">
             <button
-              onClick={() => setReply((reply) => ({ ...reply, show: !reply.show }))}
+              onClick={() => {
+                setReply((reply) => ({ ...reply, show: !reply.show }))
+              }}
               className="p-0.5 rounded cursor-pointer hover:bg-gray-100 "
             >
               Reply
@@ -64,6 +73,7 @@ export const CommentReplyAction = ({
       {reply.show ? (
         <div>
           <CommentReplyInput
+            ref={inputRef}
             isReply={true}
             setReply={setReply}
             postId={postId}
