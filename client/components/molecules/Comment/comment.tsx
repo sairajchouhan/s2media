@@ -3,6 +3,7 @@ import { useInfiniteQuery } from 'react-query'
 import { axios } from '../../../config/axios'
 import { useAuth } from '../../../context/authContext'
 import { paths } from '../../../utils/paths'
+import { GET_REPLIES_FOR_COMMENT } from '../../../utils/querykeysAndPaths'
 import { Avatar } from '../../atoms/Avatar'
 import { Link } from '../../Link'
 import { CommentReplyAction } from './c-r-actions'
@@ -19,11 +20,11 @@ export const Comment = ({ comment }: { comment: any }) => {
     refetch,
     isFetching,
   } = useInfiniteQuery(
-    ['reply', { commentId: comment.id }],
+    GET_REPLIES_FOR_COMMENT.queryKey(comment.id),
     async ({ pageParam = '' }) => {
       const token = await getIdToken()
       const { data } = await axios.get(
-        `/post/comment/reply/${comment.postId}/${comment.id}?cursor=${pageParam}`,
+        GET_REPLIES_FOR_COMMENT.path(comment.postId, comment.id, pageParam),
         {
           headers: {
             Authorization: `Bearer ${token}`,

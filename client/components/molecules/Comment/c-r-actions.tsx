@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useQueryClient } from 'react-query'
+import { GET_REPLIES_FOR_COMMENT } from '../../../utils/querykeysAndPaths'
 import { CommentReplyInput } from './c-r-input'
-import CommentReplyLikeAction from './c-r-like-actions'
+import CommentReplyLikeAction from './c-r-like-action'
 
 export const CommentReplyAction = ({
   crEntity,
@@ -25,7 +26,9 @@ export const CommentReplyAction = ({
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const handleShowReplies = async () => {
-    const previousCommentReplies = queryClient.getQueryData(['reply', { commentId }])
+    const previousCommentReplies = queryClient.getQueryData(
+      GET_REPLIES_FOR_COMMENT.queryKey(commentId)
+    )
     if (!previousCommentReplies) {
       fetchNextPage()
     }

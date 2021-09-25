@@ -4,6 +4,15 @@ import { useMutation, useQueryClient } from 'react-query'
 import { axios } from '../../../config/axios'
 import { useAuth } from '../../../context/authContext'
 import { paths } from '../../../utils/paths'
+import {
+  DELETE_COMMENT,
+  DELETE_REPLY,
+  EDIT_COMMENT,
+  EDIT_REPLY,
+  GET_COMMENTS_FOR_POST,
+  GET_ONE_POST,
+  GET_REPLIES_FOR_COMMENT,
+} from '../../../utils/querykeysAndPaths'
 import { IconButton } from '../../atoms/IconButton/icon-button'
 import { Input } from '../../atoms/Input/Input'
 import { DotsHorizontal } from '../../icons'
@@ -20,7 +29,7 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
   const deleteCommentMutation = useMutation(
     async () => {
       const idToken = await getIdToken()
-      return axios.delete(`/post/comment/${crEntity.postId}/${crEntity.id}`, {
+      return axios.delete(DELETE_COMMENT.path(crEntity.postId, crEntity.id), {
         headers: {
           Authorization: `Bearer ${idToken}`,
         },
@@ -29,14 +38,13 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
     {
       onMutate: async () => {
         const postId = crEntity.postId
-        await queryClient.cancelQueries(['post', { id: postId, comment: true }])
-        await queryClient.cancelQueries(['post', postId])
+        await queryClient.cancelQueries(GET_COMMENTS_FOR_POST.queryKey(postId))
+        await queryClient.cancelQueries(GET_ONE_POST.queryKey(postId))
 
-        const previousComments = queryClient.getQueryData<any>([
-          'post',
-          { id: postId, comment: true },
-        ])
-        const previousPost: any = queryClient.getQueryData(['post', postId])
+        const previousComments = queryClient.getQueryData<any>(
+          GET_COMMENTS_FOR_POST.queryKey(postId)
+        )
+        const previousPost: any = queryClient.getQueryData(GET_ONE_POST.queryKey(postId))
 
         if (previousComments) {
           const newCommentsData = previousComments
@@ -47,8 +55,8 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
               page.comment.splice(index, 1)
             }
           })
-          queryClient.setQueryData(['post', { id: postId, comment: true }], newCommentsData)
-          queryClient.setQueryData(['post', postId], {
+          queryClient.setQueryData(GET_COMMENTS_FOR_POST.queryKey(postId), newCommentsData)
+          queryClient.setQueryData(GET_ONE_POST.queryKey(postId), {
             ...previousPost,
             _count: {
               ...previousPost._count,
@@ -61,17 +69,20 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
       onError: (_err, _vars, context) => {
         if (context?.previousComments) {
           queryClient.setQueryData<any>(
-            ['post', { id: crEntity.postId, comment: true }],
+            GET_COMMENTS_FOR_POST.queryKey(crEntity.postId),
             context.previousComments
           )
         }
         if (context?.previousPost) {
-          queryClient.setQueryData<any>(['post', crEntity.postId], context.previousPost)
+          queryClient.setQueryData<any>(
+            GET_ONE_POST.queryKey(crEntity.postId),
+            context.previousPost
+          )
         }
       },
       onSuccess: () => {},
       onSettled: () => {
-        queryClient.invalidateQueries(['post', { id: crEntity.postId, comment: true }])
+        queryClient.invalidateQueries(GET_COMMENTS_FOR_POST.queryKey(crEntity.postId))
       },
     }
   )
@@ -80,7 +91,7 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
     async () => {
       const idToken = await getIdToken()
       return axios.put(
-        `/post/comment/${crEntity.postId}/${crEntity.id}`,
+        EDIT_COMMENT.path(crEntity.postId, crEntity.id),
         {
           commentText: edit.text,
         },
@@ -94,13 +105,12 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
     {
       onMutate: async () => {
         const postId = crEntity.postId
-        await queryClient.cancelQueries(['post', { id: postId, comment: true }])
-        await queryClient.cancelQueries(['post', postId])
+        await queryClient.cancelQueries(GET_COMMENTS_FOR_POST.queryKey(postId))
+        await queryClient.cancelQueries(GET_ONE_POST.queryKey(postId))
 
-        const previousComments = queryClient.getQueryData<any>([
-          'post',
-          { id: postId, comment: true },
-        ])
+        const previousComments = queryClient.getQueryData<any>(
+          GET_COMMENTS_FOR_POST.queryKey(postId)
+        )
 
         if (previousComments) {
           const newCommentsData = previousComments
@@ -111,7 +121,7 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
               }
             })
           })
-          queryClient.setQueryData(['post', { id: postId, comment: true }], newCommentsData)
+          queryClient.setQueryData(GET_COMMENTS_FOR_POST.queryKey(postId), newCommentsData)
         }
         setEdit({ text: edit.text, show: false })
         return { previousComments }
@@ -119,14 +129,14 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
       onError: (_err, _vars, context) => {
         if (context?.previousComments) {
           queryClient.setQueryData<any>(
-            ['post', { id: crEntity.postId, comment: true }],
+            GET_COMMENTS_FOR_POST.queryKey(crEntity.postId),
             context.previousComments
           )
         }
       },
       onSuccess: () => {},
       onSettled: () => {
-        queryClient.invalidateQueries(['post', { id: crEntity.postId, comment: true }])
+        queryClient.invalidateQueries(GET_COMMENTS_FOR_POST.queryKey(crEntity.postId))
       },
     }
   )
@@ -134,24 +144,24 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
   const deleteReplyMutation = useMutation(
     async () => {
       const idToken = await getIdToken()
-      return axios.delete(
-        `/post/comment/reply/${crEntity.postId}/${crEntity.commentId}/${crEntity.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${idToken}`,
-          },
-        }
-      )
+      return axios.delete(DELETE_REPLY.path(crEntity.postId, crEntity.commentId, crEntity.id), {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      })
     },
     {
       onMutate: async () => {
         const postId = crEntity.postId
         const commentId = crEntity.commentId
-        await queryClient.cancelQueries(['reply', { commentId }])
-        await queryClient.cancelQueries(['post', postId])
+        await queryClient.cancelQueries(GET_REPLIES_FOR_COMMENT.queryKey(commentId))
+        await queryClient.cancelQueries(GET_REPLIES_FOR_COMMENT.queryKey(commentId))
+        await queryClient.cancelQueries(GET_ONE_POST.queryKey(postId))
 
-        const previousReplies = queryClient.getQueryData<any>(['reply', { commentId }])
-        const previousPost: any = queryClient.getQueryData(['post', postId])
+        const previousReplies = queryClient.getQueryData<any>(
+          GET_REPLIES_FOR_COMMENT.queryKey(commentId)
+        )
+        const previousPost: any = queryClient.getQueryData(GET_ONE_POST.queryKey(postId))
 
         if (previousReplies) {
           const newRepliesCopy = previousReplies
@@ -162,8 +172,8 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
               page.reply.splice(index, 1)
             }
           })
-          queryClient.setQueryData(['reply', { commentId }], newRepliesCopy)
-          queryClient.setQueryData(['post', postId], {
+          queryClient.setQueryData(GET_REPLIES_FOR_COMMENT.queryKey(commentId), newRepliesCopy)
+          queryClient.setQueryData(GET_ONE_POST.queryKey(postId), {
             ...previousPost,
             _count: {
               ...previousPost._count,
@@ -176,17 +186,20 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
       onError: (_err, _vars, context) => {
         if (context?.previousReplies) {
           queryClient.setQueryData<any>(
-            ['reply', { commentId: crEntity.commentId }],
+            GET_REPLIES_FOR_COMMENT.queryKey(crEntity.commentId),
             context.previousReplies
           )
         }
         if (context?.previousPost) {
-          queryClient.setQueryData<any>(['post', crEntity.postId], context.previousPost)
+          queryClient.setQueryData<any>(
+            GET_ONE_POST.queryKey(crEntity.postId),
+            context.previousPost
+          )
         }
       },
       onSuccess: () => {},
       onSettled: () => {
-        queryClient.invalidateQueries(['reply', { commentId: crEntity.commentId }])
+        queryClient.invalidateQueries(GET_REPLIES_FOR_COMMENT.queryKey(crEntity.commentId))
       },
     }
   )
@@ -195,7 +208,7 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
     async () => {
       const idToken = await getIdToken()
       return axios.put(
-        `/post/comment/reply/${crEntity.postId}/${crEntity.commentId}/${crEntity.id}`,
+        EDIT_REPLY.path(crEntity.postId, crEntity.commentId, crEntity.id),
         {
           replyText: edit.text,
         },
@@ -209,9 +222,11 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
     {
       onMutate: async () => {
         const commentId = crEntity.commentId
-        await queryClient.cancelQueries(['reply', { commentId }])
+        await queryClient.cancelQueries(GET_REPLIES_FOR_COMMENT.queryKey(commentId))
 
-        const previousReplies = queryClient.getQueryData<any>(['reply', { commentId }])
+        const previousReplies = queryClient.getQueryData<any>(
+          GET_REPLIES_FOR_COMMENT.queryKey(commentId)
+        )
 
         if (previousReplies) {
           const newRepliesData = previousReplies
@@ -222,7 +237,7 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
               }
             })
           })
-          queryClient.setQueryData(['reply', { commentId }], newRepliesData)
+          queryClient.setQueryData(GET_REPLIES_FOR_COMMENT.queryKey(commentId), newRepliesData)
         }
         setEdit({ text: edit.text, show: false })
         return { previousReplies }
@@ -230,14 +245,14 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
       onError: (_err, _vars, context) => {
         if (context?.previousReplies) {
           queryClient.setQueryData<any>(
-            ['post', { id: crEntity.postId, comment: true }],
+            GET_COMMENTS_FOR_POST.queryKey(crEntity.postId),
             context.previousReplies
           )
         }
       },
       onSuccess: () => {},
       onSettled: () => {
-        queryClient.invalidateQueries(['reply', { commentId: crEntity.commentId }])
+        queryClient.invalidateQueries(GET_REPLIES_FOR_COMMENT.queryKey(crEntity.commentId))
       },
     }
   )

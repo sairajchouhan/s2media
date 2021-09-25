@@ -3,6 +3,12 @@ import React, { useState } from 'react'
 import { useMutation, useQueryClient } from 'react-query'
 import { axios } from '../../../config/axios'
 import { useAuth } from '../../../context/authContext'
+import {
+  GET_COMMENTS_FOR_POST,
+  GET_ONE_POST,
+  POST_COMMENT,
+  POST_REPLY,
+} from '../../../utils/querykeysAndPaths'
 import { Input } from '../../atoms/Input/Input'
 
 interface Iprops {
@@ -28,7 +34,7 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
     const commentMutation = useMutation(
       (inputText: string) => {
         return axios.post(
-          `/post/comment/${postId}`,
+          POST_COMMENT.path(postId),
           { commentText: inputText },
           {
             headers: {
@@ -39,15 +45,15 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
       },
       {
         onMutate: async (inputText: string) => {
-          await queryClient.cancelQueries(['post', { id: postId, comment: true }])
-          await queryClient.cancelQueries(['post', postId])
+          await queryClient.cancelQueries(GET_COMMENTS_FOR_POST.queryKey(postId))
+          await queryClient.cancelQueries(GET_ONE_POST.queryKey(postId))
 
           const previousComments = queryClient.getQueryData<any>([
             'post',
             { id: postId, comment: true },
           ])
           console.log(previousComments)
-          const previousPost: any = queryClient.getQueryData(['post', postId])
+          const previousPost: any = queryClient.getQueryData(GET_ONE_POST.queryKey(postId))
           console.log(previousPost)
 
           const newComment = {
@@ -76,9 +82,9 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
             const newCommentsData = previousComments
             newCommentsData.pages[0].comment.unshift(newComment)
 
-            queryClient.setQueryData(['post', { id: postId, comment: true }], newCommentsData)
+            queryClient.setQueryData(GET_COMMENTS_FOR_POST.queryKey(postId), newCommentsData)
 
-            queryClient.setQueryData(['post', postId], {
+            queryClient.setQueryData(GET_ONE_POST.queryKey(postId), {
               ...previousPost,
               _count: {
                 ...previousPost._count,
@@ -92,17 +98,17 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
         onError: (_err, _vars, context) => {
           if (context?.previousComments) {
             queryClient.setQueryData<any>(
-              ['post', { id: postId, comment: true }],
+              GET_COMMENTS_FOR_POST.queryKey(postId),
               context.previousComments
             )
           }
           if (context?.previousPost) {
-            queryClient.setQueryData<any>(['post', postId], context.previousPost)
+            queryClient.setQueryData<any>(GET_ONE_POST.queryKey(postId), context.previousPost)
           }
         },
         onSuccess: () => {},
         onSettled: () => {
-          queryClient.invalidateQueries(['post', { id: postId, comment: true }])
+          queryClient.invalidateQueries(GET_COMMENTS_FOR_POST.queryKey(postId))
         },
       }
     )
@@ -110,7 +116,7 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
     const replyMutation = useMutation(
       (inputText: string) => {
         return axios.post(
-          `/post/comment/reply/${postId}/${commentId}`,
+          POST_REPLY.path(postId, commentId),
           { replyText: inputText, repliedToUserUid: repliedToUser.uid },
           {
             headers: {
@@ -123,10 +129,10 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
         onMutate: async (inputText: string) => {
           const shouldRefetch = { value: false }
           await queryClient.cancelQueries(['reply', { commentId: commentId }])
-          await queryClient.cancelQueries(['post', postId])
+          await queryClient.cancelQueries(GET_ONE_POST.queryKey(postId))
 
           const previousReplies = queryClient.getQueryData<any>(['reply', { commentId: commentId }])
-          const previousPost: any = queryClient.getQueryData(['post', postId])
+          const previousPost: any = queryClient.getQueryData(GET_ONE_POST.queryKey(postId))
 
           const newReply = {
             id: cuid(),
@@ -160,7 +166,7 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
             copyPreviousReplies.pages[copyPreviousReplies.pages.length - 1].reply.push(newReply)
 
             queryClient.setQueryData(['reply', { commentId: commentId }], copyPreviousReplies)
-            queryClient.setQueryData(['post', postId], {
+            queryClient.setQueryData(GET_ONE_POST.queryKey(postId), {
               ...previousPost,
               _count: {
                 ...previousPost._count,
@@ -176,12 +182,12 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
         onError: (_err, _vars, context) => {
           if (context?.previousReplies) {
             queryClient.setQueryData<any>(
-              ['post', { id: postId, comment: true }],
+              GET_COMMENTS_FOR_POST.queryKey(postId),
               context.previousReplies
             )
           }
           if (context?.previousPost) {
-            queryClient.setQueryData<any>(['post', postId], context.previousPost)
+            queryClient.setQueryData<any>(GET_ONE_POST.queryKey(postId), context.previousPost)
           }
         },
         onSuccess: (data, _vars, context) => {
@@ -202,7 +208,6 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
     )
 
     const handleCreateComment = () => {
-      console.log('I will create a comment')
       if (inputText.trim() === '') return
       commentMutation.mutate(inputText)
     }

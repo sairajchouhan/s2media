@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { axios } from '../../../config/axios'
 import { useAuth } from '../../../context/authContext'
+import { CREATE_COMMENT_LIKE, CREATE_REPLY_LIKE } from '../../../utils/querykeysAndPaths'
 
 const CommentReplyLikeAction = ({ isReply, crEntity }: { isReply: boolean; crEntity: any }) => {
   const { user, getIdToken } = useAuth()
@@ -22,7 +23,7 @@ const CommentReplyLikeAction = ({ isReply, crEntity }: { isReply: boolean; crEnt
     try {
       const idToken = await getIdToken()
       await axios.post(
-        `/post/comment/like/${crEntity.id}`,
+        CREATE_COMMENT_LIKE.path(crEntity.id),
         {},
         {
           headers: {
@@ -50,7 +51,7 @@ const CommentReplyLikeAction = ({ isReply, crEntity }: { isReply: boolean; crEnt
     try {
       const idToken = await getIdToken()
       await axios.post(
-        `/post/reply/like/${crEntity.id}`,
+        CREATE_REPLY_LIKE.path(crEntity.id),
         {},
         {
           headers: {

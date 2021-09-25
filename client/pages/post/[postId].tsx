@@ -11,6 +11,7 @@ import { PostHead } from '../../components/molecules/Post/post-head'
 import { axios } from '../../config/axios'
 import { useAuth } from '../../context/authContext'
 import { PostWithBaseUser } from '../../types/post'
+import { GET_COMMENTS_FOR_POST, GET_ONE_POST } from '../../utils/querykeysAndPaths'
 
 const EachPost = () => {
   const router = useRouter()
@@ -21,15 +22,21 @@ const EachPost = () => {
     data: post,
     isError,
     isLoading,
-  } = useQuery<PostWithBaseUser>(['post', params.postId], async ({ queryKey }) => {
-    const idToken = await getIdToken()
-    const { data } = await axios.get(`/post/${queryKey[1]}`, {
-      headers: {
-        Authorization: `Bearer ${idToken}`,
-      },
-    })
-    return data
-  })
+  } = useQuery<PostWithBaseUser>(
+    GET_ONE_POST.queryKey(params.postId as string),
+    async () => {
+      const idToken = await getIdToken()
+      const { data } = await axios.get(GET_ONE_POST.path(params.postId as string), {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      })
+      return data
+    },
+    {
+      enabled: !!params.postId,
+    }
+  )
 
   const {
     data: commentData,
@@ -39,10 +46,11 @@ const EachPost = () => {
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery(
-    ['post', { id: post?.id, comment: true }],
+    // ['post', { id: post?.id, comment: true }],
+    GET_COMMENTS_FOR_POST.queryKey(post?.id),
     async ({ queryKey, pageParam = '' }) => {
       let qk = queryKey[1] as any
-      const { data } = await axios.get(`/post/comment/${qk.id}?cursor=${pageParam}`, {
+      const { data } = await axios.get(GET_COMMENTS_FOR_POST.path(qk.id, pageParam), {
         headers: {
           Authorization: `Bearer ${user?.idToken}`,
         },

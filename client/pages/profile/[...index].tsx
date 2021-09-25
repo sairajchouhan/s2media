@@ -9,6 +9,7 @@ import { axios } from '../../config/axios'
 import { useAuth } from '../../context/authContext'
 import { PostWithBaseUser } from '../../types/post'
 import { formQueryString } from '../../utils/helpers'
+import { GET_PROFILE_USER, GET_PROFILE_USER_POSTS } from '../../utils/querykeysAndPaths'
 
 const Profile = () => {
   const router = useRouter()
@@ -20,10 +21,10 @@ const Profile = () => {
     isLoading,
     isError,
   } = useQuery(
-    ['user', (router as any).query.index[0]],
+    GET_PROFILE_USER.queryKey((router as any).query.index[0]),
     async ({ queryKey }) => {
       const idToken = await getIdToken()
-      const { data } = await axios.get(`/user/${queryKey[1]}`, {
+      const { data } = await axios.get(GET_PROFILE_USER.path(queryKey[1]), {
         headers: {
           Authorization: `Bearer ${idToken}`,
         },
@@ -42,9 +43,8 @@ const Profile = () => {
     isIdle: isIdlePosts,
     refetch,
   } = useQuery(
-    ['user', 'post', (router as any).query.index[0]],
+    GET_PROFILE_USER_POSTS.queryKey((router as any).query.index[0]),
     async ({ queryKey }) => {
-      console.log(queryKey)
       const idToken = await getIdToken()
       const qsObj: Record<string, any> = { username: queryKey[2] }
       const { index: query } = router.query
@@ -56,7 +56,7 @@ const Profile = () => {
         qsObj.save = true
       }
       const qs = formQueryString(qsObj)
-      const { data } = await axios.get(`/post${qs}`, {
+      const { data } = await axios.get(GET_PROFILE_USER_POSTS.path(qs), {
         headers: {
           Authorization: `Bearer ${idToken}`,
         },
