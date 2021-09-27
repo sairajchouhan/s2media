@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "server for s2media",
   "main": "src/server.js",
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "scripts": {
     "dev": "nodemon",
     "start": "node dist/src/server.js",
