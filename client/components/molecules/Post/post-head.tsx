@@ -1,3 +1,4 @@
+import { formatDistanceToNow } from 'date-fns'
 import Link from 'next/link'
 import { IconComp } from '../../../types'
 import { PostWithBaseUser } from '../../../types/post'
@@ -32,7 +33,9 @@ export const PostHead = ({ post: { user, caption, createdAt }, icon }: PostHeadP
                 </div>
               </a>
             </Link>
-            <p className="text-xs leading-4 text-gray-500">{JSON.stringify(createdAt)}</p>
+            <p className="text-xs leading-4 text-gray-500">
+              {formatDistanceToNow(new Date(createdAt), { addSuffix: true })}
+            </p>
           </div>
         </div>
         <div className="">

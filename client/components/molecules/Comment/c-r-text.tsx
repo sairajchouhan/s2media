@@ -1,4 +1,5 @@
 import { Menu, Transition } from '@headlessui/react'
+import { formatDistanceToNow } from 'date-fns'
 import React, { useState } from 'react'
 import { useMutation, useQueryClient } from 'react-query'
 import { axios } from '../../../config/axios'
@@ -277,7 +278,12 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
               <p className="text-xs text-gray-500 cursor-pointer">@{crEntity.user.username}</p>
             </Link>
           </div>
-          <p className="text-xs leading-4 text-gray-500">{JSON.stringify(crEntity.createdAt)}</p>
+          <p className="text-xs leading-4 text-gray-500">
+            {formatDistanceToNow(new Date(crEntity.createdAt), {
+              addSuffix: true,
+              includeSeconds: true,
+            })}
+          </p>
         </div>
         <div className="flex">
           <Menu as="div" className="relative inline-block">
