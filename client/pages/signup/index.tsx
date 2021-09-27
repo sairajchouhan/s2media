@@ -37,7 +37,7 @@ const Signup = () => {
       await signup(data.email, data.password)
     } catch (err) {
       console.error(err)
-      setError({ isError: true, message: err.message })
+      setError({ isError: true, message: (err as any).message })
       setLoading(false)
     }
   }

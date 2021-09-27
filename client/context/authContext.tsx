@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { useRouter } from 'next/router'
-import nookies from 'nookies'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { axios } from '../config/axios'
 import firebase from '../config/firebase'
@@ -47,7 +46,8 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
                   Authorization: `Bearer ${idToken}`,
                 },
               })
-              nookies.set(undefined, 'idk', idToken, { path: '/' })
+              console.log(userResp)
+              // nookies.set(undefined, 'idk', idToken, { path: '/' })
               const {
                 data: { userFullDetials },
               } = userResp

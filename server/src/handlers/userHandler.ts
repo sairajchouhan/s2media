@@ -67,7 +67,7 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
     console.log(user)
     return res.status(201).json({
       redirect: '/home',
-      user,
+      userFullDetials: user,
     })
   }
 
@@ -84,6 +84,7 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
     })
     return res.status(201).json({ redirect: '/home', user: updatedUser })
   }
+  console.log(user, 87)
 
   return res.status(200).json({
     redirect: '/home',
