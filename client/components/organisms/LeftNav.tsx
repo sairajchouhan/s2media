@@ -3,7 +3,14 @@ import nookies from 'nookies'
 import { useAuth } from '../../context/authContext'
 import { paths } from '../../utils/paths'
 import { LeftNavPostBtn } from '../atoms/LeftNavPostBtn/LeftNavPostBtn'
-import { HomeIcon, MessageIcon, NotificationIcon, ProfileIcon, SettingsIcon } from '../icons'
+import {
+  HomeIcon,
+  LogoutIcon,
+  MessageIcon,
+  NotificationIcon,
+  ProfileIcon,
+  SettingsIcon,
+} from '../icons'
 import { LeftNavBrand, LeftNavLink, LeftNavUser } from '../molecules/LeftNav'
 
 const LeftNav = () => {
@@ -66,7 +73,7 @@ const LeftNav = () => {
         </LeftNavLink>
         <LeftNavLink
           active={pathname === '/logout'}
-          icon={() => <></>}
+          icon={LogoutIcon}
           onClick={() => handleLogout()}
         >
           Logout

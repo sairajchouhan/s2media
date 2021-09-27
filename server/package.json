@@ -5,12 +5,12 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
-    "start": "npm run build && node dist/server.js",
+    "start": "npm run build && node dist/src/server.js",
     "build": "rimraf ./dist && tsc",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "prettify": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "studio": "npx prisma studio"
+    "prisma:studio": "npx prisma studio"
   },
   "keywords": [],
   "author": "",
