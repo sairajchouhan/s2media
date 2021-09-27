@@ -1,20 +1,29 @@
 {
-  "name": "server",
+  "name": "@s2media/server",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "server for s2media",
+  "main": "src/server.js",
   "scripts": {
     "dev": "nodemon",
-    "start": "npm run build && node dist/src/server.js",
+    "start": "node dist/src/server.js",
     "build": "rimraf ./dist && tsc",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "prettify": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "prisma:studio": "npx prisma studio"
+    "heroku-postbuild": "rimraf ./dist && tsc",
+    "prisma:studio": "npx prisma studio",
+    "prisma:generate": "npx prisma generate",
+    "prisma:migrate:deploy": "npx prisma migrate deploy"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "express",
+    "postgres",
+    "prisma",
+    "node",
+    "typescript"
+  ],
+  "author": "sairaj2119",
+  "license": "MIT",
   "dependencies": {
     "@prisma/client": "^3.0.2",
     "cloudinary": "^1.26.2",
