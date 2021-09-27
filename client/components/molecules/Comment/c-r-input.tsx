@@ -6,6 +6,7 @@ import { useAuth } from '../../../context/authContext'
 import {
   GET_COMMENTS_FOR_POST,
   GET_ONE_POST,
+  GET_REPLIES_FOR_COMMENT,
   POST_COMMENT,
   POST_REPLY,
 } from '../../../utils/querykeysAndPaths'
@@ -128,10 +129,12 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
       {
         onMutate: async (inputText: string) => {
           const shouldRefetch = { value: false }
-          await queryClient.cancelQueries(['reply', { commentId: commentId }])
+          await queryClient.cancelQueries(GET_REPLIES_FOR_COMMENT.queryKey(commentId))
           await queryClient.cancelQueries(GET_ONE_POST.queryKey(postId))
 
-          const previousReplies = queryClient.getQueryData<any>(['reply', { commentId: commentId }])
+          const previousReplies = queryClient.getQueryData<any>(
+            GET_REPLIES_FOR_COMMENT.queryKey(commentId)
+          )
           const previousPost: any = queryClient.getQueryData(GET_ONE_POST.queryKey(postId))
 
           const newReply = {
@@ -165,7 +168,10 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
             const copyPreviousReplies = previousReplies
             copyPreviousReplies.pages[copyPreviousReplies.pages.length - 1].reply.push(newReply)
 
-            queryClient.setQueryData(['reply', { commentId: commentId }], copyPreviousReplies)
+            queryClient.setQueryData(
+              GET_REPLIES_FOR_COMMENT.queryKey(commentId),
+              copyPreviousReplies
+            )
             queryClient.setQueryData(GET_ONE_POST.queryKey(postId), {
               ...previousPost,
               _count: {
@@ -177,7 +183,12 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
             shouldRefetch.value = true
           }
 
-          return { previousReplies, previousPost, shouldRefetch: shouldRefetch.value }
+          return {
+            previousReplies,
+            previousPost,
+            shouldRefetch: shouldRefetch.value,
+            newReplyId: newReply.id,
+          }
         },
         onError: (_err, _vars, context) => {
           if (context?.previousReplies) {
@@ -191,8 +202,26 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
           }
         },
         onSuccess: (data, _vars, context) => {
+          console.log(data)
           if (context?.shouldRefetch) {
             refetchIfNoReplies()
+          } else {
+            const idFromServer = data.data.id
+            const previousReplies = queryClient.getQueryData<any>(
+              GET_REPLIES_FOR_COMMENT.queryKey(commentId)
+            )
+            const newReplyId = context?.newReplyId
+
+            if (previousReplies) {
+              const copyPreviousReplies = previousReplies
+              copyPreviousReplies.pages[copyPreviousReplies.pages.length - 1].reply.find(
+                (reply: any) => reply.id === newReplyId
+              ).id = idFromServer
+              queryClient.setQueryData(
+                GET_REPLIES_FOR_COMMENT.queryKey(commentId),
+                copyPreviousReplies
+              )
+            }
           }
         },
         onSettled: () => {

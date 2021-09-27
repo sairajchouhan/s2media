@@ -62,7 +62,7 @@ export const CREATE_COMMENT_LIKE = {
 
 //! REPLY
 export const GET_REPLIES_FOR_COMMENT = {
-  queryKey: (commentId: string) => {
+  queryKey: (commentId: string | undefined) => {
     return ['reply', { commentId }]
   },
   path: (postId: string, commentId: string, cursor: string) => {
