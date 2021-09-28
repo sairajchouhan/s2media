@@ -5,7 +5,7 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head />
-        <body className="debug-screens">
+        <body className={process.env.NODE_ENV !== 'production' ? 'debug-screens' : ''}>
           <Main />
           <NextScript />
         </body>
