@@ -45,7 +45,9 @@ app.use('/api/v1/post/comment/like', commentLikeRoutes)
 app.use('/api/v1/post/reply/like', replyLikeRoutes)
 
 app.use(errorMiddleware)
-const PORT = process.env.PORT || 5000
+
+const PORT = process.env.NODE_ENV === 'production' ? 80 : 5000
 app.listen(PORT, () => {
-  console.log(`server is up and running at http://localhost:${PORT}`)
+  console.log(`Running in ${process.env.NODE_ENV} mode`)
+  console.log(`Server is up and running at http://localhost:${PORT}`)
 })
