@@ -110,7 +110,9 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     <AuthContext.Provider value={returnObj}>
       {loading ? (
         <div className="flex items-center justify-center w-full h-screen bg-gray-100">
-          <h1 className="text-indigo-600 text-8xl">S2Media</h1>
+          <div className="text-indigo-600" style={{ fontSize: '6rem' }}>
+            S2Media
+          </div>
         </div>
       ) : (
         children
