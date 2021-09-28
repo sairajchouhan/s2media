@@ -1,6 +1,7 @@
 import cors from 'cors'
 import express from 'express'
 import morgan from 'morgan'
+import { initAdmin } from './config/firebase-admin'
 // import { initAdmin } from './config/firebase-admin'
 import errorMiddleware from './middlewares/error'
 import authRoutes from './routes/authRoutes'
@@ -16,7 +17,7 @@ import userRoutes from './routes/userRoutes'
 
 const app = express()
 // firebase setup
-// initAdmin()
+initAdmin()
 
 // middlewares
 app.use(morgan('dev'))
