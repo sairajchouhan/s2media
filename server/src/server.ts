@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: process.env.NODE_ENV === 'production' ? 'https://s2media.vercel.app/' : 'http://localhost:3000',
   })
 )
 
@@ -46,7 +46,7 @@ app.use('/api/v1/post/reply/like', replyLikeRoutes)
 
 app.use(errorMiddleware)
 
-const PORT = process.env.NODE_ENV === 'production' ? 80 : 5000
+const PORT = process.env.PORT || 5000
 app.listen(PORT, () => {
   console.log(`Running in ${process.env.NODE_ENV} mode`)
   console.log(`Server is up and running at http://localhost:${PORT}`)
