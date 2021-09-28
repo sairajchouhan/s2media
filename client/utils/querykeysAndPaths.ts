@@ -30,6 +30,10 @@ export const GET_ONE_POST = {
   },
 }
 
+export const CREATE_POST = {
+  path: '/post',
+}
+
 //! COMMENT
 export const GET_COMMENTS_FOR_POST = {
   queryKey: (postId: string | undefined) => {

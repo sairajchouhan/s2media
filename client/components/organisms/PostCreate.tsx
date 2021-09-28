@@ -2,6 +2,7 @@
 import axios from 'axios'
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import { useAuth } from '../../context/authContext'
+import { CREATE_POST } from '../../utils/querykeysAndPaths'
 import { AutoGrowTextArea } from '../atoms/AutoGrowTextArea'
 import { Avatar } from '../atoms/Avatar'
 import { Button } from '../atoms/Button'
@@ -77,7 +78,7 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
     try {
       console.log(formData)
       setLoading((l) => !l)
-      const res = await axios.post('http://localhost:5000/api/v1/post', formData, {
+      const res = await axios.post(CREATE_POST.path, formData, {
         headers: {
           Authorization: `Bearer ${user.idToken}`,
         },
