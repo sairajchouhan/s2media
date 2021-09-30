@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import axios from 'axios'
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
+import { axios } from '../../config/axios'
 import { useAuth } from '../../context/authContext'
 import { CREATE_POST } from '../../utils/querykeysAndPaths'
 import { AutoGrowTextArea } from '../atoms/AutoGrowTextArea'
