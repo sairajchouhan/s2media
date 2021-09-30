@@ -4,6 +4,7 @@
   "plugins": ["@typescript-eslint", "prettier"],
   "extends": ["eslint:recommended", "plugin:@typescript-eslint/eslint-recommended", "prettier"],
   "rules": {
-    "prettier/prettier": ["error", {}]
+    "prettier/prettier": ["error", {}],
+    "no-unused-vars": "warn"
   }
 }
