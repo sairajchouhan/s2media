@@ -10,4 +10,4 @@ export interface LeftNavIconProps extends IconProps {
 }
 
 // eslint-disable-next-line no-unused-vars
-export type IconComp = (props: LeftNavIconProps) => JSX.Element
+export type LeftNavIconComp = (props: LeftNavIconProps) => JSX.Element

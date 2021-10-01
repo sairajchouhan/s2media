@@ -123,6 +123,26 @@ export const deletePost = async (req: Request, res: Response) => {
     throw createError(403, 'Unauthorized')
   }
 
+  await prisma.like.deleteMany({
+    where: {
+      postId,
+    },
+  })
+  await prisma.save.deleteMany({
+    where: {
+      postId,
+    },
+  })
+  await prisma.reply.deleteMany({
+    where: {
+      postId,
+    },
+  })
+  await prisma.comment.deleteMany({
+    where: {
+      postId,
+    },
+  })
   await prisma.post.delete({
     where: {
       id: postId,

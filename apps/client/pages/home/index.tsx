@@ -13,9 +13,11 @@ const Home = () => {
       <div className="h-full border-l border-r border-opacity-80">
         {/* <Stories /> */}
 
-        <main>
+        <main className="">
           {loading ? (
-            <h1 className="text-4xl text-center text-indigo-500">Loading...</h1>
+            <h1 className="pt-10 text-4xl text-center text-indigo-500">Loading...</h1>
+          ) : posts.length === 0 ? (
+            <h1 className="pt-10 text-4xl text-center text-indigo-500">No posts yet</h1>
           ) : (
             posts.map((post: PostWithBaseUser) => (
               <React.Fragment key={post.id}>
@@ -23,11 +25,6 @@ const Home = () => {
               </React.Fragment>
             ))
           )}
-          {/* {!isLoading && (
-            <React.Fragment>
-              <Post post={posts[0]} />
-            </React.Fragment>
-          )} */}
         </main>
       </div>
     </>

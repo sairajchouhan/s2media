@@ -1,9 +1,9 @@
 import React from 'react'
-import { IconComp } from '../../../types/icon'
+import { LeftNavIconComp } from '../../../types/icon'
 
 export type LeftNavLinkProps = {
   active: boolean
-  icon: IconComp
+  icon: LeftNavIconComp
   onClick: () => void
   children: React.ReactNode
 }

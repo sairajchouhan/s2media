@@ -1,13 +1,16 @@
 import { formatDistanceToNow } from 'date-fns'
 import Link from 'next/link'
-import { IconComp } from '../../../types'
+import { LeftNavIconComp } from '../../../types'
 import { PostWithBaseUser } from '../../../types/post'
 import { paths } from '../../../utils/paths'
 import { Avatar } from '../../atoms/Avatar/avatar'
 import { IconButton } from '../../atoms/IconButton'
+import { DeleteIcon } from '../../icons/DeleteIcon'
+import { EditIcon } from '../../icons/EditIcon'
+import { Menu } from '../Menu'
 
 export interface PostHeadProps {
-  icon: IconComp
+  icon: LeftNavIconComp
   post: PostWithBaseUser
 }
 
@@ -39,7 +42,16 @@ export const PostHead = ({ post: { user, caption, createdAt }, icon }: PostHeadP
           </div>
         </div>
         <div className="">
-          <IconButton w="w-4" h="h-4" hoverBgColor="bg-gray-100" icon={icon} />
+          <Menu
+            activationButton={() => (
+              <IconButton w="w-4" h="h-4" hoverBgColor="bg-gray-100" icon={icon} />
+            )}
+          >
+            <Menu.Item icon={EditIcon}>Edit</Menu.Item>
+            <Menu.Item className="text-red-500" activeClassName="hover:bg-red-50" icon={DeleteIcon}>
+              Delete
+            </Menu.Item>
+          </Menu>
         </div>
       </div>
       {caption && (
