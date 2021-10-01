@@ -31,7 +31,7 @@ export const BaseModel = ({
         >
           <div className="min-h-screen px-4 text-center">
             <Transition.Child
-              as={Fragment}
+              as={'div'}
               enter="ease-out duration-300"
               enterFrom="opacity-0"
               enterTo="opacity-100"

@@ -1,13 +1,17 @@
 import { formatDistanceToNow } from 'date-fns'
 import Link from 'next/link'
+import { useRef, useState } from 'react'
+import { useAuth } from '../../../context/authContext'
 import { LeftNavIconComp } from '../../../types'
 import { PostWithBaseUser } from '../../../types/post'
 import { paths } from '../../../utils/paths'
 import { Avatar } from '../../atoms/Avatar/avatar'
+import { Button } from '../../atoms/Button'
 import { IconButton } from '../../atoms/IconButton'
 import { DeleteIcon } from '../../icons/DeleteIcon'
-import { EditIcon } from '../../icons/EditIcon'
 import { Menu } from '../Menu'
+import { Model } from '../Model'
+import { ModelFoot } from '../Model/model-foot'
 
 export interface PostHeadProps {
   icon: LeftNavIconComp
@@ -15,6 +19,10 @@ export interface PostHeadProps {
 }
 
 export const PostHead = ({ post: { user, caption, createdAt }, icon }: PostHeadProps) => {
+  const { user: authUser } = useAuth()
+  const cancelRef = useRef<HTMLButtonElement | null>(null)
+  const [open, setOpen] = useState(false)
+
   return (
     <div>
       <div className="flex items-center justify-between px-2 py-2">
@@ -47,10 +55,18 @@ export const PostHead = ({ post: { user, caption, createdAt }, icon }: PostHeadP
               <IconButton w="w-4" h="h-4" hoverBgColor="bg-gray-100" icon={icon} />
             )}
           >
-            <Menu.Item icon={EditIcon}>Edit</Menu.Item>
-            <Menu.Item className="text-red-500" activeClassName="hover:bg-red-50" icon={DeleteIcon}>
-              Delete
-            </Menu.Item>
+            {authUser?.uid === user.uid ? (
+              <Menu.Item
+                className="text-red-500"
+                activeClassName="hover:bg-red-50"
+                icon={DeleteIcon}
+                onClick={() => setOpen(true)}
+              >
+                Delete
+              </Menu.Item>
+            ) : (
+              <Menu.Item>Report</Menu.Item>
+            )}
           </Menu>
         </div>
       </div>
@@ -59,6 +75,31 @@ export const PostHead = ({ post: { user, caption, createdAt }, icon }: PostHeadP
           <p className="items-end flex-1 text-base leading-6 text-gray-700">{caption}</p>
         </div>
       )}
+      <Model open={open} toggleOpen={() => setOpen((open) => !open)} initialFoucsRef={cancelRef}>
+        <Model.Head title="Delete Post" toggleOpen={() => setOpen((open) => !open)} />
+        <Model.Body>
+          <p className="my-3 text-md">
+            🔴 Deleting the post will delete all the likes, comments and replies related to this
+            post
+          </p>
+        </Model.Body>
+        <ModelFoot>
+          <div className="flex justify-end">
+            <Button
+              ref={cancelRef}
+              variant="outline"
+              onClick={() => setOpen(!open)}
+              colorScheme="gray"
+            >
+              Cancel
+            </Button>
+            <span className="mx-2"></span>
+            <Button variant="solid" colorScheme="red">
+              Delete
+            </Button>
+          </div>
+        </ModelFoot>
+      </Model>
     </div>
   )
 }

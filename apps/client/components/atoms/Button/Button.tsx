@@ -86,33 +86,40 @@ const baseClasses = [
   'shadow',
 ]
 
-export const Button = ({
-  colorScheme = 'indigo',
-  variant = 'solid',
-  disabled = false,
-  loading = false,
-  children,
-  ...props
-}: ButtonProps) => {
-  return (
-    <button
-      {...props}
-      className={`
+// eslint-disable-next-line react/display-name
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      colorScheme = 'indigo',
+      variant = 'solid',
+      disabled = false,
+      loading = false,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <button
+        {...props}
+        className={`
 			${baseClasses.join(' ')} 
 			${variant === 'solid' ? getSolidColorClasses(colorScheme, disabled).join(' ') : ''}
 			${variant === 'outline' ? getOutlineColorClasses(colorScheme, disabled).join(' ') : ''}
 			${disabled && 'cursor-not-allowed'}
 			relative disabled:opacity-70 
 			`}
-      disabled={disabled || loading}
-    >
-      {loading && (
-        <div className="absolute inset-0 flex items-center justify-center red-100">
-          <Loader />
-        </div>
-      )}
+        disabled={disabled || loading}
+        ref={ref}
+      >
+        {loading && (
+          <div className="absolute inset-0 flex items-center justify-center red-100">
+            <Loader />
+          </div>
+        )}
 
-      <div className={`${loading && 'invisible'}`}>{children}</div>
-    </button>
-  )
-}
+        <div className={`${loading && 'invisible'}`}>{children}</div>
+      </button>
+    )
+  }
+)
