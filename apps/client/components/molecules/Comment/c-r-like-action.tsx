@@ -10,35 +10,9 @@ const CommentReplyLikeAction = ({ isReply, crEntity }: { isReply: boolean; crEnt
     crEntity?.like?.some((like: any) => like.userId === user?.uid) ?? false
   )
 
-  const handleCommentLike = async () => {
-    const currentLikes = crLikeCount
-    if (userLiked) {
-      setUserLiked(false)
-      setCrLikeCount((like) => like - 1)
-    }
-    if (!userLiked) {
-      setUserLiked(true)
-      setCrLikeCount((like) => like + 1)
-    }
-    try {
-      const idToken = await getIdToken()
-      await axios.post(
-        CREATE_COMMENT_LIKE.path(crEntity.id),
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${idToken}`,
-          },
-        }
-      )
-    } catch (err) {
-      setCrLikeCount(currentLikes)
-      setUserLiked((state) => !state)
-      console.error(err)
-    }
-  }
+  console.log(crEntity)
 
-  const handleReplyLike = async () => {
+  const handleCommentReplyLike = async () => {
     const currentLikes = crLikeCount
     if (userLiked) {
       setUserLiked(false)
@@ -51,8 +25,8 @@ const CommentReplyLikeAction = ({ isReply, crEntity }: { isReply: boolean; crEnt
     try {
       const idToken = await getIdToken()
       await axios.post(
-        CREATE_REPLY_LIKE.path(crEntity.id),
-        {},
+        isReply ? CREATE_REPLY_LIKE.path(crEntity.id) : CREATE_COMMENT_LIKE.path(crEntity.id),
+        { postId: crEntity.postId },
         {
           headers: {
             Authorization: `Bearer ${idToken}`,
@@ -70,7 +44,7 @@ const CommentReplyLikeAction = ({ isReply, crEntity }: { isReply: boolean; crEnt
     <>
       <button
         className="rounded cursor-pointer p-0.5 hover:bg-gray-100"
-        onClick={() => (isReply ? handleReplyLike() : handleCommentLike())}
+        onClick={handleCommentReplyLike}
       >
         <span className={userLiked ? 'text-red-500' : 'text-gray-500'}>Like</span>
       </button>

@@ -42,6 +42,7 @@ model Post{
   id String @id @default(cuid())
   url String 
   caption String?
+  imagePublicId String
   like Like[]
   save Save[]
   comment Comment[]
@@ -108,6 +109,7 @@ model CommentReplyLike {
   userId String
   commentId String?
   replyId String?
+  postId String
   user User @relation(fields: [userId], references: [uid])
   comment Comment? @relation(fields: [commentId], references: [id])
   reply Reply? @relation(fields: [replyId], references: [id])

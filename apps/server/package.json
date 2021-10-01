@@ -13,7 +13,8 @@
     "heroku-postbuild": "rimraf ./dist && tsc",
     "prisma:studio": "npx prisma studio",
     "prisma:generate": "npx prisma generate",
-    "prisma:migrate:deploy": "npx prisma migrate deploy"
+    "prisma:migrate:deploy": "npx prisma migrate deploy",
+    "prisma:migrate:dev": "npx prisma migrate dev"
   },
   "keywords": [
     "express",

@@ -3,9 +3,9 @@ import createError from 'http-errors'
 import prisma from '../../prisma'
 
 export const likeOrUnlikeComment = async (req: Request, res: Response) => {
-  console.log('req received')
   const commentId = req.params.commentId
   const userId = req.user.uid
+  const postId = req.body.postId
 
   const comment = await prisma.comment.findUnique({
     where: {
@@ -24,6 +24,7 @@ export const likeOrUnlikeComment = async (req: Request, res: Response) => {
       data: {
         commentId,
         userId,
+        postId,
       },
     })
     return res.json({ commentLiked: true })
@@ -42,6 +43,7 @@ export const likeOrUnlikeReply = async (req: Request, res: Response) => {
   console.log('Like or Unlike Reply')
   const replyId = req.params.replyId
   const userId = req.user.uid
+  const postId = req.body.postId
 
   const reply = await prisma.reply.findUnique({
     where: {
@@ -60,6 +62,7 @@ export const likeOrUnlikeReply = async (req: Request, res: Response) => {
       data: {
         replyId,
         userId,
+        postId,
       },
     })
     return res.json({ replyLiked: true })

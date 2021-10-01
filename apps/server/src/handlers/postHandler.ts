@@ -1,14 +1,14 @@
 import { Request, Response } from 'express'
 import createError from 'http-errors'
 import prisma from '../../prisma/'
-import { cloudinaryPostImageUpload } from '../config/cloudinary'
+import { cloudinary, cloudinaryPostImageUpload } from '../config/cloudinary'
 import { formatBufferTo64 } from '../config/data-uri'
 
 export const createPost = async (req: Request, res: Response) => {
   const { caption }: { caption: string } = req.body
 
   if (!req.file) {
-    throw createError(404, 'Post does not exist')
+    throw createError(404, 'Post must contain a image')
   }
 
   const base64file = formatBufferTo64(req.file)
@@ -19,6 +19,7 @@ export const createPost = async (req: Request, res: Response) => {
       url: imageUploadRes.secure_url,
       caption: caption,
       userId: req.user.uid,
+      imagePublicId: imageUploadRes.public_id,
     },
   })
 
@@ -128,6 +129,13 @@ export const deletePost = async (req: Request, res: Response) => {
       postId,
     },
   })
+
+  await prisma.commentReplyLike.deleteMany({
+    where: {
+      postId,
+    },
+  })
+
   await prisma.save.deleteMany({
     where: {
       postId,
@@ -138,16 +146,20 @@ export const deletePost = async (req: Request, res: Response) => {
       postId,
     },
   })
+
   await prisma.comment.deleteMany({
     where: {
       postId,
     },
   })
+
   await prisma.post.delete({
     where: {
       id: postId,
     },
   })
+
+  await cloudinary.api.delete_resources([post.imagePublicId])
 
   return res.json({ message: 'Post deleted successfully' })
 }

@@ -15,3 +15,5 @@ export const cloudinaryUserProfileImageUpload = (file: string, folder: string = 
   cloudinary.uploader.upload(file, {
     folder,
   })
+
+export { cloudinary }
