@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import React from 'react'
 import { CircleLoader } from '../../components/atoms/CircleLoader'
 import { Post } from '../../components/organisms/Post'
@@ -11,10 +12,11 @@ const Home = () => {
 
   return (
     <>
-      {/* <PageNav title="Home" /> */}
+      <Head>
+        <title>Home / S2Media</title>
+      </Head>
       <div className="h-full border-l border-r border-opacity-80">
         {/* <Stories /> */}
-
         <main className="">
           {loading ? (
             <CircleLoader className="pt-10" />

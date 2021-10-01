@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
 import { Button } from '../../components/atoms/Button'
 import { Input } from '../../components/atoms/Input/Input'
@@ -48,6 +49,9 @@ const Signup = () => {
 
   return (
     <UnAuthenticatedLayout>
+      <Head>
+        <title>SignUp / S2Media</title>
+      </Head>
       <div className="flex flex-col items-center">
         <h1 className="my-4 text-5xl">Signup</h1>
         <div className="flex flex-col w-1/3">

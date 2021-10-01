@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
@@ -86,6 +87,9 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen border-l border-r border-opacity-80">
+      <Head>
+        <title>{user ? `${user.profile.displayName} / ` : ''}S2Media</title>
+      </Head>
       {isLoading ? (
         <CircleLoader className="pt-10" />
       ) : (

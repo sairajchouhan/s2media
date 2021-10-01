@@ -5,6 +5,7 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head />
+        <title>S2Media</title>
         <body className={process.env.NODE_ENV !== 'production' ? 'debug-screens' : ''}>
           <Main />
           <NextScript />

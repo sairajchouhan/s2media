@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { useInfiniteQuery, useQuery } from 'react-query'
@@ -75,6 +76,9 @@ const EachPost = () => {
 
   return (
     <div className="min-h-screen border-l border-r border-opacity-80">
+      <Head>
+        <title>Post / S2Media</title>
+      </Head>
       <PageNav title="Post" />
       <main className="">
         {isLoading ? (
