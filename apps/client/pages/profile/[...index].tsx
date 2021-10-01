@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
+import { CircleLoader } from '../../components/atoms/CircleLoader'
 import { PageNav } from '../../components/molecules/Page/page-nav'
 import { ProfileCard } from '../../components/molecules/Profile'
 import ProfileNav from '../../components/molecules/Profile/profile-nav'
@@ -81,28 +82,32 @@ const Profile = () => {
   }, [router, refetch])
 
   if (isError || isErrorPosts) return <div>Something went wrong</div>
-  if (isLoading || isLoadingPosts) return <div>Loading...</div>
   if (!isLoading && isIdlePosts) return <div>Something went wrong</div>
 
   return (
     <div className="min-h-screen border-l border-r border-opacity-80">
-      <PageNav title="Profile" subtitle={`@${user.username}`} />
-      <main className="flex flex-col mt-4">
-        <ProfileCard profileUser={user} />
-        <ProfileNav active={active} username={user.username} />
-
-        <section className="mb-4">
-          {isLoading || isLoadingPosts ? (
-            <h1 className="mt-5 text-4xl text-center text-indigo-500">Loading...</h1>
-          ) : posts.length > 0 ? (
-            posts.map((post: PostWithBaseUser) => <Post key={post.id} post={post} />)
-          ) : (
-            <h1 className="mt-5 text-4xl text-center text-indigo-500">
-              No {active !== 'all' ? active : ''} posts yet
-            </h1>
-          )}
-        </section>
-      </main>
+      {isLoading ? (
+        <CircleLoader className="pt-10" />
+      ) : (
+        <>
+          <PageNav title="Profile" subtitle={`@${user.username}`} />
+          <main className="flex flex-col mt-4">
+            <ProfileCard profileUser={user} />
+            <ProfileNav active={active} username={user.username} />
+            <section className="mb-4">
+              {isLoadingPosts ? (
+                <CircleLoader className="pt-10" />
+              ) : posts.length > 0 ? (
+                posts.map((post: PostWithBaseUser) => <Post key={post.id} post={post} />)
+              ) : (
+                <h1 className="mt-5 text-4xl text-center text-indigo-500">
+                  No {active !== 'all' ? active : ''} posts yet
+                </h1>
+              )}
+            </section>
+          </main>
+        </>
+      )}
     </div>
   )
 }

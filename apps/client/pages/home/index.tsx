@@ -1,4 +1,5 @@
 import React from 'react'
+import { CircleLoader } from '../../components/atoms/CircleLoader'
 import { Post } from '../../components/organisms/Post'
 import { useQuery } from '../../hooks/useQuery'
 import { PostWithBaseUser } from '../../types/post'
@@ -10,12 +11,13 @@ const Home = () => {
 
   return (
     <>
+      {/* <PageNav title="Home" /> */}
       <div className="h-full border-l border-r border-opacity-80">
         {/* <Stories /> */}
 
         <main className="">
           {loading ? (
-            <h1 className="pt-10 text-4xl text-center text-indigo-500">Loading...</h1>
+            <CircleLoader className="pt-10" />
           ) : posts.length === 0 ? (
             <h1 className="pt-10 text-4xl text-center text-indigo-500">No posts yet</h1>
           ) : (

@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { useInfiniteQuery, useQuery } from 'react-query'
 import { Button } from '../../components/atoms/Button'
+import { CircleLoader } from '../../components/atoms/CircleLoader'
 import { NextImage } from '../../components/atoms/Image'
 import { DotsHorizontal } from '../../components/icons'
 import { Comment, CommentReplyInput } from '../../components/molecules/Comment'
@@ -77,7 +78,7 @@ const EachPost = () => {
       <PageNav title="Post" />
       <main className="">
         {isLoading ? (
-          <h1>Loading...</h1>
+          <CircleLoader className="pt-10" />
         ) : (
           <>
             <PostHead post={post} icon={DotsHorizontal} />
@@ -88,7 +89,7 @@ const EachPost = () => {
             <section className="px-4 pb-10 mb-20 border-opacity-80">
               <CommentReplyInput isReply={false} postId={post.id} />
               {isLoadingComments ? (
-                <div>Loading...</div>
+                <CircleLoader />
               ) : isErrorComments ? (
                 <div>Something went wrong</div>
               ) : (
