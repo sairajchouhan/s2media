@@ -1,6 +1,5 @@
-import { Menu, Transition } from '@headlessui/react'
 import { formatDistanceToNow } from 'date-fns'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useMutation, useQueryClient } from 'react-query'
 import { axios } from '../../../config/axios'
 import { useAuth } from '../../../context/authContext'
@@ -14,10 +13,13 @@ import {
   GET_ONE_POST,
   GET_REPLIES_FOR_COMMENT,
 } from '../../../utils/querykeysAndPaths'
-import { IconButton } from '../../atoms/IconButton/icon-button'
+import { IconButton } from '../../atoms/IconButton'
 import { Input } from '../../atoms/Input/Input'
-import { DotsHorizontal } from '../../icons'
+import { DeleteIcon } from '../../icons/DeleteIcon'
+import { DotsHorizontal } from '../../icons/DotsHorizontal'
+import { EditIcon } from '../../icons/EditIcon'
 import { Link } from '../../Link'
+import { Menu } from '../Menu'
 
 export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply: boolean }) => {
   const { user, getIdToken } = useAuth()
@@ -286,7 +288,35 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
           </p>
         </div>
         <div className="flex">
-          <Menu as="div" className="relative inline-block">
+          <Menu
+            activationButton={() => (
+              <IconButton w="w-4" h="h-4" hoverBgColor="bg-gray-100" icon={DotsHorizontal} />
+            )}
+          >
+            {crEntity.userId === user?.uid ? (
+              <>
+                <Menu.Item
+                  icon={EditIcon}
+                  onClick={() => setEdit((edit) => ({ ...edit, show: true }))}
+                >
+                  Edit
+                </Menu.Item>
+                <Menu.Item
+                  className="text-red-500"
+                  activeClassName="hover:bg-red-50"
+                  icon={DeleteIcon}
+                  onClick={handleCrDelete}
+                >
+                  Delete
+                </Menu.Item>
+              </>
+            ) : (
+              <>
+                <Menu.Item>Report</Menu.Item>
+              </>
+            )}
+          </Menu>
+          {/* <Menu as="div" className="relative inline-block">
             <div>
               <Menu.Button as="div">
                 <IconButton w="w-4" h="h-4" hoverBgColor="bg-gray-100" icon={DotsHorizontal} />
@@ -348,7 +378,7 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
                 </div>
               </Menu.Items>
             </Transition>
-          </Menu>
+          </Menu> */}
         </div>
       </div>
       <div className="pb-2 mt-1">
