@@ -29,6 +29,7 @@
     "lint:client": "yarn workspace @s2media/client run lint",
     "lint:server": "yarn workspace @s2media/server run lint",
     "lint": "npm-run-all lint:*",
+    "studio:server": "yarn workspace @s2media/server run prisma:studio",
     "prepare": "husky install"
   },
   "devDependencies": {

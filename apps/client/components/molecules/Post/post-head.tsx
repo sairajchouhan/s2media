@@ -1,6 +1,8 @@
 import { formatDistanceToNow } from 'date-fns'
 import Link from 'next/link'
 import { useRef, useState } from 'react'
+import { useMutation } from 'react-query'
+import { axios } from '../../../config/axios'
 import { useAuth } from '../../../context/authContext'
 import { LeftNavIconComp } from '../../../types'
 import { PostWithBaseUser } from '../../../types/post'
@@ -18,10 +20,36 @@ export interface PostHeadProps {
   post: PostWithBaseUser
 }
 
-export const PostHead = ({ post: { user, caption, createdAt }, icon }: PostHeadProps) => {
-  const { user: authUser } = useAuth()
+export const PostHead = ({ post: { user, id, caption, createdAt }, icon }: PostHeadProps) => {
+  const { user: authUser, getIdToken } = useAuth()
   const cancelRef = useRef<HTMLButtonElement | null>(null)
   const [open, setOpen] = useState(false)
+
+  const postDeleteMutation = useMutation(
+    async (id: string) => {
+      const idToken = await getIdToken()
+      const res = await axios.delete(`/post/${id}`, {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      })
+      return res.data
+    },
+    {
+      onSuccess: (data) => {
+        console.log(data)
+        setOpen(false)
+      },
+      onError: (err) => {
+        console.log('error in deleting the post')
+        console.log(err)
+      },
+    }
+  )
+
+  const handleDeletePost = async () => {
+    postDeleteMutation.mutate(id)
+  }
 
   return (
     <div>
@@ -94,7 +122,12 @@ export const PostHead = ({ post: { user, caption, createdAt }, icon }: PostHeadP
               Cancel
             </Button>
             <span className="mx-2"></span>
-            <Button variant="solid" colorScheme="red">
+            <Button
+              loading={postDeleteMutation.isLoading}
+              onClick={() => handleDeletePost()}
+              variant="solid"
+              colorScheme="red"
+            >
               Delete
             </Button>
           </div>
