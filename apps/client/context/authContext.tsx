@@ -32,7 +32,6 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
   const [user, setUser] = useState<AuthUser | null>(null)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
-  console.log(user)
 
   useEffect(() => {
     const unsub = firebase.auth().onAuthStateChanged((user) => {
@@ -46,7 +45,6 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
                   Authorization: `Bearer ${idToken}`,
                 },
               })
-              console.log(userResp)
               // nookies.set(undefined, 'idk', idToken, { path: '/' })
               const {
                 data: { userFullDetials },
