@@ -38,8 +38,6 @@ const Profile = () => {
     }
   )
 
-  console.log(userData)
-
   const {
     data: posts,
     isLoading: isLoadingPosts,
@@ -59,14 +57,14 @@ const Profile = () => {
         qsObj.save = true
       }
       const qs = formQueryString(qsObj)
-      const { data } = await axios.get(GET_PROFILE_USER_POSTS.path(qs), {
+      const { data } = await axios.get(GET_PROFILE_USER_POSTS.path(userData.user.username, qs), {
         headers: {
           Authorization: `Bearer ${idToken}`,
         },
       })
       const nowActive = qsObj.like ? 'liked' : qsObj.save ? 'saved' : 'all'
       setActive(nowActive)
-      return data
+      return data.posts
     },
     {
       enabled: !!userData && !!userData?.canViewFullProfile,

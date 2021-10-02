@@ -15,8 +15,8 @@ export const GET_PROFILE_USER_POSTS = {
   queryKey: (username: string) => {
     return ['user', 'post', username]
   },
-  path: (queryString: string) => {
-    return `/post${queryString}`
+  path: (username: string, queryString: string) => {
+    return `/user/${username}/post${queryString}`
   },
 }
 

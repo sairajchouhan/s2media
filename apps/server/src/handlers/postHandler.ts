@@ -26,38 +26,8 @@ export const createPost = async (req: Request, res: Response) => {
   return res.send(createdPost)
 }
 
-export const allPosts = async (req: Request, res: Response) => {
-  const username = (req.query.username as string) ?? undefined
-  const likeBool = req.query.like ?? undefined
-  const saveBool = req.query.save ?? undefined
-
-  const where: Record<string, any> = {}
-
-  if (username) {
-    where.user = {}
-    where.user.username = username
-  }
-  if (likeBool) {
-    where['like'] = {
-      some: {
-        user: {
-          username,
-        },
-      },
-    }
-  }
-  if (saveBool) {
-    where['save'] = {
-      some: {
-        user: {
-          username,
-        },
-      },
-    }
-  }
-
+export const allPosts = async (_req: Request, res: Response) => {
   const posts = await prisma.post.findMany({
-    where: where,
     take: 10,
     orderBy: {
       createdAt: 'desc',

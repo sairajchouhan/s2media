@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import ash from 'express-async-handler'
-import { body, param } from 'express-validator'
+import { body, param, query } from 'express-validator'
 import { getAllPostsOfUser, getAllUsers, getAuthUserInfo, getUserInfo, updateProfile } from '../handlers/userHandler'
 import auth from '../middlewares/auth'
 import follow from '../middlewares/follow'
@@ -12,7 +12,18 @@ const router = Router()
 router.get('/me', auth, ash(getAuthUserInfo))
 router.get('/all', ash(getAllUsers))
 router.get('/:username', auth, follow, [param('username').exists().trim().escape()], validate, ash(getUserInfo))
-router.get('/:username/post', [param('username').exists()], validate, ash(getAllPostsOfUser))
+router.get(
+  '/:username/post',
+  auth,
+
+  [
+    param('username').exists().trim().escape(),
+    query('like').optional().toBoolean(),
+    query('save').optional().toBoolean(),
+  ],
+  validate,
+  ash(getAllPostsOfUser)
+)
 
 router.put(
   '/profile',

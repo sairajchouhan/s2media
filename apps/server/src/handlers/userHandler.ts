@@ -177,23 +177,53 @@ export const getUserInfo = async (req: Request, res: Response) => {
 }
 
 export const getAllPostsOfUser = async (req: Request, res: Response) => {
-  const id = req.params.userId
+  const username = (req.query.username as string) ?? undefined
+  const likeBool = req.query.like ?? undefined
+  const saveBool = req.query.save ?? undefined
+
+  const where: Record<string, any> = {}
+
+  if (username) {
+    where.user = {}
+    where.user.username = username
+  }
+  if (likeBool) {
+    where['like'] = {
+      some: {
+        user: {
+          username,
+        },
+      },
+    }
+  }
+  if (saveBool) {
+    where['save'] = {
+      some: {
+        user: {
+          username,
+        },
+      },
+    }
+  }
+
   const posts = await prisma.post.findMany({
-    where: {
-      userId: id,
+    where: where,
+    take: 10,
+    orderBy: {
+      createdAt: 'desc',
     },
     include: {
+      _count: { select: { like: true, comment: true, reply: true } },
+      like: true,
+      comment: true,
+      save: true,
       user: {
         include: {
           profile: true,
         },
       },
-      like: true,
-      comment: true,
-    },
-    orderBy: {
-      createdAt: 'desc',
     },
   })
-  return res.json(posts)
+
+  return res.json({ posts })
 }
