@@ -147,6 +147,7 @@ export const updateProfile = async (req: Request, res: Response) => {
 
 export const getUserInfo = async (req: Request, res: Response) => {
   const username = req.params.username
+  const canViewFullProfile = req.canViewFullProfile
   const includeObj = {
     _count: {
       select: {
@@ -157,9 +158,8 @@ export const getUserInfo = async (req: Request, res: Response) => {
       },
     },
     profile: true,
-    save: true,
-    followers: true,
-    following: true,
+    followers: canViewFullProfile,
+    following: canViewFullProfile,
   }
 
   const user = await prisma.user.findUnique({
@@ -173,7 +173,7 @@ export const getUserInfo = async (req: Request, res: Response) => {
     throw createError(403, 'User not found')
   }
 
-  res.json(user)
+  res.json({ user, canViewFullProfile })
 }
 
 export const getAllPostsOfUser = async (req: Request, res: Response) => {

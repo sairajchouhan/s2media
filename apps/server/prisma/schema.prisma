@@ -13,14 +13,15 @@ model User {
   username  String   @unique
   avatar    String?   
   provider  String   
+  profileType ProfileType @default(PUBLIC)
   profile   Profile?
   post Post[]
   like Like[]
   save Save[]
   reply Reply[]
   repliedTo Reply[] @relation("repliedToUser")
-  followers Follow[] @relation("followed")
-  following Follow[] @relation("follower")
+  followers Follow[] @relation("followed") // You are being followed
+  following Follow[] @relation("follower") // You are a folloser
   comment Comment[]
   crLikes CommentReplyLike[]
   createdAt DateTime @default(now())
@@ -125,4 +126,9 @@ model Follow {
   follower User @relation(name: "follower", fields: [followerId], references: [uid])
   createdAt DateTime @default(now())
   @@unique([followedId, followerId])
+}
+
+enum ProfileType {
+  PUBLIC
+  PRIVATE
 }
