@@ -6,6 +6,7 @@ import {
   getAllUsers,
   getAuthUserInfo,
   getFollowersOfUser,
+  getFollowingOfUser,
   getUserInfo,
   updateProfile,
 } from '../handlers/userHandler'
@@ -39,7 +40,14 @@ router.get(
   follow,
   ash(getFollowersOfUser)
 )
-router.get('/:username/following')
+router.get(
+  '/:username/following',
+  auth,
+  param('username').exists().trim().escape(),
+  validate,
+  follow,
+  ash(getFollowingOfUser)
+)
 
 router.put(
   '/profile',

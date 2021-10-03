@@ -94,3 +94,21 @@ export const CREATE_REPLY_LIKE = {
     return `/post/reply/like/${postId}/${replyId}`
   },
 }
+
+//! FOLLOW
+export const GET_USER_FOLLOWERS = {
+  queryKey: (username: string) => {
+    return ['user', 'followers', username]
+  },
+  path: (username: string, cursor: string) => {
+    return `/user/${username}/followers?cursor=${cursor}`
+  },
+}
+export const GET_USER_FOLLOWING = {
+  queryKey: (username: string) => {
+    return ['user', 'following', username]
+  },
+  path: (username: string, cursor: string) => {
+    return `/user/${username}/following?cursor=${cursor}`
+  },
+}

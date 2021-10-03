@@ -8,9 +8,10 @@ import { ProfileCardStats } from './profile-card-stats'
 
 export interface ProfileCardProps {
   profileUser: AuthUser
+  canViewFullProfile: boolean
 }
 
-export const ProfileCard = ({ profileUser }: ProfileCardProps) => {
+export const ProfileCard = ({ profileUser, canViewFullProfile }: ProfileCardProps) => {
   const [open, setOpen] = useState(false)
 
   const toggleOpen = () => {
@@ -40,16 +41,19 @@ export const ProfileCard = ({ profileUser }: ProfileCardProps) => {
         </div>
         <div className="flex items-center justify-between">
           <ProfileCardStats
+            canViewFullProfile={canViewFullProfile}
             profileUserUsername={profileUser.username}
             type="posts"
             count={profileUser._count.post}
           />
           <ProfileCardStats
+            canViewFullProfile={canViewFullProfile}
             profileUserUsername={profileUser.username}
             type="followers"
             count={profileUser._count.followers}
           />
           <ProfileCardStats
+            canViewFullProfile={canViewFullProfile}
             profileUserUsername={profileUser.username}
             type="following"
             count={profileUser._count.following}

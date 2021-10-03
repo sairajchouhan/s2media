@@ -29,6 +29,10 @@
     "lint:client": "yarn workspace @s2media/client run lint",
     "lint:server": "yarn workspace @s2media/server run lint",
     "lint": "npm-run-all lint:*",
+    "clean:server": "yarn workspace @s2media/client run clean",
+    "clean:client": "yarn workspace @s2media/client run clean",
+    "clean:root": "rm -rf /node_modules",
+    "clean": "npm-run-all clean:*",
     "studio:server": "yarn workspace @s2media/server run prisma:studio",
     "migrate:dev": "yarn workspace @s2media/server run prisma:migrate:dev",
     "prepare": "husky install"

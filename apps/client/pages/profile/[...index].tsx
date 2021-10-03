@@ -94,7 +94,10 @@ const Profile = () => {
         <>
           <PageNav title="Profile" subtitle={`@${userData.user.username}`} />
           <main className="flex flex-col mt-4">
-            <ProfileCard profileUser={userData.user} />
+            <ProfileCard
+              profileUser={userData.user}
+              canViewFullProfile={userData.canViewFullProfile}
+            />
             {userData.canViewFullProfile ? (
               <>
                 <ProfileNav active={active} username={userData.user.username} />

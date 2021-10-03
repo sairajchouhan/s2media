@@ -243,7 +243,15 @@ export const getFollowersOfUser = async (req: Request, res: Response) => {
       followers: {
         take: 10,
         include: {
-          follower: true,
+          follower: {
+            include: {
+              profile: {
+                select: {
+                  displayName: true,
+                },
+              },
+            },
+          },
         },
         select: undefined,
       },
@@ -257,4 +265,43 @@ export const getFollowersOfUser = async (req: Request, res: Response) => {
   const followers = data.followers.map((follower) => follower.follower)
 
   return res.json({ followers })
+}
+
+export const getFollowingOfUser = async (req: Request, res: Response) => {
+  const username = req.params.username
+
+  if (!req.canViewPrivateInfo) {
+    return res.status(403).json({ message: 'You are not authorized to view this information' })
+  }
+
+  const data = await prisma.user.findUnique({
+    where: {
+      username,
+    },
+    include: {
+      following: {
+        take: 10,
+        include: {
+          followed: {
+            include: {
+              profile: {
+                select: {
+                  displayName: true,
+                },
+              },
+            },
+          },
+        },
+        select: undefined,
+      },
+    },
+  })
+
+  if (!data) {
+    return res.json(400).end('User not found')
+  }
+
+  const following = data.following.map((following) => following.followed)
+
+  return res.json({ following })
 }
