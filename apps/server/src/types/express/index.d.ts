@@ -25,6 +25,6 @@ declare namespace Express {
         [key: string]: any
       }
     }
-    canViewFullProfile: boolean
+    canViewPrivateInfo: boolean
   }
 }

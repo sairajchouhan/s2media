@@ -147,7 +147,7 @@ export const updateProfile = async (req: Request, res: Response) => {
 
 export const getUserInfo = async (req: Request, res: Response) => {
   const username = req.params.username
-  const canViewFullProfile = req.canViewFullProfile
+  const canViewFullProfile = req.canViewPrivateInfo
   const includeObj = {
     _count: {
       select: {

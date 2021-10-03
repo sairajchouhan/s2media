@@ -1,3 +1,4 @@
+import type { AxiosError } from 'axios'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React from 'react'
@@ -24,7 +25,8 @@ const EachPost = () => {
     data: post,
     isError,
     isLoading,
-  } = useQuery<PostWithBaseUser>(
+    error,
+  } = useQuery<PostWithBaseUser, AxiosError>(
     GET_ONE_POST.queryKey(params.postId as string),
     async () => {
       const idToken = await getIdToken()
@@ -37,6 +39,7 @@ const EachPost = () => {
     },
     {
       enabled: !!params.postId,
+      retry: false,
     }
   )
 
@@ -48,7 +51,6 @@ const EachPost = () => {
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery(
-    // ['post', { id: post?.id, comment: true }],
     GET_COMMENTS_FOR_POST.queryKey(post?.id),
     async ({ queryKey, pageParam = '' }) => {
       let qk = queryKey[1] as any
@@ -71,7 +73,13 @@ const EachPost = () => {
     fetchNextPage()
   }
 
-  if (isError) return <h1>An error has occured</h1>
+  if (isError) {
+    return error?.response?.status === 403 ? (
+      <div>
+        <h1>Not Authorised to view the requested source</h1>
+      </div>
+    ) : null
+  }
   if (!post) return null
 
   return (

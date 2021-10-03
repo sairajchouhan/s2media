@@ -3,6 +3,7 @@ import ash from 'express-async-handler'
 import { body, param, query } from 'express-validator'
 import { allPosts, createPost, deletePost, getPostById, updatePost } from '../handlers/postHandler'
 import auth from '../middlewares/auth'
+import follow from '../middlewares/follow'
 import { singleImageUploadMiddleware } from '../middlewares/singleImageUpload'
 import validate from '../middlewares/validate'
 
@@ -29,7 +30,7 @@ router.post(
   ash(createPost)
 )
 
-router.get('/:postId', [param('postId').not().isEmpty()], validate, ash(getPostById))
+router.get('/:postId', auth, follow, [param('postId').not().isEmpty()], validate, ash(getPostById))
 router.put(
   '/:postId',
   auth,
