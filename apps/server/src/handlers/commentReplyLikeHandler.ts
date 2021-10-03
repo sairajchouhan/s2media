@@ -5,7 +5,7 @@ import prisma from '../../prisma'
 export const likeOrUnlikeComment = async (req: Request, res: Response) => {
   const commentId = req.params.commentId
   const userId = req.user.uid
-  const postId = req.body.postId
+  const postId = req.params.postId
 
   const comment = await prisma.comment.findUnique({
     where: {
@@ -43,7 +43,7 @@ export const likeOrUnlikeReply = async (req: Request, res: Response) => {
   console.log('Like or Unlike Reply')
   const replyId = req.params.replyId
   const userId = req.user.uid
-  const postId = req.body.postId
+  const postId = req.params.postId
 
   const reply = await prisma.reply.findUnique({
     where: {

@@ -59,8 +59,8 @@ export const DELETE_COMMENT = {
 }
 
 export const CREATE_COMMENT_LIKE = {
-  path: (commentId: string) => {
-    return `/post/comment/like/${commentId}`
+  path: (postId: string, commentId: string) => {
+    return `/post/comment/like/${postId}/${commentId}`
   },
 }
 
@@ -90,7 +90,7 @@ export const DELETE_REPLY = {
 }
 
 export const CREATE_REPLY_LIKE = {
-  path: (replyId: string) => {
-    return `/post/reply/like/${replyId}`
+  path: (postId: string, replyId: string) => {
+    return `/post/reply/like/${postId}/${replyId}`
   },
 }

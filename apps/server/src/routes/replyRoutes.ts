@@ -3,6 +3,7 @@ import ash from 'express-async-handler'
 import { body, param, query } from 'express-validator'
 import { createReplyToComment, deleteReply, editReply, getReplyForComment } from '../handlers/replyHandlers'
 import auth from '../middlewares/auth'
+import follow from '../middlewares/follow'
 import validate from '../middlewares/validate'
 
 const router = Router()
@@ -17,6 +18,7 @@ router.post(
     body('repliedToUserUid').trim().escape().optional(),
   ],
   validate,
+  follow,
   ash(createReplyToComment)
 )
 
@@ -29,6 +31,7 @@ router.get(
     query('cursor').optional().trim().escape(),
   ],
   validate,
+  follow,
   ash(getReplyForComment)
 )
 

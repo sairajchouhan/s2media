@@ -25,8 +25,10 @@ const CommentReplyLikeAction = ({ isReply, crEntity }: { isReply: boolean; crEnt
     try {
       const idToken = await getIdToken()
       await axios.post(
-        isReply ? CREATE_REPLY_LIKE.path(crEntity.id) : CREATE_COMMENT_LIKE.path(crEntity.id),
-        { postId: crEntity.postId },
+        isReply
+          ? CREATE_REPLY_LIKE.path(crEntity.postId, crEntity.id)
+          : CREATE_COMMENT_LIKE.path(crEntity.postId, crEntity.id),
+        {},
         {
           headers: {
             Authorization: `Bearer ${idToken}`,
