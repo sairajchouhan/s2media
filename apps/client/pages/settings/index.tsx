@@ -1,10 +1,11 @@
 import Head from 'next/head'
 import { CircleLoader } from '../../components/atoms/CircleLoader'
+import { PageLayout } from '../../components/molecules/Page'
 import { PageNav } from '../../components/molecules/Page/page-nav'
 
 const Settings = () => {
   return (
-    <div className="min-h-screen border-l border-r border-opacity-80">
+    <PageLayout>
       <Head>
         <title>Settings / S2Media</title>
       </Head>
@@ -16,7 +17,7 @@ const Settings = () => {
           <CircleLoader />
         </div>
       </main>
-    </div>
+    </PageLayout>
   )
 }
 

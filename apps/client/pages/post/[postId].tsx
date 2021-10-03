@@ -8,6 +8,7 @@ import { CircleLoader } from '../../components/atoms/CircleLoader'
 import { NextImage } from '../../components/atoms/Image'
 import { DotsHorizontal } from '../../components/icons'
 import { Comment, CommentReplyInput } from '../../components/molecules/Comment'
+import { PageLayout } from '../../components/molecules/Page'
 import { PageNav } from '../../components/molecules/Page/page-nav'
 import { PostFoot } from '../../components/molecules/Post/post-foot'
 import { PostHead } from '../../components/molecules/Post/post-head'
@@ -83,7 +84,7 @@ const EachPost = () => {
   if (!post) return null
 
   return (
-    <div className="min-h-screen border-l border-r border-opacity-80">
+    <PageLayout>
       <Head>
         <title>Post / S2Media</title>
       </Head>
@@ -130,7 +131,7 @@ const EachPost = () => {
           </>
         )}
       </main>
-    </div>
+    </PageLayout>
   )
 }
 

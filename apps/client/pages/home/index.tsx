@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import React from 'react'
 import { CircleLoader } from '../../components/atoms/CircleLoader'
+import { PageLayout } from '../../components/molecules/Page'
 import { Post } from '../../components/organisms/Post'
 import { useQuery } from '../../hooks/useQuery'
 import { PostWithBaseUser } from '../../types/post'
@@ -15,7 +16,7 @@ const Home = () => {
       <Head>
         <title>Home / S2Media</title>
       </Head>
-      <div className="h-full border-l border-r border-opacity-80">
+      <PageLayout>
         {/* <Stories /> */}
         <main className="">
           {loading ? (
@@ -30,7 +31,7 @@ const Home = () => {
             ))
           )}
         </main>
-      </div>
+      </PageLayout>
     </>
   )
 }

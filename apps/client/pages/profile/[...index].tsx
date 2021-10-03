@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { CircleLoader } from '../../components/atoms/CircleLoader'
-import { PageNav } from '../../components/molecules/Page'
+import { PageLayout, PageNav } from '../../components/molecules/Page'
 import { ProfileCard } from '../../components/molecules/Profile'
 import ProfileNav from '../../components/molecules/Profile/profile-nav'
 import { Post } from '../../components/organisms/Post'
@@ -84,7 +84,7 @@ const Profile = () => {
   if (isError || isErrorPosts) return <div>Something went wrong</div>
 
   return (
-    <div className="min-h-screen border-l border-r border-opacity-80">
+    <PageLayout>
       <Head>
         <title>{!isLoading ? `${userData.user.profile.displayName} / ` : ''}S2Media</title>
       </Head>
@@ -119,7 +119,7 @@ const Profile = () => {
           </main>
         </>
       )}
-    </div>
+    </PageLayout>
   )
 }
 
