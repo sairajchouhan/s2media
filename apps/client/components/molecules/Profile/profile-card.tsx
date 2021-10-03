@@ -4,6 +4,7 @@ import { AuthUser } from '../../../types/'
 import DummyUser from '../../atoms/Avatar/dummyUser.svg'
 import { EditProfile } from '../../organisms/EditProfile'
 import { ProfileCardAction } from './profile-card-action'
+import { ProfileCardStats } from './profile-card-stats'
 
 export interface ProfileCardProps {
   profileUser: AuthUser
@@ -38,9 +39,21 @@ export const ProfileCard = ({ profileUser }: ProfileCardProps) => {
           <h3 className="text-gray-500">@{profileUser.username}</h3>
         </div>
         <div className="flex items-center justify-between">
-          <p>{profileUser._count.post} posts</p>
-          <p>{profileUser._count.followers} followers</p>
-          <p>{profileUser._count.following} following</p>
+          <ProfileCardStats
+            profileUserUsername={profileUser.username}
+            type="posts"
+            count={profileUser._count.post}
+          />
+          <ProfileCardStats
+            profileUserUsername={profileUser.username}
+            type="followers"
+            count={profileUser._count.followers}
+          />
+          <ProfileCardStats
+            profileUserUsername={profileUser.username}
+            type="following"
+            count={profileUser._count.following}
+          />
         </div>
         <div>
           {profileUser.profile.bio &&
