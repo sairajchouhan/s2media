@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useMutation } from 'react-query'
 import { axios } from '../../../config/axios'
 import { useAuth } from '../../../context/authContext'
@@ -13,9 +13,17 @@ export const ProfileCardAction = ({
   toggleOpen: () => void
 }) => {
   const { user, getIdToken } = useAuth()
-  const [userFollowed, setUserFollowed] = useState(() =>
-    user?.following?.some((follow) => follow.followedId === profileUser.uid)
-  )
+  const [userFollowed, setUserFollowed] = useState<boolean | undefined>()
+
+  useEffect(() => {
+    if (user && profileUser) {
+      const value =
+        user?.following.filter((following) => following.followedId === profileUser.uid).length > 0
+      setUserFollowed(value)
+    }
+  }, [profileUser, user])
+
+  console.log(typeof userFollowed)
 
   const followUserMutation = useMutation(
     async (toBeFollowedUserId: string) => {

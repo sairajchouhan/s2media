@@ -12,6 +12,7 @@ export interface IconButtonProps
   bgColor?: string
   hoverBgColor?: string
   p?: string
+  hasFocus?: boolean
 }
 
 export const IconButton = ({
@@ -19,6 +20,7 @@ export const IconButton = ({
   textColour = 'text-gray-600',
   bgColor = 'transparent',
   hoverBgColor = 'bg-gray-200',
+  hasFocus = false,
   w = 'w-5',
   h = 'h-5',
   p = 'p-2',
@@ -27,7 +29,9 @@ export const IconButton = ({
 }: IconButtonProps) => {
   return (
     <button
-      className={`${p} rounded-full cursor-pointer ${bgColor} hover:${hoverBgColor} outline-none focus:ring focus:ring-indigo-400`}
+      className={`${p} rounded-full cursor-pointer ${bgColor} hover:${hoverBgColor} outline-none ${
+        hasFocus ? 'focus:ring focus:ring-indigo-400' : ''
+      }`}
       {...props}
     >
       <div className={`${w} ${h} ${textColour} flex justify-center items-center`}>

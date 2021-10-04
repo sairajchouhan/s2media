@@ -13,6 +13,7 @@ export interface ProfileCardProps {
 
 export const ProfileCard = ({ profileUser, canViewFullProfile }: ProfileCardProps) => {
   const [open, setOpen] = useState(false)
+  // console.log('++', profileUser)
 
   const toggleOpen = () => {
     setOpen((open) => !open)

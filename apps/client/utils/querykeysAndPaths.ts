@@ -96,6 +96,13 @@ export const CREATE_REPLY_LIKE = {
 }
 
 //! FOLLOW
+export const FOLLOW_USER = {
+  path: (username: string) => {
+    return `/user/follow/${username}`
+  },
+}
+
+//! USER FOLLOWERS AND FOLLOWING
 export const GET_USER_FOLLOWERS = {
   queryKey: (username: string) => {
     return ['user', 'followers', username]
