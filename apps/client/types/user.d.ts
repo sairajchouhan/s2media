@@ -6,6 +6,7 @@ export interface BaseUser {
   provider: string
   createdAt: string
   updatedAt: string
+  profileType: 'PUBLIC' | 'PRIVATE'
   profile: {
     id: string
     bio: string | null
