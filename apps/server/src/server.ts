@@ -13,6 +13,7 @@ import postRoutes from './routes/postRoutes'
 import replyLikeRoutes from './routes/replyLikeRoutes'
 import replyRoutes from './routes/replyRoutes'
 import saveRoutes from './routes/saveRoutes'
+import settingsRoutes from './routes/settingsRoutes'
 import userRoutes from './routes/userRoutes'
 
 const app = express()
@@ -43,6 +44,7 @@ app.use('/api/v1/post/comment', commentRoutes)
 app.use('/api/v1/post/comment/reply', replyRoutes)
 app.use('/api/v1/post/comment/like', commentLikeRoutes)
 app.use('/api/v1/post/reply/like', replyLikeRoutes)
+app.use('/api/v1/settings/profileType', settingsRoutes)
 
 app.use(errorMiddleware)
 

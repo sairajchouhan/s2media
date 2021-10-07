@@ -119,3 +119,8 @@ export const GET_USER_FOLLOWING = {
     return `/user/${username}/following?cursor=${cursor}`
   },
 }
+
+//! SETTINGS
+export const CHANGE_USER_PROFILE_TYPE = {
+  path: '/settings/profileType',
+}
