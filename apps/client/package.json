@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "clean": "rimraf ./node_modules ./.next"
   },
   "dependencies": {
     "@headlessui/react": "^1.4.0",

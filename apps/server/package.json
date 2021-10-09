@@ -10,7 +10,7 @@
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "prettify": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "heroku-postbuild": "rimraf ./dist && tsc",
+    "clean": "rimraf ./node_modules",
     "prisma:studio": "npx prisma studio",
     "prisma:generate": "npx prisma generate",
     "prisma:migrate:deploy": "npx prisma migrate deploy",
