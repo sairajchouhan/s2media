@@ -48,8 +48,9 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
     if (message.trim() === '') return
     setToastInfo({ message, type })
     setIsOpen(true)
-    setTimeout(() => {
+    setTimeout(async () => {
       setIsOpen(false)
+      await new Promise((res) => setTimeout(res, 100))
       setToastInfo((info) => ({ ...info, message: '' }))
     }, duration)
   }
