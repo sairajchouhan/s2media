@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { Button } from '../../components/atoms/Button'
 import { Input } from '../../components/atoms/Input'
@@ -84,16 +85,16 @@ const Login = () => {
               onChange={handleChange}
             />
           </div>
-          <Button onClick={handleLogin} loading={loading} className="py-2" colorScheme="green">
+          <div className="mt-2"></div>
+          <Button onClick={handleLogin} loading={loading} variant="solid" colorScheme="indigo">
             Submit
           </Button>
-          <span className="my-4"></span>
-          <Button
-            onClick={() => handleOAuthLogin(providerNames.google)}
-            className="py-2"
-            colorScheme="indigo"
-          >
-            Login With Google
+          <div className="my-3"></div>
+          <Button onClick={() => handleOAuthLogin(providerNames.google)} variant="outline">
+            <div className="flex items-center justify-center">
+              <Image src="/google.svg" alt="Google" width="25" height="25" />
+              <p className="ml-3">Login With Google</p>
+            </div>
           </Button>
         </div>
       </div>

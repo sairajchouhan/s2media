@@ -13,24 +13,24 @@ const getSolidColorClasses = (colorScheme: string, disabled: boolean) => {
   const resObj: { colorProps: string[] } = { colorProps: [] }
   switch (colorScheme) {
     case 'indigo':
-      resObj.colorProps = [`bg-indigo-100`, 'focus:ring-indigo-400', 'text-indigo-900']
+      resObj.colorProps = [`bg-indigo-600`, 'focus:ring-indigo-400', 'text-white']
       !disabled &&
-        (resObj.colorProps = [...resObj.colorProps, 'hover:bg-indigo-200', 'active:bg-indigo-300'])
+        (resObj.colorProps = [...resObj.colorProps, 'hover:bg-indigo-500', 'active:bg-indigo-700'])
       break
     case 'red':
-      resObj.colorProps = [`bg-red-100`, 'focus:ring-red-400', 'text-red-900']
+      resObj.colorProps = [`bg-red-600`, 'focus:ring-red-400', 'text-white']
       !disabled &&
-        (resObj.colorProps = [...resObj.colorProps, 'hover:bg-red-200', 'active:bg-red-300'])
+        (resObj.colorProps = [...resObj.colorProps, 'hover:bg-red-500', 'active:bg-red-700'])
       break
     case 'green':
-      resObj.colorProps = [`bg-green-100`, 'focus:ring-green-400', 'text-green-900']
+      resObj.colorProps = [`bg-green-600`, 'focus:ring-green-400', 'text-white']
       !disabled &&
-        (resObj.colorProps = [...resObj.colorProps, 'hover:bg-green-200', 'active:bg-green-300'])
+        (resObj.colorProps = [...resObj.colorProps, 'hover:bg-green-500', 'active:bg-green-700'])
       break
     case 'gray':
-      resObj.colorProps = [`bg-gray-100`, 'focus:ring-gray-400', 'text-gray-900']
+      resObj.colorProps = [`bg-gray-600`, 'focus:ring-gray-400', 'text-white']
       !disabled &&
-        (resObj.colorProps = [...resObj.colorProps, 'hover:bg-gray-200', 'active:bg-gray-300'])
+        (resObj.colorProps = [...resObj.colorProps, 'hover:bg-gray-500', 'active:bg-gray-700'])
       break
     default:
       resObj.colorProps = []
