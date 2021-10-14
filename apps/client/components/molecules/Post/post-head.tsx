@@ -4,6 +4,7 @@ import { useRef, useState } from 'react'
 import { useMutation } from 'react-query'
 import { axios } from '../../../config/axios'
 import { useAuth } from '../../../context/authContext'
+import { useToast } from '../../../context/toastContext'
 import { LeftNavIconComp } from '../../../types'
 import { PostWithBaseUser } from '../../../types/post'
 import { paths } from '../../../utils/paths'
@@ -21,6 +22,7 @@ export interface PostHeadProps {
 }
 
 export const PostHead = ({ post: { user, id, caption, createdAt }, icon }: PostHeadProps) => {
+  const toast = useToast()
   const { user: authUser, getIdToken } = useAuth()
   const cancelRef = useRef<HTMLButtonElement | null>(null)
   const [open, setOpen] = useState(false)
@@ -36,12 +38,12 @@ export const PostHead = ({ post: { user, id, caption, createdAt }, icon }: PostH
       return res.data
     },
     {
-      onSuccess: (data) => {
-        console.log(data)
+      onSuccess: (_data) => {
         setOpen(false)
+        toast({ type: 'success', message: 'Post deleted successfully' })
       },
       onError: (err) => {
-        console.log('error in deleting the post')
+        toast({ type: 'error', message: 'Something went wrong :( Try again' })
         console.log(err)
       },
     }

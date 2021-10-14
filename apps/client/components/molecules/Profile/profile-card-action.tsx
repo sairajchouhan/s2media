@@ -23,8 +23,6 @@ export const ProfileCardAction = ({
     }
   }, [profileUser, user])
 
-  console.log(typeof userFollowed)
-
   const followUserMutation = useMutation(
     async (toBeFollowedUserId: string) => {
       const token = await getIdToken()

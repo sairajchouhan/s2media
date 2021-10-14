@@ -3,7 +3,7 @@ import React, { createContext, useContext } from 'react'
 import { CheckIcon, ExclaimationIcon } from '../components/icons'
 
 // eslint-disable-next-line no-unused-vars
-const ToastContext = createContext<({ message, duration }: ToastArgs) => void>(() => {
+const ToastContext = createContext<({ message, duration, type }: ToastArgs) => void>(() => {
   return
 })
 

@@ -7,9 +7,11 @@ import { PageLayout } from '../../components/molecules/Page'
 import { PageNav } from '../../components/molecules/Page/page-nav'
 import { axios } from '../../config/axios'
 import { useAuth } from '../../context/authContext'
+import { useToast } from '../../context/toastContext'
 import { CHANGE_USER_PROFILE_TYPE } from '../../utils/querykeysAndPaths'
 
 const Settings = () => {
+  const toast = useToast()
   const { user, getIdToken } = useAuth()
   const [enabled, setEnabled] = useState(() => user?.profileType === 'PRIVATE')
   const [open, setOpen] = useState(false)
@@ -20,8 +22,6 @@ const Settings = () => {
       setEnabled(user?.profileType === 'PRIVATE')
     }, 500)
   }
-
-  console.log(enabled)
 
   const handleProfileTypeChange = async () => {
     try {
@@ -34,6 +34,10 @@ const Settings = () => {
           },
         }
       )
+      toast({
+        type: 'success',
+        message: `Profile type changed to ${enabled ? 'PRIVATE' : 'PUBLIC'}`,
+      })
       toggleOpen()
     } catch (err) {
       console.log(err)

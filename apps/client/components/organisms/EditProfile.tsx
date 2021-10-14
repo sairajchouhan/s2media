@@ -3,6 +3,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react'
 import { useMutation, useQueryClient } from 'react-query'
 import { axios } from '../../config/axios'
 import { useAuth } from '../../context/authContext'
+import { useToast } from '../../context/toastContext'
 import { useFileUpload } from '../../hooks/useFileUpload'
 import { AuthUser } from '../../types/user'
 import { Avatar } from '../atoms/Avatar'
@@ -18,6 +19,7 @@ export interface EditProfileProps {
   profileUser: AuthUser
 }
 export const EditProfile = ({ open, setOpen, profileUser }: EditProfileProps) => {
+  const toast = useToast()
   const queryClient = useQueryClient()
   const { user, getIdToken } = useAuth()
   const { handleFileChange, previewUrl, resetFile, selectedFile } = useFileUpload()
@@ -46,7 +48,6 @@ export const EditProfile = ({ open, setOpen, profileUser }: EditProfileProps) =>
       }
       formData.append('displayName', profile.name)
       formData.append('bio', profile.bio)
-      await new Promise((res) => setTimeout(res, 3000))
       return axios.put(`/user/profile`, formData, {
         headers: {
           Authorization: `Bearer ${idToken}`,
@@ -57,9 +58,11 @@ export const EditProfile = ({ open, setOpen, profileUser }: EditProfileProps) =>
       onSuccess: (_data, _vars, _context) => {
         queryClient.invalidateQueries(['user', profileUser.username])
         toggleOpen()
+        toast({ type: 'success', message: 'Profile updated successfully' })
       },
       onError: (error, _vars, _context) => {
         console.log(error)
+        toast({ type: 'error', message: 'Something went wrong :( Try again' })
       },
     }
   )
