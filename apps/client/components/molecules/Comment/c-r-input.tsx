@@ -8,7 +8,7 @@ import {
   GET_ONE_POST,
   GET_REPLIES_FOR_COMMENT,
   POST_COMMENT,
-  POST_REPLY,
+  POST_REPLY
 } from '../../../utils/querykeysAndPaths'
 import { Input } from '../../atoms/Input/Input'
 
@@ -254,6 +254,11 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             id="textInput"
+            onKeyUp={(e) => {
+              if (e.key === 'Enter') {
+                isReply ? handleCreateReply() : handleCreateComment()
+              }
+            }}
             placeholder={commentId ? 'Your reply' : 'Your comment'}
           />
           <button
