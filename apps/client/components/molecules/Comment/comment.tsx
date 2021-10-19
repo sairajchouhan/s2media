@@ -48,7 +48,7 @@ export const Comment = ({ comment }: { comment: any }) => {
         <Link to={paths.profile({ username: comment.user.username })}>
           <Avatar src={comment.user.avatar} w="w-10" h="h-10" alt="user profile image" />
         </Link>
-        <div className="flex-1">
+        <div className="flex-1 ml-1">
           <CommentReplyText crEntity={comment} isReply={false} />
           <CommentReplyAction
             isReply={false}

@@ -1,4 +1,4 @@
-import { Dialog, Transition } from '@headlessui/react'
+import { Transition } from '@headlessui/react'
 import React, { createContext, useContext } from 'react'
 import { CheckIcon, ExclaimationIcon } from '../components/icons'
 
@@ -55,15 +55,11 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
     }, duration)
   }
 
-  const closeModal = () => {
-    setIsOpen(false)
-  }
-
   return (
     <>
       <ToastContext.Provider value={toast}>
         <Transition appear show={isOpen} as={React.Fragment}>
-          <Dialog as="div" className="fixed inset-0 z-10 overflow-y-auto" onClose={closeModal}>
+          <div className="fixed inset-0 z-10 overflow-y-auto">
             <div className="flex items-end justify-center min-h-screen px-4 text-center">
               <Transition.Child
                 as={React.Fragment}
@@ -82,14 +78,12 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
                   <div className="flex items-center ">
                     {getToastIcon(toastInfo.type)}
                     <span className="mx-1"></span>
-                    <Dialog.Title as="h3" className="text-lg font-medium text-white">
-                      {toastInfo.message}
-                    </Dialog.Title>
+                    <h3 className="text-lg font-medium text-white">{toastInfo.message}</h3>
                   </div>
                 </div>
               </Transition.Child>
             </div>
-          </Dialog>
+          </div>
         </Transition>
         {children}
       </ToastContext.Provider>
