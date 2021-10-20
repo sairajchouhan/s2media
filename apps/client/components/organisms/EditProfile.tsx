@@ -109,10 +109,10 @@ export const EditProfile = ({ open, setOpen, profileUser }: EditProfileProps) =>
             <div className="absolute bottom-2 right-2">
               <div role="button">
                 <label
-                  className="inline-flex items-center justify-center p-1 text-gray-600 bg-blue-100 border border-transparent rounded-full cursor-pointer hover:bg-blue-200 d-flex focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                  className="inline-flex items-center justify-center p-1 text-gray-600 border border-transparent rounded-full cursor-pointer bg-blue-50 hover:bg-blue-100 d-flex focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 "
                   htmlFor="avatarFile"
                 >
-                  <EditIcon />
+                  <EditIcon className="w-5 h-5" />
                 </label>
                 <input onChange={handleFileChange} id="avatarFile" type="file" className="hidden" />
               </div>
@@ -168,6 +168,7 @@ export const EditProfile = ({ open, setOpen, profileUser }: EditProfileProps) =>
           <Button
             loading={profileUpdateMutation.isLoading}
             colorScheme="green"
+            variant="outline"
             onClick={handleUpdateProfile}
           >
             Update
