@@ -35,7 +35,9 @@
     "clean": "npm-run-all clean:*",
     "studio:server": "yarn workspace @s2media/server run prisma:studio",
     "migrate:dev": "yarn workspace @s2media/server run prisma:migrate:dev",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test:watch:client": "yarn workspace @s2media/client run test:watch",
+    "test:watch": "npm-run-all test:watch:*"
   },
   "devDependencies": {
     "husky": "^7.0.2",
