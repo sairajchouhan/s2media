@@ -4,7 +4,7 @@ import DummyUser from './dummyUser.svg'
 
 interface AvatarProps {
   src?: string | null
-  alt: string
+  alt?: string
   w?: string
   h?: string
 }
