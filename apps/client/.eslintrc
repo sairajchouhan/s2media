@@ -10,7 +10,8 @@
         "ignoreRestSiblings": false,
         "argsIgnorePattern": "^_"
       }
-    ]
+    ],
+    "@next/next/no-img-element": "off"
   },
   "overrides": [
     {
