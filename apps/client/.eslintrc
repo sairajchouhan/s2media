@@ -1,5 +1,6 @@
 {
   "extends": ["next"],
+  "plugins": ["testing-library", "jest-dom"],
   "rules": {
     "no-unused-vars": [
       "warn",
@@ -10,5 +11,11 @@
         "argsIgnorePattern": "^_"
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
+      "extends": ["plugin:testing-library/react"]
+    }
+  ]
 }

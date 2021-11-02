@@ -8,7 +8,7 @@
     "lint": "next lint",
     "start": "next start",
     "clean": "rimraf ./node_modules ./.next",
-    "jest": "jest --watch"
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@headlessui/react": "^1.4.0",
@@ -33,7 +33,8 @@
     "babel-jest": "^27.3.1",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.0",
-    "identity-obj-proxy": "^3.0.0",
+    "eslint-plugin-jest-dom": "^3.9.2",
+    "eslint-plugin-testing-library": "^4.12.4",
     "jest": "^27.3.1",
     "postcss": "^8.3.6",
     "react-test-renderer": "^17.0.2",
