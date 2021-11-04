@@ -60,9 +60,7 @@ const Login = () => {
         <h1 className="my-4 text-5xl">Login</h1>
 
         <div className="flex flex-col w-1/3">
-          {error.isError && (
-            <div className="p-3 my-3 text-sm text-white bg-red-500 rounded-md">{error.message}</div>
-          )}
+          {error.isError && <div className="p-3 my-3 text-sm text-white bg-red-500 rounded-md">{error.message}</div>}
           <div className="mb-5">
             <Input
               id="email"

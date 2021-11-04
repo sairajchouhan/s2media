@@ -75,11 +75,7 @@ export const EditProfile = ({ open, setOpen, profileUser }: EditProfileProps) =>
       })
       return toggleOpen()
     }
-    if (
-      profile.name === profileUser.profile.displayName &&
-      profile.bio === profileUser.profile.bio &&
-      !selectedFile
-    ) {
+    if (profile.name === profileUser.profile.displayName && profile.bio === profileUser.profile.bio && !selectedFile) {
       return toggleOpen()
     }
     profileUpdateMutation.mutate()
@@ -97,11 +93,7 @@ export const EditProfile = ({ open, setOpen, profileUser }: EditProfileProps) =>
           <div className="relative">
             {previewUrl ? (
               <div className="w-40 h-40 overflow-hidden rounded-full ">
-                <img
-                  src={previewUrl}
-                  className="object-cover object-center w-full h-full"
-                  alt="preview url"
-                />
+                <img src={previewUrl} className="object-cover object-center w-full h-full" alt="preview url" />
               </div>
             ) : (
               <Avatar src={profileUser.avatar} alt="user profile avatar" w="w-40" h="h-40" />
@@ -136,7 +128,10 @@ export const EditProfile = ({ open, setOpen, profileUser }: EditProfileProps) =>
                 id="bio"
                 onChange={(e) => {
                   if (e.target.value.length <= maxBioLength) {
-                    setProfile((profile) => ({ ...profile, bio: e.target.value }))
+                    setProfile((profile) => ({
+                      ...profile,
+                      bio: e.target.value,
+                    }))
                   }
                 }}
                 value={profile.bio}
@@ -158,18 +153,10 @@ export const EditProfile = ({ open, setOpen, profileUser }: EditProfileProps) =>
       </Model.Body>
       <Model.Foot>
         <div className="flex items-center justify-end mt-6 space-x-3">
-          <Button
-            disabled={profileUpdateMutation.isLoading}
-            colorScheme="red"
-            onClick={() => handleProfileEditClose()}
-          >
+          <Button disabled={profileUpdateMutation.isLoading} colorScheme="red" onClick={() => handleProfileEditClose()}>
             Cancel
           </Button>
-          <Button
-            loading={profileUpdateMutation.isLoading}
-            colorScheme="green"
-            onClick={handleUpdateProfile}
-          >
+          <Button loading={profileUpdateMutation.isLoading} colorScheme="green" onClick={handleUpdateProfile}>
             Update
           </Button>
         </div>

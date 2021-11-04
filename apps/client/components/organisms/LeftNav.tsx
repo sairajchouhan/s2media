@@ -3,14 +3,7 @@ import nookies from 'nookies'
 import { useAuth } from '../../context/authContext'
 import { paths } from '../../utils/paths'
 import { LeftNavPostBtn } from '../atoms/LeftNavPostBtn/LeftNavPostBtn'
-import {
-  HomeIcon,
-  LogoutIcon,
-  MessageIcon,
-  NotificationIcon,
-  ProfileIcon,
-  SettingsIcon,
-} from '../icons'
+import { HomeIcon, LogoutIcon, MessageIcon, NotificationIcon, ProfileIcon, SettingsIcon } from '../icons'
 import { LeftNavBrand, LeftNavLink, LeftNavUser } from '../molecules/LeftNav'
 
 const LeftNav = () => {
@@ -42,11 +35,7 @@ const LeftNav = () => {
         <LeftNavLink active={isActive(paths.home)} icon={HomeIcon} onClick={() => push(paths.home)}>
           Home
         </LeftNavLink>
-        <LeftNavLink
-          active={pathname === paths.messages}
-          icon={MessageIcon}
-          onClick={() => push(paths.messages)}
-        >
+        <LeftNavLink active={pathname === paths.messages} icon={MessageIcon} onClick={() => push(paths.messages)}>
           Messages
         </LeftNavLink>
         <LeftNavLink
@@ -64,18 +53,10 @@ const LeftNav = () => {
           Notifications
         </LeftNavLink>
 
-        <LeftNavLink
-          active={pathname === paths.settings}
-          icon={SettingsIcon}
-          onClick={() => push(paths.settings)}
-        >
+        <LeftNavLink active={pathname === paths.settings} icon={SettingsIcon} onClick={() => push(paths.settings)}>
           Settings
         </LeftNavLink>
-        <LeftNavLink
-          active={pathname === '/logout'}
-          icon={LogoutIcon}
-          onClick={() => handleLogout()}
-        >
+        <LeftNavLink active={pathname === '/logout'} icon={LogoutIcon} onClick={() => handleLogout()}>
           Logout
         </LeftNavLink>
         <LeftNavPostBtn />

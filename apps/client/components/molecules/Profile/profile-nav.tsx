@@ -1,13 +1,7 @@
 import { paths } from '../../../utils/paths'
 import { Link } from '../../Link'
 
-const ProfileNav = ({
-  active,
-  username,
-}: {
-  active: 'all' | 'liked' | 'saved'
-  username: string
-}) => {
+const ProfileNav = ({ active, username }: { active: 'all' | 'liked' | 'saved'; username: string }) => {
   return (
     <section className="mt-4">
       <nav className="border-t border-b border-opacity-80">
@@ -17,10 +11,7 @@ const ProfileNav = ({
               active === 'all' ? 'border-b-2 border-indigo-400' : ''
             }`}
           >
-            <Link
-              className="flex items-center justify-center w-full h-full"
-              to={paths.profile({ username })}
-            >
+            <Link className="flex items-center justify-center w-full h-full" to={paths.profile({ username })}>
               Your Posts
             </Link>
           </li>

@@ -44,10 +44,7 @@ const CommentReplyLikeAction = ({ isReply, crEntity }: { isReply: boolean; crEnt
 
   return (
     <>
-      <button
-        className="rounded cursor-pointer p-0.5 hover:bg-gray-100"
-        onClick={handleCommentReplyLike}
-      >
+      <button className="rounded cursor-pointer p-0.5 hover:bg-gray-100" onClick={handleCommentReplyLike}>
         <span className={userLiked ? 'text-red-500' : 'text-gray-500'}>Like</span>
       </button>
       {crEntity?.like && crEntity?.like.length > 0 ? (

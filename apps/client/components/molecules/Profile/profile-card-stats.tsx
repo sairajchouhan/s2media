@@ -15,12 +15,7 @@ interface IProfileCardStatsProps {
   canViewFullProfile: boolean
 }
 
-export const ProfileCardStats = ({
-  profileUserUsername,
-  type,
-  count,
-  canViewFullProfile,
-}: IProfileCardStatsProps) => {
+export const ProfileCardStats = ({ profileUserUsername, type, count, canViewFullProfile }: IProfileCardStatsProps) => {
   const { getIdToken } = useAuth()
   const [open, setOpen] = useState(false)
   const router = useRouter()
@@ -52,11 +47,7 @@ export const ProfileCardStats = ({
     <>
       <div
         className={`${count > 0 && type !== 'posts' && canViewFullProfile ? 'cursor-pointer' : ''}`}
-        onClick={
-          count > 0 && type !== 'posts' && canViewFullProfile
-            ? handleShowDetailedTypeInfo
-            : undefined
-        }
+        onClick={count > 0 && type !== 'posts' && canViewFullProfile ? handleShowDetailedTypeInfo : undefined}
       >
         <p>
           <span className={`text-lg font-medium`}>{count}</span> {type}

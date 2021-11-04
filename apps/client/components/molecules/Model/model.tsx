@@ -13,13 +13,7 @@ export interface ModelProps {
   children: React.ReactNode
 }
 
-export const BaseModel = ({
-  open,
-  toggleOpen,
-  initialFoucsRef,
-  center = false,
-  children,
-}: ModelProps) => {
+export const BaseModel = ({ open, toggleOpen, initialFoucsRef, center = false, children }: ModelProps) => {
   return (
     <>
       <Transition appear show={open} as={Fragment}>

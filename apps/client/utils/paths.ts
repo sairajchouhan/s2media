@@ -6,13 +6,7 @@ export const paths = {
   messages: '/messages',
   settings: '/settings',
   notifications: '/notifications',
-  profile: ({
-    username,
-    query,
-  }: {
-    username: string
-    query?: { like?: boolean; save?: boolean }
-  }) => {
+  profile: ({ username, query }: { username: string; query?: { like?: boolean; save?: boolean } }) => {
     let href = { value: `/profile/${username}` }
 
     if (query?.like) {

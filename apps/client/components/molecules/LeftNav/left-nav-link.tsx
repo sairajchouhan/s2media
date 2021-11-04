@@ -16,11 +16,7 @@ export const LeftNavLink = ({ active, icon: Icon, onClick, children }: LeftNavLi
     >
       <button className="flex items-center px-6 py-2 rounded-full group-hover:bg-indigo-50 ">
         <Icon variant={active ? 'solid' : 'outline'} styling="text-indigo-600 mr-4" />
-        <p
-          className={`text-lg font-bold group-hover:text-indigo-500 ${
-            active ? 'text-indigo-600' : 'text-gray-600'
-          }`}
-        >
+        <p className={`text-lg font-bold group-hover:text-indigo-500 ${active ? 'text-indigo-600' : 'text-gray-600'}`}>
           {children}
         </p>
       </button>

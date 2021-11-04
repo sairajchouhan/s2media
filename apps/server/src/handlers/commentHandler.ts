@@ -35,7 +35,10 @@ export const getCommentsOfPost = async (req: Request, res: Response) => {
       user: commentAndReplyUser,
     },
   })
-  res.json({ comment: comments, nextCursor: comments[commentCount - 1]?.id ?? undefined })
+  res.json({
+    comment: comments,
+    nextCursor: comments[commentCount - 1]?.id ?? undefined,
+  })
 }
 
 export const createComment = async (req: Request, res: Response) => {

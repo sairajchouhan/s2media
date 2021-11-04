@@ -44,9 +44,7 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
         await queryClient.cancelQueries(GET_COMMENTS_FOR_POST.queryKey(postId))
         await queryClient.cancelQueries(GET_ONE_POST.queryKey(postId))
 
-        const previousComments = queryClient.getQueryData<any>(
-          GET_COMMENTS_FOR_POST.queryKey(postId)
-        )
+        const previousComments = queryClient.getQueryData<any>(GET_COMMENTS_FOR_POST.queryKey(postId))
         const previousPost: any = queryClient.getQueryData(GET_ONE_POST.queryKey(postId))
 
         if (previousComments) {
@@ -71,16 +69,10 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
       },
       onError: (_err, _vars, context) => {
         if (context?.previousComments) {
-          queryClient.setQueryData<any>(
-            GET_COMMENTS_FOR_POST.queryKey(crEntity.postId),
-            context.previousComments
-          )
+          queryClient.setQueryData<any>(GET_COMMENTS_FOR_POST.queryKey(crEntity.postId), context.previousComments)
         }
         if (context?.previousPost) {
-          queryClient.setQueryData<any>(
-            GET_ONE_POST.queryKey(crEntity.postId),
-            context.previousPost
-          )
+          queryClient.setQueryData<any>(GET_ONE_POST.queryKey(crEntity.postId), context.previousPost)
         }
       },
       onSuccess: () => {},
@@ -111,9 +103,7 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
         await queryClient.cancelQueries(GET_COMMENTS_FOR_POST.queryKey(postId))
         await queryClient.cancelQueries(GET_ONE_POST.queryKey(postId))
 
-        const previousComments = queryClient.getQueryData<any>(
-          GET_COMMENTS_FOR_POST.queryKey(postId)
-        )
+        const previousComments = queryClient.getQueryData<any>(GET_COMMENTS_FOR_POST.queryKey(postId))
 
         if (previousComments) {
           const newCommentsData = previousComments
@@ -131,10 +121,7 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
       },
       onError: (_err, _vars, context) => {
         if (context?.previousComments) {
-          queryClient.setQueryData<any>(
-            GET_COMMENTS_FOR_POST.queryKey(crEntity.postId),
-            context.previousComments
-          )
+          queryClient.setQueryData<any>(GET_COMMENTS_FOR_POST.queryKey(crEntity.postId), context.previousComments)
         }
       },
       onSuccess: () => {},
@@ -161,9 +148,7 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
         await queryClient.cancelQueries(GET_REPLIES_FOR_COMMENT.queryKey(commentId))
         await queryClient.cancelQueries(GET_ONE_POST.queryKey(postId))
 
-        const previousReplies = queryClient.getQueryData<any>(
-          GET_REPLIES_FOR_COMMENT.queryKey(commentId)
-        )
+        const previousReplies = queryClient.getQueryData<any>(GET_REPLIES_FOR_COMMENT.queryKey(commentId))
         const previousPost: any = queryClient.getQueryData(GET_ONE_POST.queryKey(postId))
 
         if (previousReplies) {
@@ -188,16 +173,10 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
       },
       onError: (_err, _vars, context) => {
         if (context?.previousReplies) {
-          queryClient.setQueryData<any>(
-            GET_REPLIES_FOR_COMMENT.queryKey(crEntity.commentId),
-            context.previousReplies
-          )
+          queryClient.setQueryData<any>(GET_REPLIES_FOR_COMMENT.queryKey(crEntity.commentId), context.previousReplies)
         }
         if (context?.previousPost) {
-          queryClient.setQueryData<any>(
-            GET_ONE_POST.queryKey(crEntity.postId),
-            context.previousPost
-          )
+          queryClient.setQueryData<any>(GET_ONE_POST.queryKey(crEntity.postId), context.previousPost)
         }
       },
       onSuccess: () => {},
@@ -227,9 +206,7 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
         const commentId = crEntity.commentId
         await queryClient.cancelQueries(GET_REPLIES_FOR_COMMENT.queryKey(commentId))
 
-        const previousReplies = queryClient.getQueryData<any>(
-          GET_REPLIES_FOR_COMMENT.queryKey(commentId)
-        )
+        const previousReplies = queryClient.getQueryData<any>(GET_REPLIES_FOR_COMMENT.queryKey(commentId))
 
         if (previousReplies) {
           const newRepliesData = previousReplies
@@ -247,10 +224,7 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
       },
       onError: (_err, _vars, context) => {
         if (context?.previousReplies) {
-          queryClient.setQueryData<any>(
-            GET_COMMENTS_FOR_POST.queryKey(crEntity.postId),
-            context.previousReplies
-          )
+          queryClient.setQueryData<any>(GET_COMMENTS_FOR_POST.queryKey(crEntity.postId), context.previousReplies)
         }
       },
       onSuccess: () => {},
@@ -260,8 +234,7 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
     }
   )
 
-  const handleCrDelete = () =>
-    isReply ? deleteReplyMutation.mutate() : deleteCommentMutation.mutate()
+  const handleCrDelete = () => (isReply ? deleteReplyMutation.mutate() : deleteCommentMutation.mutate())
 
   const handleCrEdit = () => (isReply ? editReplyMutation.mutate() : editCommentMutation.mutate())
 
@@ -289,16 +262,11 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
         </div>
         <div className="flex">
           <Menu
-            activationButton={() => (
-              <IconButton w="w-4" h="h-4" hoverBgColor="bg-gray-100" icon={DotsHorizontal} />
-            )}
+            activationButton={() => <IconButton w="w-4" h="h-4" hoverBgColor="bg-gray-100" icon={DotsHorizontal} />}
           >
             {crEntity.userId === user?.uid ? (
               <>
-                <Menu.Item
-                  icon={EditIcon}
-                  onClick={() => setEdit((edit) => ({ ...edit, show: true }))}
-                >
+                <Menu.Item icon={EditIcon} onClick={() => setEdit((edit) => ({ ...edit, show: true }))}>
                   Edit
                 </Menu.Item>
                 <Menu.Item

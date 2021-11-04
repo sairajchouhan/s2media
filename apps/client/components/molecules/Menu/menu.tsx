@@ -10,9 +10,7 @@ const BaseMenu = ({ activationButton, children }: IMenu) => {
   return (
     <HeadlessMenu as="div" role="menu" className="relative z-10 inline-block">
       <div>
-        <HeadlessMenu.Button as="div">
-          {activationButton ? activationButton : <span>Menu</span>}
-        </HeadlessMenu.Button>
+        <HeadlessMenu.Button as="div">{activationButton ? activationButton : <span>Menu</span>}</HeadlessMenu.Button>
       </div>
       <Transition
         as={'div'}

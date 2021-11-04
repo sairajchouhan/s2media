@@ -1,5 +1,0 @@
-{
-  "apps/**/*.tsx": [
-    "yarn lint"
-  ]
-}

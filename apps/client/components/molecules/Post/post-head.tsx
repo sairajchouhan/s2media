@@ -80,11 +80,7 @@ export const PostHead = ({ post: { user, id, caption, createdAt }, icon }: PostH
           </div>
         </div>
         <div className="">
-          <Menu
-            activationButton={() => (
-              <IconButton w="w-4" h="h-4" hoverBgColor="bg-gray-100" icon={icon} />
-            )}
-          >
+          <Menu activationButton={() => <IconButton w="w-4" h="h-4" hoverBgColor="bg-gray-100" icon={icon} />}>
             {authUser?.uid === user.uid ? (
               <Menu.Item
                 className="text-red-500"
@@ -109,18 +105,12 @@ export const PostHead = ({ post: { user, id, caption, createdAt }, icon }: PostH
         <Model.Head title="Delete Post" toggleOpen={() => setOpen((open) => !open)} />
         <Model.Body>
           <p className="my-3 text-md">
-            🔴 Deleting the post will delete all the likes, comments and replies related to this
-            post
+            🔴 Deleting the post will delete all the likes, comments and replies related to this post
           </p>
         </Model.Body>
         <ModelFoot>
           <div className="flex justify-end">
-            <Button
-              ref={cancelRef}
-              variant="outline"
-              onClick={() => setOpen(!open)}
-              colorScheme="gray"
-            >
+            <Button ref={cancelRef} variant="outline" onClick={() => setOpen(!open)} colorScheme="gray">
               Cancel
             </Button>
             <span className="mx-2"></span>

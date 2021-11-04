@@ -18,9 +18,7 @@ export const MenuItem = ({
       {({ active }) => (
         <button
           {...props}
-          className={`${
-            active ? activeClassName : ''
-          } group flex items-center w-full px-2 py-2 text-sm ${className}`}
+          className={`${active ? activeClassName : ''} group flex items-center w-full px-2 py-2 text-sm ${className}`}
         >
           {Icon ? <Icon className="w-5 mr-2" /> : null}
           {children}

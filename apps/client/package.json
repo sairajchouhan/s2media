@@ -7,7 +7,7 @@
     "build": "next build",
     "lint": "next lint",
     "start": "next start",
-    "clean": "rimraf ./node_modules ./.next",
+    "clean": "rm -rf ./node_modules ./.next",
     "test:watch": "jest --watch"
   },
   "dependencies": {

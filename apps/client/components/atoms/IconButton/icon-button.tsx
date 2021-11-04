@@ -1,8 +1,7 @@
 import { ButtonHTMLAttributes, DetailedHTMLProps } from 'react'
 import { LeftNavIconComp } from '../../../types/icon'
 
-export interface IconButtonProps
-  extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
+export interface IconButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
   // eslint-disable-next-line no-unused-vars
   icon: LeftNavIconComp
   variant?: 'solid' | 'outline'

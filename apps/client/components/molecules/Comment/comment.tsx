@@ -23,14 +23,11 @@ export const Comment = ({ comment }: { comment: any }) => {
     GET_REPLIES_FOR_COMMENT.queryKey(comment.id),
     async ({ pageParam = '' }) => {
       const token = await getIdToken()
-      const { data } = await axios.get(
-        GET_REPLIES_FOR_COMMENT.path(comment.postId, comment.id, pageParam),
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      const { data } = await axios.get(GET_REPLIES_FOR_COMMENT.path(comment.postId, comment.id, pageParam), {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       return data
     },
     {

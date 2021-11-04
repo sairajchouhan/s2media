@@ -102,9 +102,7 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
           <div className="mt-4">
             <div className="flex items-start h-full space-x-4">
               <div className="h-full">
-                {user.avatar && (
-                  <Avatar src={user.avatar} w="w-10" h="h-10" alt="authenticated user avatar" />
-                )}
+                {user.avatar && <Avatar src={user.avatar} w="w-10" h="h-10" alt="authenticated user avatar" />}
               </div>
               <div className="flex items-center flex-1 h-full">
                 <AutoGrowTextArea initialFocusRef={textareaRef} />
@@ -146,13 +144,7 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
               </label>
               <input onChange={handleFileChange} id="postfile" type="file" className="hidden" />
             </div>
-            <Button
-              onClick={handleCreatePost}
-              variant="solid"
-              colorScheme="green"
-              loading={loading}
-              disabled={loading}
-            >
+            <Button onClick={handleCreatePost} variant="solid" colorScheme="green" loading={loading} disabled={loading}>
               Post
             </Button>
           </div>

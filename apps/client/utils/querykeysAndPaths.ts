@@ -75,18 +75,15 @@ export const GET_REPLIES_FOR_COMMENT = {
 }
 
 export const POST_REPLY = {
-  path: (postId: string, commentId: string | undefined) =>
-    `/post/comment/reply/${postId}/${commentId}`,
+  path: (postId: string, commentId: string | undefined) => `/post/comment/reply/${postId}/${commentId}`,
 }
 
 export const EDIT_REPLY = {
-  path: (postId: string, commentId: string, replyId: string) =>
-    `/post/comment/reply/${postId}/${commentId}/${replyId}`,
+  path: (postId: string, commentId: string, replyId: string) => `/post/comment/reply/${postId}/${commentId}/${replyId}`,
 }
 
 export const DELETE_REPLY = {
-  path: (postId: string, commentId: string, replyId: string) =>
-    `/post/comment/reply/${postId}/${commentId}/${replyId}`,
+  path: (postId: string, commentId: string, replyId: string) => `/post/comment/reply/${postId}/${commentId}/${replyId}`,
 }
 
 export const CREATE_REPLY_LIKE = {

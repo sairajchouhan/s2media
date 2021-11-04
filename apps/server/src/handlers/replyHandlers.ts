@@ -57,7 +57,10 @@ export const getReplyForComment = async (req: Request, res: Response) => {
     },
   })
 
-  return res.json({ reply: replies, nextCursor: replies[replyTakeCount - 1]?.id ?? undefined })
+  return res.json({
+    reply: replies,
+    nextCursor: replies[replyTakeCount - 1]?.id ?? undefined,
+  })
 }
 
 export const editReply = async (req: Request, res: Response) => {

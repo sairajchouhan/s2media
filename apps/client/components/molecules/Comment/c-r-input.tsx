@@ -8,7 +8,7 @@ import {
   GET_ONE_POST,
   GET_REPLIES_FOR_COMMENT,
   POST_COMMENT,
-  POST_REPLY
+  POST_REPLY,
 } from '../../../utils/querykeysAndPaths'
 import { Input } from '../../atoms/Input/Input'
 
@@ -49,10 +49,7 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
           await queryClient.cancelQueries(GET_COMMENTS_FOR_POST.queryKey(postId))
           await queryClient.cancelQueries(GET_ONE_POST.queryKey(postId))
 
-          const previousComments = queryClient.getQueryData<any>([
-            'post',
-            { id: postId, comment: true },
-          ])
+          const previousComments = queryClient.getQueryData<any>(['post', { id: postId, comment: true }])
           console.log(previousComments)
           const previousPost: any = queryClient.getQueryData(GET_ONE_POST.queryKey(postId))
           console.log(previousPost)
@@ -98,10 +95,7 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
         },
         onError: (_err, _vars, context) => {
           if (context?.previousComments) {
-            queryClient.setQueryData<any>(
-              GET_COMMENTS_FOR_POST.queryKey(postId),
-              context.previousComments
-            )
+            queryClient.setQueryData<any>(GET_COMMENTS_FOR_POST.queryKey(postId), context.previousComments)
           }
           if (context?.previousPost) {
             queryClient.setQueryData<any>(GET_ONE_POST.queryKey(postId), context.previousPost)
@@ -132,9 +126,7 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
           await queryClient.cancelQueries(GET_REPLIES_FOR_COMMENT.queryKey(commentId))
           await queryClient.cancelQueries(GET_ONE_POST.queryKey(postId))
 
-          const previousReplies = queryClient.getQueryData<any>(
-            GET_REPLIES_FOR_COMMENT.queryKey(commentId)
-          )
+          const previousReplies = queryClient.getQueryData<any>(GET_REPLIES_FOR_COMMENT.queryKey(commentId))
           const previousPost: any = queryClient.getQueryData(GET_ONE_POST.queryKey(postId))
 
           const newReply = {
@@ -168,10 +160,7 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
             const copyPreviousReplies = previousReplies
             copyPreviousReplies.pages[copyPreviousReplies.pages.length - 1].reply.push(newReply)
 
-            queryClient.setQueryData(
-              GET_REPLIES_FOR_COMMENT.queryKey(commentId),
-              copyPreviousReplies
-            )
+            queryClient.setQueryData(GET_REPLIES_FOR_COMMENT.queryKey(commentId), copyPreviousReplies)
             queryClient.setQueryData(GET_ONE_POST.queryKey(postId), {
               ...previousPost,
               _count: {
@@ -192,10 +181,7 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
         },
         onError: (_err, _vars, context) => {
           if (context?.previousReplies) {
-            queryClient.setQueryData<any>(
-              GET_COMMENTS_FOR_POST.queryKey(postId),
-              context.previousReplies
-            )
+            queryClient.setQueryData<any>(GET_COMMENTS_FOR_POST.queryKey(postId), context.previousReplies)
           }
           if (context?.previousPost) {
             queryClient.setQueryData<any>(GET_ONE_POST.queryKey(postId), context.previousPost)
@@ -207,9 +193,7 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
             refetchIfNoReplies()
           } else {
             const idFromServer = data.data.id
-            const previousReplies = queryClient.getQueryData<any>(
-              GET_REPLIES_FOR_COMMENT.queryKey(commentId)
-            )
+            const previousReplies = queryClient.getQueryData<any>(GET_REPLIES_FOR_COMMENT.queryKey(commentId))
             const newReplyId = context?.newReplyId
 
             if (previousReplies) {
@@ -217,10 +201,7 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
               copyPreviousReplies.pages[copyPreviousReplies.pages.length - 1].reply.find(
                 (reply: any) => reply.id === newReplyId
               ).id = idFromServer
-              queryClient.setQueryData(
-                GET_REPLIES_FOR_COMMENT.queryKey(commentId),
-                copyPreviousReplies
-              )
+              queryClient.setQueryData(GET_REPLIES_FOR_COMMENT.queryKey(commentId), copyPreviousReplies)
             }
           }
         },

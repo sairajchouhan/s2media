@@ -5,20 +5,13 @@ import { useAuth } from '../../../context/authContext'
 import { BaseUser } from '../../../types'
 import { Button } from '../../atoms/Button'
 
-export const ProfileCardAction = ({
-  profileUser,
-  toggleOpen,
-}: {
-  profileUser: BaseUser
-  toggleOpen: () => void
-}) => {
+export const ProfileCardAction = ({ profileUser, toggleOpen }: { profileUser: BaseUser; toggleOpen: () => void }) => {
   const { user, getIdToken } = useAuth()
   const [userFollowed, setUserFollowed] = useState<boolean | undefined>()
 
   useEffect(() => {
     if (user && profileUser) {
-      const value =
-        user?.following.filter((following) => following.followedId === profileUser.uid).length > 0
+      const value = user?.following.filter((following) => following.followedId === profileUser.uid).length > 0
       setUserFollowed(value)
     }
   }, [profileUser, user])

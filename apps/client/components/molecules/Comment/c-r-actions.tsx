@@ -26,9 +26,7 @@ export const CommentReplyAction = ({
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const handleShowReplies = async () => {
-    const previousCommentReplies = queryClient.getQueryData(
-      GET_REPLIES_FOR_COMMENT.queryKey(commentId)
-    )
+    const previousCommentReplies = queryClient.getQueryData(GET_REPLIES_FOR_COMMENT.queryKey(commentId))
     if (!previousCommentReplies) {
       fetchNextPage()
     }

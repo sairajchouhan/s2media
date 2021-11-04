@@ -61,9 +61,7 @@ export const ProfileCard = ({ profileUser, canViewFullProfile }: ProfileCardProp
         </div>
         <div>
           {profileUser.profile.bio &&
-            profileUser.profile.bio
-              .split(',')
-              .map((para) => <p key={para.length * Math.random()}>{para}</p>)}
+            profileUser.profile.bio.split(',').map((para) => <p key={para.length * Math.random()}>{para}</p>)}
         </div>
       </div>
       <EditProfile profileUser={profileUser} open={open} setOpen={setOpen} />

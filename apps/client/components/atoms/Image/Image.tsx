@@ -8,14 +8,7 @@ interface NextImageProps {
   objectPosition?: any
 }
 
-export const NextImage = ({
-  src,
-  alt,
-  roundedFull,
-  objectFit,
-  objectPosition,
-  ...props
-}: NextImageProps) => {
+export const NextImage = ({ src, alt, roundedFull, objectFit, objectPosition, ...props }: NextImageProps) => {
   if (!src) return null
   return (
     <div className="imageContainer" {...props}>

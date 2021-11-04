@@ -19,30 +19,25 @@
     "yarn": ">=1.22.0",
     "npm": "use-yarn-instead"
   },
-  "workspaces": [
-    "apps/*"
-  ],
   "scripts": {
-    "dev:client": "yarn workspace @s2media/client run dev",
-    "dev:server": "yarn workspace @s2media/server run dev",
-    "dev": "npm-run-all --parallel dev:* ",
-    "lint:client": "yarn workspace @s2media/client run lint",
-    "lint:server": "yarn workspace @s2media/server run lint",
-    "lint": "npm-run-all lint:*",
-    "clean:server": "yarn workspace @s2media/client run clean",
-    "clean:client": "yarn workspace @s2media/client run clean",
-    "clean:root": "rimraf ./node_modules",
-    "clean": "npm-run-all clean:*",
-    "studio:server": "yarn workspace @s2media/server run prisma:studio",
-    "migrate:dev": "yarn workspace @s2media/server run prisma:migrate:dev",
-    "prepare": "husky install",
-    "test:watch:client": "yarn workspace @s2media/client run test:watch",
-    "test:watch": "npm-run-all test:watch:*"
+    "boot": "lerna bootstrap",
+    "dev:client": "lerna run --scope @s2media/client --stream dev",
+    "dev:server": "lerna run --scope @s2media/server --stream dev",
+    "dev": "lerna run --stream dev",
+    "lint:client": "lerna run --scope @s2media/client --stream lint",
+    "lint:server": "lerna run --scope @s2media/server --stream lint",
+    "lint": "lerna run --stream lint",
+    "clean:root": "rm -rf ./node_modules",
+    "clean:client": "lerna run --scope @s2media/client clean",
+    "clean": "yarn clean:root && yarn clean:client && lerna clean",
+    "studio:server": "lerna run --scope @s2media/server --stream prisma:studio",
+    "migrate:dev": "lerna run --scope @s2media/server --stream run prisma:migrate:dev",
+    "test:watch:client": "cd apps/client && yarn test:watch",
+    "test:watch": "yarn test:watch:client",
+    "prettier": "prettier --write ./apps --ignore-unknown"
   },
   "devDependencies": {
-    "husky": "^7.0.2",
-    "lint-staged": "^11.1.2",
-    "npm-run-all": "^4.1.5",
-    "rimraf": "^3.0.2"
+    "lerna": "^4.0.0",
+    "prettier": "^2.4.1"
   }
 }
