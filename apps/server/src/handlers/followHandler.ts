@@ -28,7 +28,8 @@ export const followUser = async (req: Request, res: Response) => {
       },
     })
 
-    return res.json({ message: 'followed' })
+    res.json({ message: 'followed' })
+    return
   } else {
     const deleteId = userFollowing[0].id
     await prisma.follow.delete({
@@ -37,6 +38,7 @@ export const followUser = async (req: Request, res: Response) => {
       },
     })
 
-    return res.json({ message: 'unfollowed' })
+    res.json({ message: 'unfollowed' })
+    return
   }
 }

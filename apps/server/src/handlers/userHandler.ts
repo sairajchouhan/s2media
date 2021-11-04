@@ -63,10 +63,11 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
       },
       include: includeObj,
     })
-    return res.status(201).json({
+    res.status(201).json({
       redirect: '/home',
       userFullDetials: user,
     })
+    return
   }
 
   if (user.provider !== req.user.firebase.sign_in_provider) {
@@ -80,10 +81,11 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
       },
       include: includeObj,
     })
-    return res.status(201).json({ redirect: '/home', user: updatedUser })
+    res.status(201).json({ redirect: '/home', user: updatedUser })
+    return
   }
 
-  return res.status(200).json({
+  res.status(200).json({
     redirect: '/home',
     userFullDetials: user,
   })
@@ -111,7 +113,8 @@ export const updateProfile = async (req: Request, res: Response) => {
         userId: user.uid,
       },
     })
-    return res.json(profile)
+    res.json(profile)
+    return
   }
 
   const updateObj: Record<string, any> = {}
@@ -142,7 +145,7 @@ export const updateProfile = async (req: Request, res: Response) => {
     },
   })
 
-  return res.json(profile)
+  res.json(profile)
 }
 
 export const getUserInfo = async (req: Request, res: Response) => {
@@ -225,14 +228,15 @@ export const getAllPostsOfUser = async (req: Request, res: Response) => {
     },
   })
 
-  return res.json({ posts })
+  res.json({ posts })
 }
 
 export const getFollowersOfUser = async (req: Request, res: Response) => {
   const username = req.params.username
 
   if (!req.canViewPrivateInfo) {
-    return res.status(403).json({ message: 'You are not authorized to view this information' })
+    res.status(403).json({ message: 'You are not authorized to view this information' })
+    return
   }
 
   const data = await prisma.user.findUnique({
@@ -259,19 +263,21 @@ export const getFollowersOfUser = async (req: Request, res: Response) => {
   })
 
   if (!data) {
-    return res.json(400).end('User not found')
+    res.json(400).end('User not found')
+    return
   }
 
   const followers = data.followers.map((follower) => follower.follower)
 
-  return res.json({ followers })
+  res.json({ followers })
 }
 
 export const getFollowingOfUser = async (req: Request, res: Response) => {
   const username = req.params.username
 
   if (!req.canViewPrivateInfo) {
-    return res.status(403).json({ message: 'You are not authorized to view this information' })
+    res.status(403).json({ message: 'You are not authorized to view this information' })
+    return
   }
 
   const data = await prisma.user.findUnique({
@@ -298,10 +304,12 @@ export const getFollowingOfUser = async (req: Request, res: Response) => {
   })
 
   if (!data) {
-    return res.json(400).end('User not found')
+    res.json(400).end('User not found')
+    return
   }
 
   const following = data.following.map((following) => following.followed)
 
-  return res.json({ following })
+  res.json({ following })
+  return
 }

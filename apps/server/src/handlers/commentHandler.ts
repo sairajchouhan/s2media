@@ -54,8 +54,7 @@ export const createComment = async (req: Request, res: Response) => {
     },
   })
 
-  console.log(comment)
-  return res.json(comment)
+  res.json(comment)
 }
 
 export const editComment = async (req: Request, res: Response) => {
@@ -87,7 +86,7 @@ export const editComment = async (req: Request, res: Response) => {
     },
   })
 
-  return res.json(editedComment)
+  res.json(editedComment)
 }
 
 export const deleteComment = async (req: Request, res: Response) => {
@@ -126,11 +125,10 @@ export const deleteComment = async (req: Request, res: Response) => {
     where: { id: commentId },
   })
 
-  return res.json({ msg: 'Comment deleted successfully' })
+  res.json({ msg: 'Comment deleted successfully' })
 }
 
 export const getOneComment = async (req: Request, res: Response) => {
-  // const postId = req.params.postId
   const commentId = req.params.commentId
 
   const comment = await prisma.comment.findUnique({
@@ -142,5 +140,5 @@ export const getOneComment = async (req: Request, res: Response) => {
     },
   })
 
-  return res.json({ comment })
+  res.json({ comment })
 }

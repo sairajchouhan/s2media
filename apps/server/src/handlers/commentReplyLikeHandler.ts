@@ -27,7 +27,8 @@ export const likeOrUnlikeComment = async (req: Request, res: Response) => {
         postId,
       },
     })
-    return res.json({ commentLiked: true })
+    res.json({ commentLiked: true })
+    return
   } else {
     const likeId = comment.like.filter((like) => like.userId === userId)[0].id
     await prisma.commentReplyLike.delete({
@@ -35,7 +36,8 @@ export const likeOrUnlikeComment = async (req: Request, res: Response) => {
         id: likeId,
       },
     })
-    return res.json({ commentUnLiked: true })
+    res.json({ commentUnLiked: true })
+    return
   }
 }
 
@@ -65,7 +67,8 @@ export const likeOrUnlikeReply = async (req: Request, res: Response) => {
         postId,
       },
     })
-    return res.json({ replyLiked: true })
+    res.json({ replyLiked: true })
+    return
   } else {
     const likeId = reply.like.filter((like) => like.userId === userId)[0].id
     await prisma.commentReplyLike.delete({
@@ -73,6 +76,7 @@ export const likeOrUnlikeReply = async (req: Request, res: Response) => {
         id: likeId,
       },
     })
-    return res.json({ replyUnliked: true })
+    res.json({ replyUnliked: true })
+    return
   }
 }

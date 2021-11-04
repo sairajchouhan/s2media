@@ -20,7 +20,7 @@ export const createReplyToComment = async (req: Request, res: Response) => {
     },
   })
 
-  return res.json(reply)
+  res.json(reply)
 }
 
 const replyTakeCount = 10
@@ -57,7 +57,7 @@ export const getReplyForComment = async (req: Request, res: Response) => {
     },
   })
 
-  return res.json({
+  res.json({
     reply: replies,
     nextCursor: replies[replyTakeCount - 1]?.id ?? undefined,
   })

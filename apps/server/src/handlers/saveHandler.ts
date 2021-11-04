@@ -6,9 +6,10 @@ import prisma from '../../prisma'
 export const saveAndUnsavePost = async (req: Request, res: Response) => {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
-    return res.status(400).json({
+    res.status(400).json({
       errors: errors.array(),
     })
+    return
   }
 
   const postId = req.params.postId
@@ -49,7 +50,8 @@ export const saveAndUnsavePost = async (req: Request, res: Response) => {
       },
     })
 
-    return res.json(resp)
+    res.json(resp)
+    return
   } else {
     const saveId = post.save.filter((save) => save.userId === userId)[0].id
 
@@ -69,6 +71,7 @@ export const saveAndUnsavePost = async (req: Request, res: Response) => {
       },
     })
 
-    return res.json(resp)
+    res.json(resp)
+    return
   }
 }

@@ -23,7 +23,8 @@ export const toggleProfileType = async (req: Request, res: Response) => {
         profileType: 'PRIVATE',
       },
     })
-    return res.json({ user: userUpdated })
+    res.json({ user: userUpdated })
+    return
   }
 
   if (user.profileType === 'PRIVATE') {
@@ -35,8 +36,10 @@ export const toggleProfileType = async (req: Request, res: Response) => {
         profileType: 'PUBLIC',
       },
     })
-    return res.json({ user: userUpdated })
+    res.json({ user: userUpdated })
+    return
   }
 
-  return res.status(400).json({ message: 'something went wrong' })
+  res.status(400).json({ message: 'something went wrong' })
+  return
 }

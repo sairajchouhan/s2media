@@ -29,7 +29,8 @@ export const likeAndUnlikePost = async (req: Request, res: Response) => {
         post: true,
       },
     })
-    return res.json({ liked: true })
+    res.json({ liked: true })
+    return
   } else {
     const likeId = post.like.filter((like) => like.userId === userId)[0].id
     await prisma.like.delete({
@@ -37,7 +38,7 @@ export const likeAndUnlikePost = async (req: Request, res: Response) => {
         id: likeId,
       },
     })
-
-    return res.json({ unliked: true })
+    res.json({ unliked: true })
+    return
   }
 }

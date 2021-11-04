@@ -23,7 +23,7 @@ export const createPost = async (req: Request, res: Response) => {
     },
   })
 
-  return res.send(createdPost)
+  res.send(createdPost)
 }
 
 export const allPosts = async (_req: Request, res: Response) => {
@@ -44,7 +44,7 @@ export const allPosts = async (_req: Request, res: Response) => {
       },
     },
   })
-  return res.json(posts)
+  res.json(posts)
 }
 
 export const updatePost = async (req: Request, res: Response) => {
@@ -74,7 +74,7 @@ export const updatePost = async (req: Request, res: Response) => {
     },
   })
 
-  return res.json(updatedPost)
+  res.json(updatedPost)
 }
 
 export const deletePost = async (req: Request, res: Response) => {
@@ -131,7 +131,7 @@ export const deletePost = async (req: Request, res: Response) => {
 
   await cloudinary.api.delete_resources([post.imagePublicId])
 
-  return res.json({ message: 'Post deleted successfully' })
+  res.json({ message: 'Post deleted successfully' })
 }
 
 export const getPostById = async (req: Request, res: Response) => {
@@ -155,5 +155,5 @@ export const getPostById = async (req: Request, res: Response) => {
     throw createError(400, 'Post not found')
   }
 
-  return res.json(post)
+  res.json(post)
 }
