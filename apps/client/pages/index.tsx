@@ -1,6 +1,8 @@
 import UnAuthenticatedLayout from '../components/layouts/UnAuthenticatedLayout'
+import { useState } from 'react'
 
 export default function Landing() {
+  const [dummy, setDummy] = useState()
   return (
     <UnAuthenticatedLayout>
       {/* test commit from vscode.dev */}

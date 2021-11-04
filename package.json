@@ -24,9 +24,9 @@
     "dev:client": "lerna run --scope @s2media/client --stream dev",
     "dev:server": "lerna run --scope @s2media/server --stream dev",
     "dev": "lerna run --stream dev",
-    "lint:client": "lerna run --scope @s2media/client --stream lint",
-    "lint:server": "lerna run --scope @s2media/server --stream lint",
-    "lint": "lerna run --stream lint",
+    "lint:client": "cd ./apps/client && yarn lint",
+    "lint:server": "cd ./apps/server && yarn lint",
+    "lint": "yarn lint:client && yarn lint:server",
     "clean:root": "rm -rf ./node_modules",
     "clean:client": "lerna run --scope @s2media/client clean",
     "clean": "yarn clean:root && yarn clean:client && lerna clean",
@@ -34,10 +34,21 @@
     "migrate:dev": "lerna run --scope @s2media/server --stream run prisma:migrate:dev",
     "test:watch:client": "cd apps/client && yarn test:watch",
     "test:watch": "yarn test:watch:client",
-    "prettier": "prettier --write ./apps --ignore-unknown"
+    "prettier": "prettier --write ./apps --ignore-unknown",
+    "prepare": "husky install"
   },
   "devDependencies": {
+    "husky": "^7.0.4",
     "lerna": "^4.0.0",
+    "lint-staged": "^11.2.6",
     "prettier": "^2.4.1"
+  },
+  "lint-staged": {
+    "**/*": [
+      "prettier --write --ignore-unknown"
+    ],
+    "apps/**/*.tsx": [
+      "yarn lint"
+    ]
   }
 }
