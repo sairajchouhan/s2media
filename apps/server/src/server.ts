@@ -50,6 +50,6 @@ app.use(errorMiddleware)
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => {
-  console.log(`Running in ${process.env.NODE_ENV} mode`)
+  console.log(process.env.DATABASE_URL)
   console.log(`Server is up and running at http://localhost:${PORT}`)
 })
