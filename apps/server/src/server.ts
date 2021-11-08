@@ -2,22 +2,15 @@ import cors from 'cors'
 import express from 'express'
 import morgan from 'morgan'
 import { initAdmin } from './config/firebase-admin'
+import Redis from 'ioredis'
+
 // import { initAdmin } from './config/firebase-admin'
 import errorMiddleware from './middlewares/error'
-import authRoutes from './routes/authRoutes'
-import commentLikeRoutes from './routes/commentLikeRoutes'
-import commentRoutes from './routes/commentRoutes'
-import followRoutes from './routes/followRoutes'
-import likeRoutes from './routes/likeRoutes'
-import postRoutes from './routes/postRoutes'
-import replyLikeRoutes from './routes/replyLikeRoutes'
-import replyRoutes from './routes/replyRoutes'
-import saveRoutes from './routes/saveRoutes'
-import settingsRoutes from './routes/settingsRoutes'
-import userRoutes from './routes/userRoutes'
+import routes from './routes'
 
 const app = express()
 // firebase setup
+const redis = new Redis({ host: process.env.REDIS_HOST })
 initAdmin()
 
 // middlewares
@@ -32,19 +25,32 @@ app.use(
 
 // Routes
 app.get('/test', (_req, res) => {
-  res.send('hello world 2')
+  redis.get('foo', function (err, result) {
+    if (err) {
+      console.error(err)
+    } else {
+      console.log(result) // Promise resolves to "bar"
+      res.json(result)
+    }
+  })
 })
-app.use('/api/v1/auth', authRoutes)
-app.use('/api/v1/user', userRoutes)
-app.use('/api/v1/user/follow', followRoutes)
-app.use('/api/v1/post', postRoutes)
-app.use('/api/v1/post/like', likeRoutes)
-app.use('/api/v1/post/save', saveRoutes)
-app.use('/api/v1/post/comment', commentRoutes)
-app.use('/api/v1/post/comment/reply', replyRoutes)
-app.use('/api/v1/post/comment/like', commentLikeRoutes)
-app.use('/api/v1/post/reply/like', replyLikeRoutes)
-app.use('/api/v1/settings/profileType', settingsRoutes)
+
+app.post('/test', async (_req, res) => {
+  const data = await redis.set('foo', 'bar') // returns promise which resolves to string, "OK"
+  res.json({ data })
+})
+
+app.use('/api/v1/auth', routes.authRoutes)
+app.use('/api/v1/user', routes.userRoutes)
+app.use('/api/v1/user/follow', routes.followRoutes)
+app.use('/api/v1/post', routes.postRoutes)
+app.use('/api/v1/post/like', routes.likeRoutes)
+app.use('/api/v1/post/save', routes.saveRoutes)
+app.use('/api/v1/post/comment', routes.commentRoutes)
+app.use('/api/v1/post/comment/reply', routes.replyRoutes)
+app.use('/api/v1/post/comment/like', routes.commentLikeRoutes)
+app.use('/api/v1/post/reply/like', routes.replyLikeRoutes)
+app.use('/api/v1/settings/profileType', routes.settingsRoutes)
 
 app.use(errorMiddleware)
 
