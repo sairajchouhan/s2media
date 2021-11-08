@@ -27,7 +27,7 @@
     "dev": "npm-run-all --parallel dev:client up",
     "lint:client": "cd ./apps/client && yarn lint",
     "lint:server": "cd ./apps/server && yarn lint",
-    "lint": "yarn lint:client && yarn lint:server",
+    "lint": "npm-run-all lint:*",
     "clean:root": "rm -rf ./node_modules",
     "clean:client": "lerna run --scope @s2media/client clean",
     "clean": "yarn clean:root && yarn clean:client && lerna clean",
