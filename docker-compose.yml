@@ -19,16 +19,16 @@ services:
       - DATABASE_URL=postgresql://postgres:password@db:5432/s2media?schema=public
 
   db:
-    image: 'postgres:latest'
+    image: postgres:latest
     container_name: s2media_postgres
     restart: always
     ports:
-      - '5432:5432'
+      - 5432:5432
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=s2media
-#     volumes:
-#       - postgres-data:/var/lib/postgresql/data/
-# volumes:
-#   postgres-data:
+    volumes:
+      - postgres-data:/var/lib/postgresql/data/
+volumes:
+  postgres-data:

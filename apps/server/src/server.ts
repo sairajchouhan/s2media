@@ -32,7 +32,7 @@ app.use(
 
 // Routes
 app.get('/test', (_req, res) => {
-  res.send('hello world')
+  res.send('hello world 2')
 })
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/user', userRoutes)
