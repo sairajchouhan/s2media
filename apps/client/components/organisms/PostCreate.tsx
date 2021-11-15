@@ -55,21 +55,7 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
     }, 200)
   }
 
-  const validatePostData = () => {
-    let res: boolean
-    if (!selectedFile) res = false
-    else res = true
-    return res
-  }
-
   const handleCreatePost = async () => {
-    const isValid = validatePostData()
-
-    if (!isValid) {
-      console.log('data is not validated')
-      return
-    }
-
     const formData = new FormData()
     formData.append('image', selectedFile as Blob)
     if (textareaRef.current?.value !== '' && textareaRef.current?.value) {

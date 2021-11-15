@@ -1,0 +1,6 @@
+{
+  "lint-staged": {
+    "**/*": ["prettier --write --ignore-unknown"],
+    "apps/**/*.tsx": ["yarn lint"]
+  }
+}

@@ -7,19 +7,29 @@ import { formatBufferTo64 } from '../config/data-uri'
 export const createPost = async (req: Request, res: Response) => {
   const { caption }: { caption: string } = req.body
 
-  if (!req.file) {
-    throw createError(404, 'Post must contain a image')
+  if ((!caption || caption.trim() === '') && !req.file) {
+    throw createError(400, 'Invalid post data')
   }
 
-  const base64file = formatBufferTo64(req.file)
-  const imageUploadRes = await cloudinaryPostImageUpload(base64file.content as string)
+  if (caption.length > 300) {
+    throw createError(400, 'Caption must be less than 300 characters')
+  }
+
+  const data: any = { caption, userId: req.user.uid }
+
+  if (req.file) {
+    const base64file = formatBufferTo64(req.file)
+    const imageUploadRes = await cloudinaryPostImageUpload(base64file.content as string)
+    data.url = imageUploadRes.secure_url
+    data.imagePublicId = imageUploadRes.public_id
+  }
+
+  console.log(data)
 
   const createdPost = await prisma.post.create({
     data: {
-      url: imageUploadRes.secure_url,
       caption: caption,
       userId: req.user.uid,
-      imagePublicId: imageUploadRes.public_id,
     },
   })
 
@@ -129,7 +139,9 @@ export const deletePost = async (req: Request, res: Response) => {
     },
   })
 
-  await cloudinary.api.delete_resources([post.imagePublicId])
+  if (post.imagePublicId) {
+    await cloudinary.api.delete_resources([post.imagePublicId])
+  }
 
   res.json({ message: 'Post deleted successfully' })
 }

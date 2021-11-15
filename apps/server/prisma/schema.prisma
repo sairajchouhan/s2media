@@ -42,9 +42,9 @@ model Profile {
 
 model Post{
   id String @id @default(cuid())
-  url String 
+  url String? 
   caption String?
-  imagePublicId String
+  imagePublicId String?
   like Like[]
   save Save[]
   comment Comment[]

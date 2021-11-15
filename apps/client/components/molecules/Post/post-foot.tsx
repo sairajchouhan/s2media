@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { axios } from '../../../config/axios'
@@ -72,9 +71,9 @@ export const PostFoot = ({ post }: PostFootInterface) => {
   if (!user) return null
 
   return (
-    <div className="px-3 py-2">
+    <div className="">
       <div className="flex items-center justify-between">
-        <div className="flex">
+        <div className="flex items-center transform -translate-x-2">
           <IconButton
             w="w-6"
             h="h-6"
@@ -97,7 +96,7 @@ export const PostFoot = ({ post }: PostFootInterface) => {
             }}
           />
         </div>
-        <div>
+        <div className="flex items-center justify-center transform translate-x-2">
           <IconButton
             w="w-6"
             h="h-6"

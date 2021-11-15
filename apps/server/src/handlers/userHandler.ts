@@ -4,6 +4,7 @@ import prisma from '../../prisma'
 import { cloudinaryUserProfileImageUpload } from '../config/cloudinary'
 import { formatBufferTo64 } from '../config/data-uri'
 import { get4RandomChars } from '../utils'
+import fbAdmin from 'firebase-admin'
 
 export const getAllUsers = async (_req: Request, res: Response) => {
   const data = await prisma.user.findMany({
@@ -39,12 +40,14 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
 
   user = await prisma.user.findUnique({
     where: {
-      email: req.user.email,
+      uid: req.user.uid,
     },
     include: includeObj,
   })
 
-  if (!user) {
+  const isUserInFirebase = await fbAdmin.auth().getUser(req.user.uid)
+
+  if (isUserInFirebase && !user) {
     const username = req.user.email.split('@')[0]
 
     user = await prisma.user.create({
@@ -70,6 +73,12 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
     return
   }
 
+  if (!isUserInFirebase && user) {
+    // TODO: delete the user and all this belongings
+  }
+
+  // if user signs up with google eventhough he has email/pass account
+  // already in firebase then this will update the user's avatar
   if (user.provider !== req.user.firebase.sign_in_provider) {
     const updatedUser = await prisma.user.update({
       where: {
