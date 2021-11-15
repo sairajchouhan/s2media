@@ -5,13 +5,10 @@ import React from 'react'
 import { useInfiniteQuery, useQuery } from 'react-query'
 import { Button } from '../../components/atoms/Button'
 import { CircleLoader } from '../../components/atoms/CircleLoader'
-import { NextImage } from '../../components/atoms/Image'
-import { DotsHorizontal } from '../../components/icons'
 import { Comment, CommentReplyInput } from '../../components/molecules/Comment'
 import { PageLayout } from '../../components/molecules/Page'
 import { PageNav } from '../../components/molecules/Page/page-nav'
-import { PostFoot } from '../../components/molecules/Post/post-foot'
-import { PostHead } from '../../components/molecules/Post/post-head'
+import { Post } from '../../components/organisms/Post'
 import { axios } from '../../config/axios'
 import { useAuth } from '../../context/authContext'
 import { PostWithBaseUser } from '../../types/post'
@@ -94,12 +91,8 @@ const EachPost = () => {
           <CircleLoader className="pt-10" />
         ) : (
           <>
-            <PostHead post={post} icon={DotsHorizontal} />
-            <main>
-              <NextImage src={post.url} />
-            </main>
-            <PostFoot post={post} />
-            <section className="px-4 pb-10 mb-20 border-opacity-80">
+            <Post post={post} />
+            <section className="px-3 pb-10 mb-20 border-opacity-80">
               <CommentReplyInput isReply={false} postId={post.id} />
               {isLoadingComments ? (
                 <CircleLoader />
