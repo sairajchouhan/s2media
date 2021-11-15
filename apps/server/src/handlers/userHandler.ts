@@ -5,6 +5,7 @@ import { cloudinaryUserProfileImageUpload } from '../config/cloudinary'
 import { formatBufferTo64 } from '../config/data-uri'
 import { get4RandomChars } from '../utils'
 import fbAdmin from 'firebase-admin'
+import { redis } from '../config/redis'
 
 export const getAllUsers = async (_req: Request, res: Response) => {
   const data = await prisma.user.findMany({
@@ -22,6 +23,15 @@ export const getAllUsers = async (_req: Request, res: Response) => {
 }
 
 export const getAuthUserInfo = async (req: Request, res: Response) => {
+  const cacheUser = await redis.get(`user:${req.user.uid}`)
+  if (cacheUser) {
+    res.status(200).json({
+      redirect: '/home',
+      userFullDetials: JSON.parse(cacheUser),
+    })
+    return
+  }
+
   let user: any
   const includeObj = {
     _count: {
@@ -93,6 +103,8 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
     res.status(201).json({ redirect: '/home', user: updatedUser })
     return
   }
+
+  await redis.setex(`user:${req.user.uid}`, 24 * 60 * 60, JSON.stringify(user))
 
   res.status(200).json({
     redirect: '/home',

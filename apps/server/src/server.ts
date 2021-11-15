@@ -5,6 +5,7 @@ import morgan from 'morgan'
 import errorMiddleware from './middlewares/error'
 import routes from './routes'
 import { init } from './utils/initialize'
+import { redis } from './config/redis'
 //
 ;(() => {
   const app = express()
@@ -21,8 +22,16 @@ import { init } from './utils/initialize'
   )
 
   // Routes
-  app.get('/test', (_req, res) => {
-    res.send('Working 🔥 \n')
+  app.get('/test', async (_req, res) => {
+    const temp = await redis.get('hi')
+    console.log('cache')
+    res.json({ temp })
+  })
+
+  app.post('/test', async (_req, res) => {
+    const resp = await redis.set('hi', 'hello')
+    console.log('cache')
+    res.json({ resp })
   })
 
   app.use('/api/v1/auth', routes.authRoutes)
@@ -40,7 +49,6 @@ import { init } from './utils/initialize'
 
   const PORT = process.env.PORT || 5000
   app.listen(PORT, () => {
-    console.log(process.env.DATABASE_URL)
     console.log(`Server is running in ${process.env.NODE_ENV} mode at http://localhost:${PORT}`)
   })
 })()
