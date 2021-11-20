@@ -10,6 +10,7 @@ import { IconButton } from '../atoms/IconButton'
 import { CancenIcon } from '../icons/CancenIcon'
 import { Model } from '../molecules/Model'
 import { ModelBody } from '../molecules/Model/model-body'
+import { PhotographIcon } from '@heroicons/react/outline'
 export interface PostCreateInterface {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
@@ -123,14 +124,20 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
             <div>
               <label
                 role="button"
-                className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md cursor-pointer hover:bg-blue-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                className="p-1.5 transform translate-y-1.5 rounded-full flex items-center justify-center hover:bg-blue-50"
                 htmlFor="postfile"
               >
-                Upload image
+                <PhotographIcon className="w-5 h-5 text-indigo-500" />
               </label>
               <input onChange={handleFileChange} id="postfile" type="file" className="hidden" />
             </div>
-            <Button onClick={handleCreatePost} variant="solid" colorScheme="green" loading={loading} disabled={loading}>
+            <Button
+              onClick={handleCreatePost}
+              variant="solid"
+              colorScheme="indigo"
+              loading={loading}
+              disabled={loading}
+            >
               Post
             </Button>
           </div>
