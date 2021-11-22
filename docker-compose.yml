@@ -4,7 +4,7 @@ services:
     container_name: s2media_server
     build:
       context: ./apps/server
-      dockerfile: ./Dockerfile
+      dockerfile: ./Dockerfile.dev
     depends_on:
       - db
       - redis
