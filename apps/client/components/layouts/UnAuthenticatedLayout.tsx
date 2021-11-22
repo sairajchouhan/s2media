@@ -4,11 +4,11 @@ import { useAuth } from '../../context/authContext'
 import Nav from '../organisms/Nav'
 
 const UnAuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
-  const { user } = useAuth()
+  const { rqUser } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
-    if (user) {
+    if (rqUser) {
       router.push('/home')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -16,7 +16,7 @@ const UnAuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      {!user && (
+      {!rqUser && (
         <>
           <header>
             <Nav />

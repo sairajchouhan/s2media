@@ -10,8 +10,6 @@ const CommentReplyLikeAction = ({ isReply, crEntity }: { isReply: boolean; crEnt
     crEntity?.like?.some((like: any) => like.userId === user?.uid) ?? false
   )
 
-  console.log(crEntity)
-
   const handleCommentReplyLike = async () => {
     const currentLikes = crLikeCount
     if (userLiked) {

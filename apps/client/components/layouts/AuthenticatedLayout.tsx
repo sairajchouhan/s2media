@@ -5,18 +5,18 @@ import LeftNav from '../organisms/LeftNav'
 import RightNav from '../organisms/RightNav'
 
 const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
-  const { user } = useAuth()
+  const { rqUser } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
-    if (!user) {
+    if (!rqUser) {
       router.push('/login')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    user && (
+    rqUser && (
       <div className="w-full">
         <div className="flex w-3/4 mx-auto">
           <header className="relative z-10 flex flex-col items-end flex-shrink mr-10">

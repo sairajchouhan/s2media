@@ -11,15 +11,16 @@ export interface PostFootInterface {
 }
 
 export const PostFoot = ({ post }: PostFootInterface) => {
-  const { user } = useAuth()
+  const { rqUser, getIdToken } = useAuth()
   const router = useRouter()
   const [likeCount, setLikeCount] = useState<number>(post.like.length)
-  const [userLiked, setUserLiked] = useState<boolean>(post.like.some((like: any) => like.userId === user?.uid))
-  const [userSaved, setUserSaved] = useState<boolean>(post.save.some((save: any) => save.userId === user?.uid))
+  const [userLiked, setUserLiked] = useState<boolean>(post.like.some((like: any) => like.userId === rqUser?.uid))
+  const [userSaved, setUserSaved] = useState<boolean>(post.save.some((save: any) => save.userId === rqUser?.uid))
 
-  if (!user) return null
+  if (!rqUser) return null
 
   const handleLikePost = async () => {
+    const token = await getIdToken()
     const currentLikes = likeCount
     if (userLiked) {
       setUserLiked(false)
@@ -35,7 +36,7 @@ export const PostFoot = ({ post }: PostFootInterface) => {
         {},
         {
           headers: {
-            Authorization: `Bearer ${user.idToken}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       )
@@ -46,6 +47,7 @@ export const PostFoot = ({ post }: PostFootInterface) => {
     }
   }
   const handleSavePost = async () => {
+    const token = await getIdToken()
     if (userSaved) {
       setUserSaved(false)
     }
@@ -58,7 +60,7 @@ export const PostFoot = ({ post }: PostFootInterface) => {
         {},
         {
           headers: {
-            Authorization: `Bearer ${user.idToken}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       )
@@ -68,7 +70,7 @@ export const PostFoot = ({ post }: PostFootInterface) => {
     }
   }
 
-  if (!user) return null
+  if (!rqUser) return null
 
   return (
     <div className="">

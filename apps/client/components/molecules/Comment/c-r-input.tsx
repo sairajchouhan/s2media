@@ -29,17 +29,18 @@ interface Iprops {
 export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
   ({ postId, commentId, isReply, repliedToUser, setReply, refetchIfNoReplies }, ref) => {
     const queryClient = useQueryClient()
-    const { user } = useAuth()
+    const { rqUser, getIdToken } = useAuth()
     const [inputText, setInputText] = useState('')
 
     const commentMutation = useMutation(
-      (inputText: string) => {
+      async (inputText: string) => {
+        const token = await getIdToken()
         return axios.post(
           POST_COMMENT.path(postId),
           { commentText: inputText },
           {
             headers: {
-              Authorization: `Bearer ${user?.idToken}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         )
@@ -50,23 +51,21 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
           await queryClient.cancelQueries(GET_ONE_POST.queryKey(postId))
 
           const previousComments = queryClient.getQueryData<any>(['post', { id: postId, comment: true }])
-          console.log(previousComments)
           const previousPost: any = queryClient.getQueryData(GET_ONE_POST.queryKey(postId))
-          console.log(previousPost)
 
           const newComment = {
             id: cuid(),
             commentText: inputText,
-            userId: user?.uid,
+            userId: rqUser?.uid,
             postId: postId,
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
             user: {
-              uid: user?.uid,
-              avatar: user?.avatar,
-              username: user?.username,
+              uid: rqUser?.uid,
+              avatar: rqUser?.avatar,
+              username: rqUser?.username,
               profile: {
-                displayName: user?.profile.displayName,
+                displayName: rqUser?.profile.displayName,
               },
             },
             _count: {
@@ -109,13 +108,14 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
     )
 
     const replyMutation = useMutation(
-      (inputText: string) => {
+      async (inputText: string) => {
+        const token = await getIdToken()
         return axios.post(
           POST_REPLY.path(postId, commentId),
           { replyText: inputText, repliedToUserUid: repliedToUser.uid },
           {
             headers: {
-              Authorization: `Bearer ${user?.idToken}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         )
@@ -132,7 +132,7 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
           const newReply = {
             id: cuid(),
             replyText: inputText,
-            userId: user?.uid,
+            userId: rqUser?.uid,
             postId: postId,
             commentId: commentId,
             repliedToUserUid: repliedToUser.uid,
@@ -147,11 +147,11 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
               },
             },
             user: {
-              uid: user?.uid,
-              avatar: user?.avatar,
-              username: user?.username,
+              uid: rqUser?.uid,
+              avatar: rqUser?.avatar,
+              username: rqUser?.username,
               profile: {
-                displayName: user?.profile.displayName,
+                displayName: rqUser?.profile.displayName,
               },
             },
           }
@@ -188,7 +188,6 @@ export const CommentReplyInput = React.forwardRef<HTMLInputElement, Iprops>(
           }
         },
         onSuccess: (data, _vars, context) => {
-          console.log(data)
           if (context?.shouldRefetch) {
             refetchIfNoReplies()
           } else {

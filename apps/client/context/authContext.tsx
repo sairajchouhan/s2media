@@ -77,7 +77,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     return () => unsub()
   }, [router])
 
-  const { isSuccess, data } = useQuery(
+  const { data } = useQuery(
     GET_PROFILE_USER.queryKey(user?.username as string),
     async () => {
       const { data } = await axios.get(GET_PROFILE_USER.path(user?.username as string), {
@@ -89,17 +89,15 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     },
     {
       enabled: !!user,
+      onSuccess: () => {
+        setLoading(false)
+      },
+      onError: () => {
+        toast({ message: 'Somethig went wrong', type: 'error' })
+        setLoading(false)
+      },
     }
   )
-
-  useEffect(() => {
-    if (isSuccess) {
-      setLoading(false)
-    } else {
-      setLoading(false)
-      toast({ message: 'Somethig went wrong', type: 'error' })
-    }
-  }, [isSuccess, toast])
 
   const login = (email: string, password: string) => {
     return firebase.auth().signInWithEmailAndPassword(email, password)
@@ -130,7 +128,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     logout,
     oAuthLogin,
     getIdToken,
-    rqUser: data.user,
+    rqUser: data?.user,
   }
 
   return (
@@ -142,7 +140,10 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
           </div>
         </div>
       ) : (
-        children
+        <>
+          {children}
+          {console.log(data)}
+        </>
       )}
     </AuthContext.Provider>
   )

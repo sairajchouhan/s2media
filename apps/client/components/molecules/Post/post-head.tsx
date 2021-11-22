@@ -42,9 +42,8 @@ export const PostHead = ({ post: { user, id, createdAt }, icon }: PostHeadProps)
         setOpen(false)
         toast({ type: 'success', message: 'Post deleted successfully' })
       },
-      onError: (err) => {
+      onError: (_err) => {
         toast({ type: 'error', message: 'Something went wrong :( Try again' })
-        console.log(err)
       },
     }
   )

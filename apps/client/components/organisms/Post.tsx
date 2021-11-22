@@ -11,7 +11,7 @@ export const Post = ({ post }: PostProps) => {
   return (
     <div className="px-3 py-2 overflow-hidden transition-all border-b rounded-sm shadow-sm border-opacity-80 hover:bg-gray-50">
       <PostHead post={post} icon={DotsHorizontal} />
-      <main className="pt-5 pb-3" onClick={() => console.log('hi')}>
+      <main className="pt-5 pb-3">
         {post.caption ? (
           <div className="">
             <p className="items-end flex-1 text-lg font-normal leading-6 text-gray-900">{post.caption}</p>

@@ -41,7 +41,6 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   }
 
   if (postToProtect) {
-    console.log('checking dude')
     const post = await prisma.post.findUnique({
       where: {
         id: postToProtect,

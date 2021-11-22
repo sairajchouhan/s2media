@@ -3,16 +3,16 @@ import React, { useEffect } from 'react'
 import { useAuth } from '../context/authContext'
 
 const AuthGaurdOn = ({ children }: { children: React.ReactNode }) => {
-  const { user } = useAuth()
+  const { rqUser } = useAuth()
 
   const router = useRouter()
   useEffect(() => {
-    if (!user) {
+    if (!rqUser) {
       router.push('/login')
     }
-  }, [user, router])
+  }, [rqUser, router])
 
-  return <>{user && children}</>
+  return <>{rqUser && children}</>
 }
 
 export default AuthGaurdOn

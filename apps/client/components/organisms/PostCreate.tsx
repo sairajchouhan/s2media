@@ -17,7 +17,7 @@ export interface PostCreateInterface {
 }
 
 export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
-  const { user } = useAuth()
+  const { rqUser, getIdToken } = useAuth()
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [selectedFile, setSelectedFile] = useState<Blob | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
@@ -29,7 +29,7 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
     }
   }, [selectedFile])
 
-  if (!user) return null
+  if (!rqUser) return null
 
   const toggleOpen = () => {
     setOpen((open) => !open)
@@ -58,6 +58,7 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
 
   const handleCreatePost = async () => {
     const formData = new FormData()
+    const token = await getIdToken()
     formData.append('image', selectedFile as Blob)
     if (textareaRef.current?.value !== '' && textareaRef.current?.value) {
       formData.append('caption', textareaRef.current?.value as string)
@@ -67,7 +68,7 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
       setLoading((l) => !l)
       const res = await axios.post(CREATE_POST.path, formData, {
         headers: {
-          Authorization: `Bearer ${user.idToken}`,
+          Authorization: `Bearer ${token}`,
         },
       })
       setOpen((open) => !open)
@@ -89,7 +90,7 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
           <div className="mt-4">
             <div className="flex items-start h-full space-x-4">
               <div className="h-full">
-                {user.avatar && <Avatar src={user.avatar} w="w-10" h="h-10" alt="authenticated user avatar" />}
+                {rqUser.avatar && <Avatar src={rqUser.avatar} w="w-10" h="h-10" alt="authenticated rqUser avatar" />}
               </div>
               <div className="flex items-center flex-1 h-full">
                 <AutoGrowTextArea initialFocusRef={textareaRef} />

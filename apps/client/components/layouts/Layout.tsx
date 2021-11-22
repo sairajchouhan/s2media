@@ -4,10 +4,10 @@ import AuthenticatedLayout from './AuthenticatedLayout'
 import UnAuthenticatedLayout from './UnAuthenticatedLayout'
 
 const Layout = ({ children }: { session?: any; children: React.ReactNode }) => {
-  const { user } = useAuth()
+  const { rqUser } = useAuth()
   return (
     <>
-      {user ? (
+      {rqUser ? (
         <AuthenticatedLayout>{children}</AuthenticatedLayout>
       ) : (
         <UnAuthenticatedLayout>{children}</UnAuthenticatedLayout>
