@@ -7,6 +7,8 @@ import { get4RandomChars } from '../utils'
 import fbAdmin from 'firebase-admin'
 import { redis } from '../config/redis'
 
+const ttl = 24 * 60 * 60 * 30
+
 export const getAllUsers = async (_req: Request, res: Response) => {
   const data = await prisma.user.findMany({
     orderBy: { createdAt: 'desc' },
@@ -23,7 +25,7 @@ export const getAllUsers = async (_req: Request, res: Response) => {
 }
 
 export const getAuthUserInfo = async (req: Request, res: Response) => {
-  const cacheUser = await redis.get(`user:${req.user.uid}`)
+  const cacheUser = await redis.get(`user:session:${req.user.uid}`)
   if (cacheUser) {
     res.status(200).json({
       redirect: '/home',
@@ -32,6 +34,7 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
     return
   }
 
+  // TODO: incrementelly remove any other information that is not required from /me insted get that information from /user/:username i.e., user profile information
   let user: any
   const includeObj = {
     _count: {
@@ -104,7 +107,7 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
     return
   }
 
-  await redis.setex(`user:${req.user.uid}`, 24 * 60 * 60, JSON.stringify(user))
+  await redis.setex(`user:session:${req.user.uid}`, ttl, JSON.stringify(user))
 
   res.status(200).json({
     redirect: '/home',
@@ -112,6 +115,20 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
   })
 }
 
+export const deleteAuthUserCache = async (req: Request, res: Response) => {
+  redis.del(`user:session:${req.user.uid}`, (error, resp) => {
+    if (error) {
+      console.log(error.name)
+      console.error(error.message)
+      console.log(error.stack)
+    }
+    console.log(resp)
+  })
+
+  res.send('OK')
+}
+
+//!
 export const updateProfile = async (req: Request, res: Response) => {
   const { bio, displayName } = req.body
   const user = await prisma.user.findUnique({
@@ -170,6 +187,12 @@ export const updateProfile = async (req: Request, res: Response) => {
 }
 
 export const getUserInfo = async (req: Request, res: Response) => {
+  const cacheUserProfile = await redis.get(`user:profile:${req.user.uid}`)
+  if (cacheUserProfile) {
+    res.status(200).json(JSON.parse(cacheUserProfile))
+    return
+  }
+
   const username = req.params.username
   const canViewFullProfile = req.canViewPrivateInfo
   const includeObj = {
@@ -182,6 +205,7 @@ export const getUserInfo = async (req: Request, res: Response) => {
       },
     },
     profile: true,
+    save: true,
     followers: canViewFullProfile,
     following: canViewFullProfile,
   }
@@ -196,7 +220,9 @@ export const getUserInfo = async (req: Request, res: Response) => {
   if (!user) {
     throw createError(403, 'User not found')
   }
+  const returnObj = { user, canViewFullProfile }
 
+  await redis.setex(`user:profile:${user.uid}`, 24 * 60 * 60, JSON.stringify(returnObj))
   res.json({ user, canViewFullProfile })
 }
 

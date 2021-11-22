@@ -1,11 +1,14 @@
 /* eslint-disable no-unused-vars */
 import { useRouter } from 'next/router'
 import { createContext, useContext, useEffect, useState } from 'react'
+import { useQuery } from 'react-query'
 import { axios } from '../config/axios'
 import firebase from '../config/firebase'
 import { AuthUser } from '../types'
 import { BaseUser } from '../types/user'
 import { getProvider } from '../utils/oAuthProviders'
+import { GET_PROFILE_USER } from '../utils/querykeysAndPaths'
+import { useToast } from './toastContext'
 
 type AuthContextType = {
   user: AuthUser | null
@@ -14,6 +17,7 @@ type AuthContextType = {
   logout: () => Promise<any>
   oAuthLogin: (provider: string) => Promise<any>
   getIdToken: () => Promise<string | undefined>
+  rqUser: any
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType)
@@ -29,6 +33,7 @@ const formatUser = (user: BaseUser, idToken: string): AuthUser => {
 }
 
 export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
+  const toast = useToast()
   const [user, setUser] = useState<AuthUser | null>(null)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
@@ -50,7 +55,6 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
                 data: { userFullDetials },
               } = userResp
               setUser(formatUser(userFullDetials, idToken))
-              setLoading(false)
               if (fromPaths.includes(router.pathname)) {
                 router.push('/home')
               }
@@ -72,6 +76,30 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     })
     return () => unsub()
   }, [router])
+
+  const { isSuccess, data } = useQuery(
+    GET_PROFILE_USER.queryKey(user?.username as string),
+    async () => {
+      const { data } = await axios.get(GET_PROFILE_USER.path(user?.username as string), {
+        headers: {
+          Authorization: `Bearer ${user?.idToken}`,
+        },
+      })
+      return data
+    },
+    {
+      enabled: !!user,
+    }
+  )
+
+  useEffect(() => {
+    if (isSuccess) {
+      setLoading(false)
+    } else {
+      setLoading(false)
+      toast({ message: 'Somethig went wrong', type: 'error' })
+    }
+  }, [isSuccess, toast])
 
   const login = (email: string, password: string) => {
     return firebase.auth().signInWithEmailAndPassword(email, password)
@@ -102,6 +130,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     logout,
     oAuthLogin,
     getIdToken,
+    rqUser: data.user,
   }
 
   return (

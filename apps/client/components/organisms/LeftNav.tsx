@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import nookies from 'nookies'
+import { axios } from '../../config/axios'
 import { useAuth } from '../../context/authContext'
 import { paths } from '../../utils/paths'
 import { LeftNavPostBtn } from '../atoms/LeftNavPostBtn/LeftNavPostBtn'
@@ -9,12 +9,18 @@ import { LeftNavBrand, LeftNavLink, LeftNavUser } from '../molecules/LeftNav'
 const LeftNav = () => {
   const router = useRouter()
   const { push, pathname } = useRouter()
-  const { user, logout } = useAuth()
+  const { user, logout, getIdToken } = useAuth()
 
   const handleLogout = async () => {
+    const token = await getIdToken()
     await logout()
-    nookies.destroy(undefined, 'idk')
+    // nookies.destroy(undefined, 'idk')
     router.push('/login')
+    await axios.delete('/user/me', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
   }
 
   const isActive = (path: string) => {
