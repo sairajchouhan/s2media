@@ -11,11 +11,11 @@
     "lint:fix": "eslint . --ext .ts --fix",
     "prettify": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "clean": "rm -rf ./node_modules",
-    "prisma:studio": "npx prisma studio",
-    "prisma:generate": "npx prisma generate",
-    "prisma:migrate:deploy": "npx prisma migrate deploy",
-    "prisma:migrate:dev": "npx prisma migrate dev",
-    "docker:start": "yarn prisma:generate && yarn dev"
+    "prisma:studio": "prisma studio",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "docker:start": "yarn prisma generate && yarn dev"
   },
   "keywords": [
     "express",
