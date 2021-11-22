@@ -90,21 +90,21 @@ export const EditProfile = ({ open, setOpen, profileUser }: EditProfileProps) =>
       <Model.Head title="Edit Profile" toggleOpen={toggleOpen} />
       <Model.Body>
         <div className="flex flex-col items-center mt-5 ">
-          <div className="relative">
-            {previewUrl ? (
-              <div className="w-40 h-40 overflow-hidden rounded-full ">
+          <div className="relative ">
+            <div className="w-40 h-40 overflow-hidden rounded-full ">
+              {previewUrl ? (
                 <img src={previewUrl} className="object-cover object-center w-full h-full" alt="preview url" />
-              </div>
-            ) : (
-              <Avatar src={profileUser.avatar} alt="user profile avatar" w="w-40" h="h-40" />
-            )}
+              ) : (
+                <img src={profileUser.avatar as any} className="block w-full h-full" alt="user profile avatar" />
+              )}
+            </div>
             <div className="absolute bottom-2 right-2">
               <div role="button">
                 <label
                   className="inline-flex items-center justify-center p-1 text-gray-600 bg-blue-100 border border-transparent rounded-full cursor-pointer hover:bg-blue-200 d-flex focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                   htmlFor="avatarFile"
                 >
-                  <EditIcon />
+                  <EditIcon className="w-5 h-5" />
                 </label>
                 <input onChange={handleFileChange} id="avatarFile" type="file" className="hidden" />
               </div>
@@ -153,10 +153,15 @@ export const EditProfile = ({ open, setOpen, profileUser }: EditProfileProps) =>
       </Model.Body>
       <Model.Foot>
         <div className="flex items-center justify-end mt-6 space-x-3">
-          <Button disabled={profileUpdateMutation.isLoading} colorScheme="red" onClick={() => handleProfileEditClose()}>
+          <Button
+            disabled={profileUpdateMutation.isLoading}
+            colorScheme="red"
+            variant="outline"
+            onClick={() => handleProfileEditClose()}
+          >
             Cancel
           </Button>
-          <Button loading={profileUpdateMutation.isLoading} colorScheme="green" onClick={handleUpdateProfile}>
+          <Button loading={profileUpdateMutation.isLoading} colorScheme="indigo" onClick={handleUpdateProfile}>
             Update
           </Button>
         </div>
