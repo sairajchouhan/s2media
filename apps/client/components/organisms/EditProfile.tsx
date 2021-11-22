@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import React, { Dispatch, SetStateAction, useState } from 'react'
 import { useMutation, useQueryClient } from 'react-query'
 import { axios } from '../../config/axios'
@@ -6,7 +5,6 @@ import { useAuth } from '../../context/authContext'
 import { useToast } from '../../context/toastContext'
 import { useFileUpload } from '../../hooks/useFileUpload'
 import { AuthUser } from '../../types/user'
-import { Avatar } from '../atoms/Avatar'
 import { Button } from '../atoms/Button'
 import { Input } from '../atoms/Input'
 import { EditIcon } from '../icons'

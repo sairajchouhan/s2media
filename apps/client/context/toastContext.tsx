@@ -59,7 +59,7 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
     <>
       <ToastContext.Provider value={toast}>
         <Transition appear show={isOpen} as={React.Fragment}>
-          <div className="fixed inset-0 z-10 overflow-y-auto">
+          <div className="absolute inset-0 z-10 overflow-y-auto">
             <div className="flex items-end justify-center min-h-screen px-4 text-center">
               <Transition.Child
                 as={React.Fragment}
