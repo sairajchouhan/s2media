@@ -9,7 +9,7 @@ import { LeftNavBrand, LeftNavLink, LeftNavUser } from '../molecules/LeftNav'
 const LeftNav = () => {
   const router = useRouter()
   const { push, pathname } = useRouter()
-  const { user, logout, getIdToken } = useAuth()
+  const { rqUser, logout, getIdToken } = useAuth()
 
   const handleLogout = async () => {
     const token = await getIdToken()
@@ -27,13 +27,13 @@ const LeftNav = () => {
     return pathname === path
   }
 
-  if (!user) return null
+  if (!rqUser) return null
 
   return (
     <nav className="flex flex-col w-64 h-screen max-h-screen">
       <LeftNavBrand
         onClick={() => {
-          if (user) push(paths.home)
+          if (rqUser) push(paths.home)
           else push(paths.landing)
         }}
       />
@@ -47,7 +47,7 @@ const LeftNav = () => {
         <LeftNavLink
           active={pathname.split('/').includes('profile')}
           icon={ProfileIcon}
-          onClick={() => push(paths.profile({ username: user.username }).href)}
+          onClick={() => push(paths.profile({ username: rqUser.username }).href)}
         >
           Profile
         </LeftNavLink>
@@ -67,7 +67,7 @@ const LeftNav = () => {
         </LeftNavLink>
         <LeftNavPostBtn />
       </ul>
-      <LeftNavUser user={user} />
+      <LeftNavUser user={rqUser} />
     </nav>
   )
 }

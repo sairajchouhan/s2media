@@ -4,10 +4,10 @@ import { useAuth } from '../../../context/authContext'
 import { CREATE_COMMENT_LIKE, CREATE_REPLY_LIKE } from '../../../utils/querykeysAndPaths'
 
 const CommentReplyLikeAction = ({ isReply, crEntity }: { isReply: boolean; crEntity: any }) => {
-  const { user, getIdToken } = useAuth()
+  const { rqUser, getIdToken } = useAuth()
   const [crLikeCount, setCrLikeCount] = useState<number>(() => crEntity?._count?.like ?? 0)
   const [userLiked, setUserLiked] = useState<boolean>(
-    crEntity?.like?.some((like: any) => like.userId === user?.uid) ?? false
+    crEntity?.like?.some((like: any) => like.userId === rqUser?.uid) ?? false
   )
 
   const handleCommentReplyLike = async () => {

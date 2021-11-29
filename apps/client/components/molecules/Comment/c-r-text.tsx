@@ -22,7 +22,7 @@ import { Link } from '../../Link'
 import { Menu } from '../Menu'
 
 export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply: boolean }) => {
-  const { user, getIdToken } = useAuth()
+  const { rqUser, getIdToken } = useAuth()
   const queryClient = useQueryClient()
   const [edit, setEdit] = useState({
     show: false,
@@ -264,7 +264,7 @@ export const CommentReplyText = ({ crEntity, isReply }: { crEntity: any; isReply
           <Menu
             activationButton={() => <IconButton w="w-4" h="h-4" hoverBgColor="bg-gray-100" icon={DotsHorizontal} />}
           >
-            {crEntity.userId === user?.uid ? (
+            {crEntity.userId === rqUser?.uid ? (
               <>
                 <Menu.Item icon={EditIcon} onClick={() => setEdit((edit) => ({ ...edit, show: true }))}>
                   Edit

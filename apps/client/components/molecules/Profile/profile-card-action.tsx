@@ -6,15 +6,15 @@ import { BaseUser } from '../../../types'
 import { Button } from '../../atoms/Button'
 
 export const ProfileCardAction = ({ profileUser, toggleOpen }: { profileUser: BaseUser; toggleOpen: () => void }) => {
-  const { user, getIdToken } = useAuth()
+  const { rqUser, getIdToken } = useAuth()
   const [userFollowed, setUserFollowed] = useState<boolean | undefined>()
 
   useEffect(() => {
-    if (user && profileUser) {
-      const value = user?.following.filter((following) => following.followedId === profileUser.uid).length > 0
+    if (rqUser && profileUser) {
+      const value = rqUser?.following.filter((following: any) => following.followedId === profileUser.uid).length > 0
       setUserFollowed(value)
     }
-  }, [profileUser, user])
+  }, [profileUser, rqUser])
 
   const followUserMutation = useMutation(
     async (toBeFollowedUserId: string) => {
@@ -52,7 +52,7 @@ export const ProfileCardAction = ({ profileUser, toggleOpen }: { profileUser: Ba
     followUserMutation.mutate(profileUser.uid)
   }
 
-  return user?.uid === profileUser.uid ? (
+  return rqUser?.uid === profileUser.uid ? (
     <Button variant="outline" colorScheme="gray" onClick={toggleOpen}>
       Edit Profile
     </Button>

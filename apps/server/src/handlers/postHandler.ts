@@ -11,7 +11,7 @@ export const createPost = async (req: Request, res: Response) => {
     throw createError(400, 'Invalid post data')
   }
 
-  if (caption.length > 300) {
+  if (caption && caption.length > 300) {
     throw createError(400, 'Caption must be less than 300 characters')
   }
 

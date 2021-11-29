@@ -23,7 +23,7 @@ export interface PostHeadProps {
 
 export const PostHead = ({ post: { user, id, createdAt }, icon }: PostHeadProps) => {
   const toast = useToast()
-  const { user: authUser, getIdToken } = useAuth()
+  const { rqUser: authUser, getIdToken } = useAuth()
   const cancelRef = useRef<HTMLButtonElement | null>(null)
   const [open, setOpen] = useState(false)
 

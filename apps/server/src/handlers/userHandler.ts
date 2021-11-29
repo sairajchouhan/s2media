@@ -34,28 +34,12 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
     return
   }
 
-  // TODO: incrementelly remove any other information that is not required from /me insted get that information from /user/:username i.e., user profile information
   let user: any
-  const includeObj = {
-    _count: {
-      select: {
-        post: true,
-        save: true,
-        followers: true,
-        following: true,
-      },
-    },
-    profile: true,
-    save: true,
-    followers: true,
-    following: true,
-  }
 
   user = await prisma.user.findUnique({
     where: {
       uid: req.user.uid,
     },
-    include: includeObj,
   })
 
   const isUserInFirebase = await fbAdmin.auth().getUser(req.user.uid)
@@ -77,7 +61,6 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
           },
         },
       },
-      include: includeObj,
     })
     res.status(201).json({
       redirect: '/home',
@@ -101,7 +84,6 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
         provider: req.user.firebase.sign_in_provider,
         avatar: req.user.picture ?? null,
       },
-      include: includeObj,
     })
     res.status(201).json({ redirect: '/home', user: updatedUser })
     return
@@ -183,16 +165,23 @@ export const updateProfile = async (req: Request, res: Response) => {
     },
   })
 
+  const userProfileCache = JSON.parse((await redis.get(`user:profile:${user.uid}`)) || '{}')
+  userProfileCache.user.profile = { ...userProfileCache.user.profile, ...updateObj }
+  await redis.setex(`user:profile:${user.uid}`, 24 * 60 * 60, JSON.stringify(userProfileCache))
+
   res.json(profile)
 }
 
 export const getUserInfo = async (req: Request, res: Response) => {
   const cacheUserProfile = await redis.get(`user:profile:${req.user.uid}`)
   if (cacheUserProfile) {
+    console.log('cache hit')
+    const userProfile = JSON.parse(cacheUserProfile)
+    console.log(userProfile)
     res.status(200).json(JSON.parse(cacheUserProfile))
     return
   }
-
+  console.log('&&&&&&&&&&&&&&&')
   const username = req.params.username
   const canViewFullProfile = req.canViewPrivateInfo
   const includeObj = {

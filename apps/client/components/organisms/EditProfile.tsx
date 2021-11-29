@@ -19,11 +19,11 @@ export interface EditProfileProps {
 export const EditProfile = ({ open, setOpen, profileUser }: EditProfileProps) => {
   const toast = useToast()
   const queryClient = useQueryClient()
-  const { user, getIdToken } = useAuth()
+  const { rqUser, getIdToken } = useAuth()
   const { handleFileChange, previewUrl, resetFile, selectedFile } = useFileUpload()
   const [profile, setProfile] = useState<{ name: string; bio: string }>({
-    name: user?.profile.displayName ?? '',
-    bio: user?.profile.bio ?? '',
+    name: rqUser?.profile.displayName ?? '',
+    bio: rqUser?.profile.bio ?? '',
   })
 
   const handleProfileInputChange = (

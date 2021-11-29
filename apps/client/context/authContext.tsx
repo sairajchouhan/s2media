@@ -62,12 +62,14 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
               console.log(err)
               setUser(null)
               setLoading(false)
+              toast({ message: 'Something went wrong', type: 'error' })
             }
           })
           .catch((err) => {
             console.log(err.message)
             setUser(null)
             setLoading(false)
+            toast({ message: 'Something went wrong', type: 'error' })
           })
       } else {
         setLoading(false)
@@ -75,7 +77,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
       }
     })
     return () => unsub()
-  }, [router])
+  }, [router, toast])
 
   const { data } = useQuery(
     GET_PROFILE_USER.queryKey(user?.username as string),

@@ -38,6 +38,8 @@ const Profile = () => {
     }
   )
 
+  console.log(userData)
+
   const {
     data: posts,
     isLoading: isLoadingPosts,

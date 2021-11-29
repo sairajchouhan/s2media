@@ -17,7 +17,7 @@ import { GET_COMMENTS_FOR_POST, GET_ONE_POST } from '../../utils/querykeysAndPat
 const EachPost = () => {
   const router = useRouter()
   const params = router.query
-  const { user, getIdToken } = useAuth()
+  const { getIdToken } = useAuth()
 
   const {
     data: post,
@@ -52,9 +52,10 @@ const EachPost = () => {
     GET_COMMENTS_FOR_POST.queryKey(post?.id),
     async ({ queryKey, pageParam = '' }) => {
       let qk = queryKey[1] as any
+      const idToken = await getIdToken()
       const { data } = await axios.get(GET_COMMENTS_FOR_POST.path(qk.id, pageParam), {
         headers: {
-          Authorization: `Bearer ${user?.idToken}`,
+          Authorization: `Bearer ${idToken}`,
         },
       })
       return data

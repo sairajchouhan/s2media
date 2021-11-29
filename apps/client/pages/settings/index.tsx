@@ -12,14 +12,14 @@ import { CHANGE_USER_PROFILE_TYPE } from '../../utils/querykeysAndPaths'
 
 const Settings = () => {
   const toast = useToast()
-  const { user, getIdToken } = useAuth()
-  const [enabled, setEnabled] = useState(() => user?.profileType === 'PRIVATE')
+  const { rqUser, getIdToken } = useAuth()
+  const [enabled, setEnabled] = useState(() => rqUser?.profileType === 'PRIVATE')
   const [open, setOpen] = useState(false)
 
   const toggleOpen = () => {
     setOpen((open) => !open)
     setTimeout(() => {
-      setEnabled(user?.profileType === 'PRIVATE')
+      setEnabled(rqUser?.profileType === 'PRIVATE')
     }, 500)
   }
 
@@ -54,7 +54,7 @@ const Settings = () => {
         <div className="px-4 py-4 cursor-pointer hover:bg-gray-50" onClick={toggleOpen}>
           <div className="flex items-center justify-between">
             <p className="">Change Profile Type</p>
-            <p className="text-sm font-bold">Your Account is {user?.profileType}</p>
+            <p className="text-sm font-bold">Your Account is {rqUser?.profileType}</p>
           </div>
         </div>
         <div className="px-4 py-4 cursor-pointer hover:bg-gray-50">
@@ -92,7 +92,7 @@ const Settings = () => {
           <Model.Foot>
             <div className="flex items-center justify-end">
               <Button
-                disabled={user?.profileType === (enabled ? 'PRIVATE' : 'PUBLIC')}
+                disabled={rqUser?.profileType === (enabled ? 'PRIVATE' : 'PUBLIC')}
                 variant="outline"
                 colorScheme="green"
                 onClick={handleProfileTypeChange}
