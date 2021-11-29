@@ -165,23 +165,10 @@ export const updateProfile = async (req: Request, res: Response) => {
     },
   })
 
-  const userProfileCache = JSON.parse((await redis.get(`user:profile:${user.uid}`)) || '{}')
-  userProfileCache.user.profile = { ...userProfileCache.user.profile, ...updateObj }
-  await redis.setex(`user:profile:${user.uid}`, 24 * 60 * 60, JSON.stringify(userProfileCache))
-
   res.json(profile)
 }
 
 export const getUserInfo = async (req: Request, res: Response) => {
-  const cacheUserProfile = await redis.get(`user:profile:${req.user.uid}`)
-  if (cacheUserProfile) {
-    console.log('cache hit')
-    const userProfile = JSON.parse(cacheUserProfile)
-    console.log(userProfile)
-    res.status(200).json(JSON.parse(cacheUserProfile))
-    return
-  }
-  console.log('&&&&&&&&&&&&&&&')
   const username = req.params.username
   const canViewFullProfile = req.canViewPrivateInfo
   const includeObj = {
@@ -209,9 +196,7 @@ export const getUserInfo = async (req: Request, res: Response) => {
   if (!user) {
     throw createError(403, 'User not found')
   }
-  const returnObj = { user, canViewFullProfile }
 
-  await redis.setex(`user:profile:${user.uid}`, 24 * 60 * 60, JSON.stringify(returnObj))
   res.json({ user, canViewFullProfile })
 }
 
