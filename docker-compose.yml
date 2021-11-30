@@ -17,7 +17,7 @@ services:
       - ./apps/server:/app
       - /app/node_modules
     environment:
-      - DATABASE_URL=postgresql://postgres:password@db:5432/s2media?schema=public
+      - DATABASE_URL=postgresql://postgres:password@db:5432/s2media?schema=public&connection_limit=5&pool_timeout=0
       - REDIS_HOST=redis
 
   db:

@@ -15,7 +15,7 @@ export const PostFoot = ({ post }: PostFootInterface) => {
   const router = useRouter()
   const [likeCount, setLikeCount] = useState<number>(post.like.length)
   const [userLiked, setUserLiked] = useState<boolean>(post.like.some((like: any) => like.userId === rqUser?.uid))
-  const [userSaved, setUserSaved] = useState<boolean>(post.save.some((save: any) => save.userId === rqUser?.uid))
+  const [userSaved, setUserSaved] = useState<boolean>(rqUser.save.some((save: any) => save.userId === rqUser?.uid))
 
   if (!rqUser) return null
 
