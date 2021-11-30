@@ -18,8 +18,8 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     rqUser && (
       <div className="w-full">
-        <div className="flex w-3/4 mx-auto">
-          <header className="relative z-10 flex flex-col items-end flex-shrink mr-10">
+        <div className="flex w-10/12 mx-auto ">
+          <header className="relative z-10 flex flex-col items-end flex-shrink mr-10 ">
             <div className="relative flex flex-col items-end flex-shrink-0 w-64">
               <div className="fixed top-0 z-0 flex flex-col items-stretch flex-shrink-0 h-full">
                 <LeftNav />
@@ -28,7 +28,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
           </header>
           <div className="grid w-full grid-cols-12 gap-10">
             <div className="min-h-screen col-span-8">{children}</div>
-            <div className="col-span-4 bg-gray-50">
+            <div className="col-span-4 ">
               <RightNav />
             </div>
           </div>
