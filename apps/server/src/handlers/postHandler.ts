@@ -33,9 +33,11 @@ export const createPost = async (req: Request, res: Response) => {
   res.send(createdPost)
 }
 
-export const allPosts = async (_req: Request, res: Response) => {
+const postCount = 10
+export const allPosts = async (req: Request, res: Response) => {
+  const cursor = (req.query.cursor as string) || undefined
+  const cursorObj = cursor ? { id: cursor } : undefined
   const posts = await prisma.post.findMany({
-    take: 10,
     orderBy: {
       createdAt: 'desc',
     },
@@ -54,8 +56,14 @@ export const allPosts = async (_req: Request, res: Response) => {
         },
       },
     },
+    skip: cursor ? 1 : 0,
+    cursor: cursorObj,
+    take: postCount,
   })
-  res.json(posts)
+  res.json({
+    posts,
+    nextCursor: posts[postCount - 1]?.id ?? undefined,
+  })
 }
 
 export const updatePost = async (req: Request, res: Response) => {

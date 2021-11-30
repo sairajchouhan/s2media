@@ -30,6 +30,11 @@ export const GET_ONE_POST = {
   },
 }
 
+export const GET_POSTS_FOR_HOME = {
+  queryKey: () => ['posts', 'home'],
+  path: (cursor: string) => `/post?cursor=${cursor}`,
+}
+
 export const CREATE_POST = {
   path: '/post',
 }

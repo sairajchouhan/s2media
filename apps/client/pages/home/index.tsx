@@ -1,15 +1,55 @@
 import Head from 'next/head'
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useInView } from 'react-intersection-observer'
+import { useInfiniteQuery } from 'react-query'
 import { CircleLoader } from '../../components/atoms/CircleLoader'
 import { PageLayout } from '../../components/molecules/Page'
 import { Post } from '../../components/organisms/Post'
-import { useQuery } from '../../hooks/useQuery'
+import { axios } from '../../config/axios'
+import { useAuth } from '../../context/authContext'
 import { PostWithBaseUser } from '../../types/post'
+import { GET_POSTS_FOR_HOME } from '../../utils/querykeysAndPaths'
 
 const Home = () => {
-  const { data: posts, loading, error } = useQuery('/post')
+  const { ref, inView } = useInView()
+  const { getIdToken } = useAuth()
 
-  if (error) return <p>Error!</p>
+  const {
+    data: posts,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+    isError,
+    isLoading,
+  } = useInfiniteQuery(
+    GET_POSTS_FOR_HOME.queryKey(),
+    async ({ pageParam = '' }) => {
+      await new Promise((resolve) => setTimeout(resolve, 3000))
+      const token = await getIdToken()
+      const { data } = await axios.get(GET_POSTS_FOR_HOME.path(pageParam), {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      return data
+    },
+    {
+      getNextPageParam: (lastPage) => {
+        return lastPage.nextCursor ?? false
+      },
+      retry: false,
+    }
+  )
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage()
+    }
+  }, [fetchNextPage, hasNextPage, inView])
+
+  if (isError) return <p>Error!</p>
+
+  console.log(posts)
 
   return (
     <>
@@ -18,18 +58,25 @@ const Home = () => {
       </Head>
       <PageLayout>
         {/* <Stories /> */}
-        <main className="">
-          {loading ? (
+        <main>
+          {isLoading ? (
             <CircleLoader className="pt-10" />
-          ) : posts.length === 0 ? (
-            <h1 className="pt-10 text-4xl text-center text-indigo-500">No posts yet</h1>
           ) : (
-            posts.map((post: PostWithBaseUser) => (
-              <React.Fragment key={post.id}>
-                <Post post={post} />
+            posts &&
+            posts.pages.map((page: any) => (
+              <React.Fragment key={page.nextCursor || 'undefined'}>
+                {page.posts.map((post: PostWithBaseUser) => (
+                  <React.Fragment key={post.id}>
+                    <Post post={post} />
+                  </React.Fragment>
+                ))}
               </React.Fragment>
             ))
           )}
+          <span style={{ visibility: 'hidden' }} ref={ref}>
+            intersection observer marker
+          </span>
+          {isFetchingNextPage ? <CircleLoader className="pb-10" /> : null}
         </main>
       </PageLayout>
     </>
