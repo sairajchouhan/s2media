@@ -2,9 +2,9 @@ import { Avatar } from '../atoms/Avatar'
 
 const RightNav = () => {
   return (
-    <div className="w-full ">
-      <div className="sticky top-0 z-10 bg-white">
-        <div className="flex items-center w-full mt-2">
+    <div className="">
+      <div className="mt-4">
+        <div className="flex items-center w-full">
           <input
             type="text"
             className="w-full pl-4 border border-gray-400 rounded-full outline-none focus:outline-none focus:ring-2 focus:ring-indigo-400"
@@ -12,30 +12,31 @@ const RightNav = () => {
           />
         </div>
       </div>
-
-      <section className="p-4 mt-4 rounded-lg" style={{ backgroundColor: 'rgb(246 246 246 / 75%)' }}>
-        <h2 className="mb-2 -mt-2 text-xl font-bold text-gray-700">Follow</h2>
-        <main>
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-        </main>
-      </section>
-      <div className="p-4">
-        <a href="#" className="mx-1 text-xs text-gray-500 hover:underline">
-          Terms of Service{' '}
-        </a>
-        <a href="#" className="mx-1 text-xs text-gray-500 hover:underline">
-          Privacy Policy
-        </a>
-        <a href="#" className="mx-1 text-xs text-gray-500 hover:underline">
-          Cookie Policy
-        </a>
-        <a href="#" className="text-xs text-gray-500 hover:underline">
-          {' '}
-          &copy; 2021 S2media{' '}
-        </a>
+      <div className="w-full ">
+        <section className="p-4 mt-4 rounded-lg" style={{ backgroundColor: 'rgb(246 246 246 / 75%)' }}>
+          <h2 className="mb-2 -mt-2 text-xl font-bold text-gray-700">Follow</h2>
+          <main>
+            <FollowCard />
+            <FollowCard />
+            <FollowCard />
+            <FollowCard />
+          </main>
+        </section>
+        <div className="p-4">
+          <a href="#" className="mx-1 text-xs text-gray-500 hover:underline">
+            Terms of Service{' '}
+          </a>
+          <a href="#" className="mx-1 text-xs text-gray-500 hover:underline">
+            Privacy Policy
+          </a>
+          <a href="#" className="mx-1 text-xs text-gray-500 hover:underline">
+            Cookie Policy
+          </a>
+          <a href="#" className="text-xs text-gray-500 hover:underline">
+            {' '}
+            &copy; 2021 S2media{' '}
+          </a>
+        </div>
       </div>
     </div>
   )
