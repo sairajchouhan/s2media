@@ -8,6 +8,7 @@ services:
     depends_on:
       - db
       - redis
+      - back
     ports:
       - 5000:5000
       - 5555:5555
@@ -32,11 +33,25 @@ services:
       - POSTGRES_DB=s2media
     volumes:
       - postgres-data:/var/lib/postgresql/data/
+
   redis:
     image: redis:latest
     container_name: s2media_redis
     volumes:
       - redis-data:/data
+
+  back:
+    container_name: s2media_back
+    build:
+      context: ./apps/back
+      dockerfile: ./Dockerfile.dev
+    ports:
+      - 8080:8080
+    volumes:
+      - ./apps/back:/app
+      - /app/node_modules
+    environment:
+      - REDIS_HOST=redis
 
 volumes:
   postgres-data:
