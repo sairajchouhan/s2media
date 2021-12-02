@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import AuthenticatedLayout from '../components/layouts/AuthenticatedLayout'
 import { AuthContextProvider } from '../context/authContext'
+import { SocketProvider } from '../context/socketContext'
 import { ToastProvider } from '../context/toastContext'
 import '../styles/globals.css'
 
@@ -23,13 +24,15 @@ function MyApp({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <ToastProvider>
         <AuthContextProvider>
-          {noAuthRequiredPages.includes(router.pathname) ? (
-            <Component {...pageProps} />
-          ) : (
-            <AuthenticatedLayout>
+          <SocketProvider>
+            {noAuthRequiredPages.includes(router.pathname) ? (
               <Component {...pageProps} />
-            </AuthenticatedLayout>
-          )}
+            ) : (
+              <AuthenticatedLayout>
+                <Component {...pageProps} />
+              </AuthenticatedLayout>
+            )}
+          </SocketProvider>
         </AuthContextProvider>
       </ToastProvider>
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />

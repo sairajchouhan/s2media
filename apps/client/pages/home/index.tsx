@@ -24,7 +24,6 @@ const Home = () => {
   } = useInfiniteQuery(
     GET_POSTS_FOR_HOME.queryKey(),
     async ({ pageParam = '' }) => {
-      await new Promise((resolve) => setTimeout(resolve, 3000))
       const token = await getIdToken()
       const { data } = await axios.get(GET_POSTS_FOR_HOME.path(pageParam), {
         headers: {
@@ -48,8 +47,6 @@ const Home = () => {
   }, [fetchNextPage, hasNextPage, inView])
 
   if (isError) return <p>Error!</p>
-
-  console.log(posts)
 
   return (
     <>

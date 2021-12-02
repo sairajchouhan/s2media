@@ -1,12 +1,31 @@
 import Head from 'next/head'
+import { useEffect } from 'react'
 import { Button } from '../../components/atoms/Button/Button'
 import { PageLayout } from '../../components/molecules/Page'
 import { PageNav } from '../../components/molecules/Page/page-nav'
+import { useAuth } from '../../context/authContext'
+import { useSocket } from '../../context/socketContext'
 import { useToast } from '../../context/toastContext'
 
 const Notifications = () => {
   const toast = useToast()
-  console.log(toast)
+  const { user } = useAuth()
+  const socket = useSocket()
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('NOTIFICATION', (data) => {
+        console.log(data)
+      })
+
+      if (user) {
+        socket.emit('GIVE_MY_NOTIFICATIONS', {
+          userId: user?.uid,
+        })
+      }
+    }
+  }, [socket, user])
+
   return (
     <PageLayout>
       <Head>

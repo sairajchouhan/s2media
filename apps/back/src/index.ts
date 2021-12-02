@@ -1,14 +1,21 @@
 import Redis from 'ioredis'
+import { Server } from 'socket.io'
 
-const config = {
+const socket_io_port = parseInt(process.env.PORT!) || 8080
+const redis_config = {
   host: process.env.REDIS_HOST!,
 }
-const redisSubscriber = new Redis(config)
-const redis = new Redis(config)
+
+const io = new Server(socket_io_port, {
+  cors: {
+    origin: 'http://localhost:3000',
+  },
+})
+
+const redisSubscriber = new Redis(redis_config)
+const redis = new Redis(redis_config)
 
 type NotificationType = 'like_post' | 'like_comment' | 'reply_to_comment' | 'comment_on_post'
-
-const ttl7Days = 7 * 24 * 60 * 60
 
 interface Notification {
   id?: string
@@ -28,6 +35,21 @@ redisSubscriber.subscribe('NOTIFICATION', (err, count) => {
   } else {
     console.log(`Subscribed successfully! This client is currently subscribed to ${count} channels.`)
   }
+})
+
+io.on('connection', (socket) => {
+  console.log('Got a connection')
+  // setInterval(() => {
+
+  socket.on('GIVE_MY_NOTIFICATIONS', async (data) => {
+    const notifications = await redis.lrange(`user:notification:${data.userId}`, 0, -1)
+    console.log(notifications)
+    socket.emit('NOTIFICATION', {
+      ping: 'pong',
+    })
+  })
+
+  // }, 1000)
 })
 
 redisSubscriber.on('message', async (channel, message) => {

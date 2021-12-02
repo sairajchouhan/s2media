@@ -142,10 +142,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
           </div>
         </div>
       ) : (
-        <>
-          {children}
-          {console.log(data)}
-        </>
+        <>{children}</>
       )}
     </AuthContext.Provider>
   )
