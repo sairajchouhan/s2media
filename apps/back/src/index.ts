@@ -33,30 +33,32 @@ redisSubscriber.subscribe('NOTIFICATION', (err, count) => {
   if (err) {
     console.error('Failed to subscribe: %s', err.message)
   } else {
-    console.log(`Subscribed successfully! This client is currently subscribed to ${count} channels.`)
+    console.log(
+      `Subscribed successfully! This client is currently subscribed to ${count} channels.`
+    )
   }
 })
 
 io.on('connection', (socket) => {
   console.log('Got a connection')
-  // setInterval(() => {
 
   socket.on('GIVE_MY_NOTIFICATIONS', async (data) => {
     const notifications = await redis.lrange(`user:notification:${data.userId}`, 0, -1)
-    console.log(notifications)
-    socket.emit('NOTIFICATION', {
-      ping: 'pong',
-    })
+    const notificationData = {
+      notifications: notifications.map((notification) => JSON.parse(notification)),
+    }
+    socket.emit('NOTIFICATION', notificationData)
   })
-
-  // }, 1000)
 })
 
 redisSubscriber.on('message', async (channel, message) => {
   if (channel === 'NOTIFICATION') {
     const notification: Notification = JSON.parse(message)
     await redis.ltrim(`user:notification:${notification.userIdWhoReceivesNotification}`, 0, 99)
-    await redis.lpush(`user:notification:${notification.userIdWhoReceivesNotification}`, JSON.stringify(notification))
+    await redis.lpush(
+      `user:notification:${notification.userIdWhoReceivesNotification}`,
+      JSON.stringify(notification)
+    )
     console.log(notification)
   }
 })

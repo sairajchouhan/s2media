@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import io from 'socket.io-client'
-import type { Socket } from 'socket.io-client'
+import { useAuth } from './authContext'
 
-const SocketContext = React.createContext<Socket | null>(null)
+const SocketContext = React.createContext<any>(null)
 
 export function useSocket() {
   return useContext(SocketContext)
@@ -13,16 +13,26 @@ interface ISocketContext {
 }
 
 export function SocketProvider({ children }: ISocketContext) {
-  const [socket, setSocket] = useState<null | Socket>(null)
+  const { rqUser } = useAuth()
+  const [notifications, setNotifications] = useState<any>([])
 
   useEffect(() => {
     const socket = io('http://localhost:8080', {})
-    setSocket(socket)
+    socket.on('NOTIFICATION', (data) => {
+      setNotifications((prev: any) => [...prev, data])
+      console.log(data)
+    })
+
+    if (rqUser) {
+      socket.emit('GIVE_MY_NOTIFICATIONS', {
+        userId: rqUser.uid,
+      })
+    }
 
     return () => {
       socket.close()
     }
-  }, [])
+  }, [rqUser])
 
-  return <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
+  return <SocketContext.Provider value={{ notifications }}>{children}</SocketContext.Provider>
 }

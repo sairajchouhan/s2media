@@ -24,15 +24,15 @@ function MyApp({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <ToastProvider>
         <AuthContextProvider>
-          <SocketProvider>
-            {noAuthRequiredPages.includes(router.pathname) ? (
-              <Component {...pageProps} />
-            ) : (
+          {noAuthRequiredPages.includes(router.pathname) ? (
+            <Component {...pageProps} />
+          ) : (
+            <SocketProvider>
               <AuthenticatedLayout>
                 <Component {...pageProps} />
               </AuthenticatedLayout>
-            )}
-          </SocketProvider>
+            </SocketProvider>
+          )}
         </AuthContextProvider>
       </ToastProvider>
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />

@@ -1,15 +1,24 @@
 import { useRouter } from 'next/router'
 import { axios } from '../../config/axios'
 import { useAuth } from '../../context/authContext'
+import { useSocket } from '../../context/socketContext'
 import { paths } from '../../utils/paths'
 import { LeftNavPostBtn } from '../atoms/LeftNavPostBtn/LeftNavPostBtn'
-import { HomeIcon, LogoutIcon, MessageIcon, NotificationIcon, ProfileIcon, SettingsIcon } from '../icons'
+import {
+  HomeIcon,
+  LogoutIcon,
+  MessageIcon,
+  NotificationIcon,
+  ProfileIcon,
+  SettingsIcon,
+} from '../icons'
 import { LeftNavBrand, LeftNavLink, LeftNavUser } from '../molecules/LeftNav'
 
 const LeftNav = () => {
   const router = useRouter()
   const { push, pathname } = useRouter()
   const { rqUser, logout, getIdToken } = useAuth()
+  const sockData = useSocket()
 
   const handleLogout = async () => {
     const token = await getIdToken()
@@ -41,7 +50,11 @@ const LeftNav = () => {
         <LeftNavLink active={isActive(paths.home)} icon={HomeIcon} onClick={() => push(paths.home)}>
           Home
         </LeftNavLink>
-        <LeftNavLink active={pathname === paths.messages} icon={MessageIcon} onClick={() => push(paths.messages)}>
+        <LeftNavLink
+          active={pathname === paths.messages}
+          icon={MessageIcon}
+          onClick={() => push(paths.messages)}
+        >
           Messages
         </LeftNavLink>
         <LeftNavLink
@@ -55,14 +68,24 @@ const LeftNav = () => {
           active={pathname === '/notifications'}
           icon={NotificationIcon}
           onClick={() => push(paths.notifications)}
+          isCountable={true}
+          countValue={sockData.notifications.length}
         >
           Notifications
         </LeftNavLink>
 
-        <LeftNavLink active={pathname === paths.settings} icon={SettingsIcon} onClick={() => push(paths.settings)}>
+        <LeftNavLink
+          active={pathname === paths.settings}
+          icon={SettingsIcon}
+          onClick={() => push(paths.settings)}
+        >
           Settings
         </LeftNavLink>
-        <LeftNavLink active={pathname === '/logout'} icon={LogoutIcon} onClick={() => handleLogout()}>
+        <LeftNavLink
+          active={pathname === '/logout'}
+          icon={LogoutIcon}
+          onClick={() => handleLogout()}
+        >
           Logout
         </LeftNavLink>
         <LeftNavPostBtn />
