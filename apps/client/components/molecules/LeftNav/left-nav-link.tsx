@@ -25,7 +25,7 @@ export const LeftNavLink = ({
     >
       <button className="flex items-center px-6 py-2 rounded-full group-hover:bg-indigo-50 ">
         <div className="relative">
-          {!active && isCountable && countValue && countValue > 0 ? (
+          {countValue && isCountable && !active && countValue > 0 ? (
             <div className="absolute flex items-center justify-center w-4 h-4 text-xs text-white bg-indigo-500 rounded-full -top-1 left-3">
               <span className="block">{countValue}</span>
             </div>

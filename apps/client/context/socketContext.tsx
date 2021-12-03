@@ -14,18 +14,20 @@ interface ISocketContext {
 
 export function SocketProvider({ children }: ISocketContext) {
   const { rqUser } = useAuth()
-  const [notifications, setNotifications] = useState<any>([])
+  const [notifications, setNotifications] = useState<any>(null)
 
   useEffect(() => {
     const socket = io('http://localhost:8080', {})
     socket.on('NOTIFICATION', (data) => {
-      setNotifications((prev: any) => [...prev, data])
+      setNotifications(data)
       console.log(data)
     })
 
     if (rqUser) {
+      console.log('Emitting GIVE_MY_NOTIFICATIONS')
       socket.emit('GIVE_MY_NOTIFICATIONS', {
         userId: rqUser.uid,
+        socketId: socket.id,
       })
     }
 
@@ -34,5 +36,5 @@ export function SocketProvider({ children }: ISocketContext) {
     }
   }, [rqUser])
 
-  return <SocketContext.Provider value={{ notifications }}>{children}</SocketContext.Provider>
+  return <SocketContext.Provider value={notifications}>{children}</SocketContext.Provider>
 }

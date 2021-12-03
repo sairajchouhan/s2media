@@ -13,7 +13,7 @@ const io = new Server(socket_io_port, {
 })
 
 const redisSubscriber = new Redis(redis_config)
-const redis = new Redis(redis_config)
+const redis = redisSubscriber.duplicate()
 
 type NotificationType = 'like_post' | 'like_comment' | 'reply_to_comment' | 'comment_on_post'
 
@@ -41,13 +41,8 @@ redisSubscriber.subscribe('NOTIFICATION', (err, count) => {
 
 io.on('connection', (socket) => {
   console.log('Got a connection')
-
   socket.on('GIVE_MY_NOTIFICATIONS', async (data) => {
-    const notifications = await redis.lrange(`user:notification:${data.userId}`, 0, -1)
-    const notificationData = {
-      notifications: notifications.map((notification) => JSON.parse(notification)),
-    }
-    socket.emit('NOTIFICATION', notificationData)
+    await fetchAndEmitNotifications(socket, data)
   })
 })
 
@@ -62,3 +57,12 @@ redisSubscriber.on('message', async (channel, message) => {
     console.log(notification)
   }
 })
+
+const fetchAndEmitNotifications = async (socket: any, data: any) => {
+  const notifications = await redis.lrange(`user:notification:${data.userId}`, 0, -1)
+  const notificationData = {
+    notifications: notifications.map((notification) => JSON.parse(notification)),
+  }
+  console.log(notificationData)
+  socket.emit('NOTIFICATION', notificationData)
+}
