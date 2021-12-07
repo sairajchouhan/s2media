@@ -73,25 +73,22 @@ const Notifications = () => {
       </Head>
       <PageNav title="Notifications" />
       <main className="flex flex-col justify-center">
-        {notifications?.notifications.map((noti: Notification) => (
-          <Link href={constructNotitification(noti).href} key={noti.id}>
-            <a onClick={() => markNotificationRead(noti)}>
-              <div key={noti.id} className={`p-3 cursor-pointer border-b border-opacity-80`}>
-                <div className="flex items-center">
-                  <Avatar src={noti.userWhoCausedNotification.avatar} w="w-10" h="h-10" />
-                  <p className="ml-4">{constructNotitification(noti).string}</p>
+        {notifications && notifications.notifications ? (
+          notifications?.notifications.map((noti: Notification) => (
+            <Link href={constructNotitification(noti).href} key={noti.id}>
+              <a onClick={() => markNotificationRead(noti)}>
+                <div key={noti.id} className={`p-3 cursor-pointer border-b border-opacity-80`}>
+                  <div className="flex items-center">
+                    <Avatar src={noti.userWhoCausedNotification.avatar} w="w-10" h="h-10" />
+                    <p className="ml-4">{constructNotitification(noti).string}</p>
+                  </div>
                 </div>
-              </div>
-            </a>
-          </Link>
-        ))}
-        {/* {notifications.notifications.map((noti) => (
-          <pre key={noti.id}>
-            <code>
-              {noti.type}: {noti.message}
-            </code>
-          </pre>
-        ))} */}
+              </a>
+            </Link>
+          ))
+        ) : (
+          <div>No notifications for now</div>
+        )}
       </main>
     </PageLayout>
   )
