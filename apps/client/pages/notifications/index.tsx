@@ -51,17 +51,21 @@ const Notifications = () => {
   const { getIdToken } = useAuth()
 
   const markNotificationRead = async (notification: Notification) => {
-    console.log(notification)
-    const res = await axios.post(
-      `/notification/${notification.id}`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${await getIdToken()}`,
-        },
-      }
-    )
-    console.log(res)
+    if (notification.isRead) return
+    try {
+      const res = await axios.post(
+        `/notification/${notification.id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${await getIdToken()}`,
+          },
+        }
+      )
+      console.log(res)
+    } catch (err) {
+      console.log('notification is already marked as read')
+    }
   }
 
   console.log(notifications)
@@ -76,8 +80,13 @@ const Notifications = () => {
         {notifications && notifications.notifications ? (
           notifications?.notifications.map((noti: Notification) => (
             <Link href={constructNotitification(noti).href} key={noti.id}>
-              <a onClick={() => markNotificationRead(noti)}>
-                <div key={noti.id} className={`p-3 cursor-pointer border-b border-opacity-80`}>
+              <a key={noti.id} onClick={() => markNotificationRead(noti)}>
+                <div
+                  key={noti.id}
+                  className={`p-3 cursor-pointer border-b border-opacity-80 ${
+                    !noti.isRead ? 'bg-blue-50' : ''
+                  }`}
+                >
                   <div className="flex items-center">
                     <Avatar src={noti.userWhoCausedNotification.avatar} w="w-10" h="h-10" />
                     <p className="ml-4">{constructNotitification(noti).string}</p>

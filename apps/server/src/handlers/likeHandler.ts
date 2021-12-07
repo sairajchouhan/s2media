@@ -46,13 +46,15 @@ export const likeAndUnlikePost = async (req: Request, res: Response) => {
       },
     })
     res.json({ liked: true })
-    await createNotification({
-      type: 'like_post',
-      post_id: postId,
-      userIdWhoReceivesNotification: post.userId,
-      userWhoCausedNotification: authUser,
-      isRead: false,
-    })
+    if (post.userId !== req.user.uid) {
+      await createNotification({
+        type: 'like_post',
+        post_id: postId,
+        userIdWhoReceivesNotification: post.userId,
+        userWhoCausedNotification: authUser,
+        isRead: false,
+      })
+    }
 
     return
   } else {

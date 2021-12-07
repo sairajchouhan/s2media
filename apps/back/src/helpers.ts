@@ -20,7 +20,7 @@ export const getNotificationDataFromRedis = async (userIdWhoReceivesNotification
 }
 
 export const emitNotification = async (socket: Socket, data: any) => {
-  const notificationData = getNotificationDataFromRedis(data.userId)
+  const notificationData = await getNotificationDataFromRedis(data.userId)
   console.log(`emitting notifications for ${data.userId}`, notificationData)
   socket.emit('NOTIFICATION', notificationData)
 }

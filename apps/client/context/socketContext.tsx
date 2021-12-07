@@ -19,6 +19,7 @@ export function SocketProvider({ children }: ISocketContext) {
   useEffect(() => {
     const socket = io('http://localhost:8080', {})
     socket.on('NOTIFICATION', (data) => {
+      console.log('GOT NOTIFICATIONS')
       setNotifications(data)
       console.log(data)
     })

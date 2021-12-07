@@ -1,18 +1,21 @@
 import { Server } from 'socket.io'
+import { createServer } from 'http'
 import { Notification } from './types'
 import { redisSubscriber, redis } from './config'
 import { getNotificationDataFromRedis, emitNotification } from './helpers'
 
+const httpServer = createServer()
 const socket_io_port = parseInt(process.env.PORT!) || 8080
+const io = new Server(httpServer, {
+  cors: {
+    origin: 'http://localhost:3000',
+  },
+})
 
-;(async () => {
-  const io = new Server(socket_io_port, {
-    cors: {
-      origin: 'http://localhost:3000',
-    },
-  })
+const channels = ['NOTIFICATION', 'REFETCH_NOTIFICATIONS']
 
-  redisSubscriber.subscribe('NOTIFICATION', (err, count) => {
+httpServer.listen(socket_io_port, () => {
+  redisSubscriber.subscribe(channels, (err, count) => {
     if (err) {
       console.error('Failed to subscribe: %s', err.message)
     } else {
@@ -50,5 +53,11 @@ const socket_io_port = parseInt(process.env.PORT!) || 8080
       console.log(`emitting notifications for ${notification.userIdWhoReceivesNotification}`)
       socket.emit('NOTIFICATION', notificationData)
     }
+
+    if (channel === 'REFETCH_NOTIFICATIONS') {
+      const userId = JSON.parse(message).userId
+      const notificationData = await getNotificationDataFromRedis(userId)
+      io.to(userId).emit('NOTIFICATION', notificationData)
+    }
   })
-})()
+})
