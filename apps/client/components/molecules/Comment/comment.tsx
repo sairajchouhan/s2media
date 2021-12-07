@@ -23,11 +23,14 @@ export const Comment = ({ comment }: { comment: any }) => {
     GET_REPLIES_FOR_COMMENT.queryKey(comment.id),
     async ({ pageParam = '' }) => {
       const token = await getIdToken()
-      const { data } = await axios.get(GET_REPLIES_FOR_COMMENT.path(comment.postId, comment.id, pageParam), {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      const { data } = await axios.get(
+        GET_REPLIES_FOR_COMMENT.path(comment.postId, comment.id, pageParam),
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       return data
     },
     {
@@ -45,7 +48,7 @@ export const Comment = ({ comment }: { comment: any }) => {
         <Link to={paths.profile({ username: comment.user.username })}>
           <Avatar src={comment.user.avatar} w="w-10" h="h-10" alt="user profile image" />
         </Link>
-        <div className="flex-1 ml-1">
+        <div className="flex-1 ml-2">
           <CommentReplyText crEntity={comment} isReply={false} />
           <CommentReplyAction
             isReply={false}
@@ -65,7 +68,7 @@ export const Comment = ({ comment }: { comment: any }) => {
                     <Link to={paths.profile({ username: reply.user.username })}>
                       <Avatar src={reply.user.avatar} w="w-10" h="h-10" alt="user profile image" />
                     </Link>
-                    <div className="flex-1">
+                    <div className="flex-1 ml-2">
                       <CommentReplyText crEntity={reply} isReply={true} />
                       <CommentReplyAction
                         isReply={true}

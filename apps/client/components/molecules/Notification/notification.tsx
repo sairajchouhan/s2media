@@ -57,7 +57,25 @@ const genNotitification = (notificationObj: Notification) => {
       break
 
     case 'reply_to_comment':
-      notification.string = `${notificationObj.userWhoCausedNotification.username} replied to your comment`
+      notification.jsx = (
+        <p>
+          <span className="font-semibold text-indigo-500">
+            @{notificationObj.userWhoCausedNotification.username}
+          </span>{' '}
+          replied{' '}
+          {notificationObj.meta.replyText ? (
+            <span className="font-semibold text-indigo-500 truncate">
+              {notificationObj.meta.replyText.slice(0, 10)}...
+            </span>
+          ) : null}{' '}
+          to your comment{' '}
+          {notificationObj.meta.commentText ? (
+            <span className="font-semibold text-indigo-500 truncate">
+              {notificationObj.meta.commentText.slice(0, 10)}...
+            </span>
+          ) : null}
+        </p>
+      )
       break
 
     case 'comment_on_post':

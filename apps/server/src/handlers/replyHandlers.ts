@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import createError from 'http-errors'
+import { createNotification } from '../utils/notifications'
 import prisma from '../../prisma'
 import { commentAndReplyUser } from './helpers'
 
@@ -21,6 +22,34 @@ export const createReplyToComment = async (req: Request, res: Response) => {
   })
 
   res.json(reply)
+  const authUser = await prisma.user.findUnique({
+    where: {
+      uid: req.user.uid,
+    },
+  })
+
+  const comment = await prisma.comment.findUnique({
+    where: {
+      id: commentId,
+    },
+    select: {
+      commentText: true,
+    },
+  })
+
+  if (reply.userId !== repliedToUserUid) {
+    await createNotification({
+      isRead: false,
+      post_id: postId,
+      type: 'reply_to_comment',
+      userWhoCausedNotification: authUser,
+      userIdWhoReceivesNotification: reply.repliedToUserUid as string,
+      meta: {
+        replyText,
+        commentText: comment?.commentText,
+      },
+    })
+  }
 }
 
 const replyTakeCount = 10
@@ -86,7 +115,8 @@ export const editReply = async (req: Request, res: Response) => {
   })
 
   if (!replyToBeEdited) throw createError(404, 'reply does not exist')
-  if (replyToBeEdited.userId !== req.user.uid) throw createError(403, 'you are not allowed to edit this reply')
+  if (replyToBeEdited.userId !== req.user.uid)
+    throw createError(403, 'you are not allowed to edit this reply')
 
   const reply = await prisma.reply.update({
     where: {
@@ -122,7 +152,8 @@ export const deleteReply = async (req: Request, res: Response) => {
   })
 
   if (!replyToBeDeleted) throw createError(404, 'reply does not exist')
-  if (replyToBeDeleted.userId !== req.user.uid) throw createError(403, 'you are not allowed to delete this reply')
+  if (replyToBeDeleted.userId !== req.user.uid)
+    throw createError(403, 'you are not allowed to delete this reply')
 
   await prisma.reply.delete({
     where: {
