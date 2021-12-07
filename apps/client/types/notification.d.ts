@@ -1,4 +1,9 @@
-export type NotificationType = 'like_post' | 'like_comment' | 'reply_to_comment' | 'comment_on_post'
+export type NotificationType =
+  | 'like_post'
+  | 'like_comment'
+  | 'like_reply'
+  | 'reply_to_comment'
+  | 'comment_on_post'
 export interface Notification {
   id?: string
   type: NotificationType

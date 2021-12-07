@@ -25,8 +25,35 @@ const genNotitification = (notificationObj: Notification) => {
       break
 
     case 'like_comment':
-      notification.string = `${notificationObj.userWhoCausedNotification.username} liked your comment`
+      notification.jsx = (
+        <p>
+          <span className="font-semibold text-indigo-500">
+            @{notificationObj.userWhoCausedNotification.username}
+          </span>{' '}
+          liked your comment{' '}
+          {notificationObj.meta.commentText ? (
+            <span className="font-semibold text-indigo-500 truncate">
+              {notificationObj.meta.commentText.slice(0, 10)}...
+            </span>
+          ) : null}
+        </p>
+      )
+      break
 
+    case 'like_reply':
+      notification.jsx = (
+        <p>
+          <span className="font-semibold text-indigo-500">
+            @{notificationObj.userWhoCausedNotification.username}
+          </span>{' '}
+          liked your reply{' '}
+          {notificationObj.meta.replyText ? (
+            <span className="font-semibold text-indigo-500 truncate">
+              {notificationObj.meta.replyText.slice(0, 10)}...
+            </span>
+          ) : null}
+        </p>
+      )
       break
 
     case 'reply_to_comment':

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import createError from 'http-errors'
+import { createNotification } from '../utils/notifications'
 import prisma from '../../prisma'
 
 export const likeOrUnlikeComment = async (req: Request, res: Response) => {
@@ -13,6 +14,7 @@ export const likeOrUnlikeComment = async (req: Request, res: Response) => {
     },
     include: {
       like: true,
+      user: true,
     },
   })
 
@@ -28,6 +30,26 @@ export const likeOrUnlikeComment = async (req: Request, res: Response) => {
       },
     })
     res.json({ commentLiked: true })
+
+    const authUser = await prisma.user.findUnique({
+      where: {
+        uid: userId,
+      },
+    })
+
+    if (comment.userId !== req.user.uid) {
+      await createNotification({
+        type: 'like_comment',
+        post_id: postId,
+        userIdWhoReceivesNotification: comment.userId,
+        userWhoCausedNotification: authUser,
+        isRead: false,
+        meta: {
+          commentText: comment.commentText,
+        },
+      })
+    }
+
     return
   } else {
     const likeId = comment.like.filter((like) => like.userId === userId)[0].id
@@ -53,6 +75,7 @@ export const likeOrUnlikeReply = async (req: Request, res: Response) => {
     },
     include: {
       like: true,
+      user: true,
     },
   })
 
@@ -68,6 +91,25 @@ export const likeOrUnlikeReply = async (req: Request, res: Response) => {
       },
     })
     res.json({ replyLiked: true })
+    const authUser = await prisma.user.findUnique({
+      where: {
+        uid: req.user.uid,
+      },
+    })
+
+    if (reply.userId !== req.user.uid) {
+      await createNotification({
+        type: 'like_reply',
+        post_id: postId,
+        userIdWhoReceivesNotification: reply.userId,
+        userWhoCausedNotification: authUser,
+        isRead: false,
+        meta: {
+          replyText: reply.replyText,
+        },
+      })
+    }
+
     return
   } else {
     const likeId = reply.like.filter((like) => like.userId === userId)[0].id

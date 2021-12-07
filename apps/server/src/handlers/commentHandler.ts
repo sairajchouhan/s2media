@@ -72,16 +72,18 @@ export const createComment = async (req: Request, res: Response) => {
     },
   })
 
-  await createNotification({
-    isRead: false,
-    post_id: postId,
-    type: 'comment_on_post',
-    userWhoCausedNotification: authUser,
-    userIdWhoReceivesNotification: post.userId,
-    meta: {
-      commentText,
-    },
-  })
+  if (post.userId !== userId) {
+    await createNotification({
+      isRead: false,
+      post_id: postId,
+      type: 'comment_on_post',
+      userWhoCausedNotification: authUser,
+      userIdWhoReceivesNotification: post.userId,
+      meta: {
+        commentText,
+      },
+    })
+  }
 }
 
 export const editComment = async (req: Request, res: Response) => {
