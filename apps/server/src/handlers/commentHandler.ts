@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import createError from 'http-errors'
+import { createNotification } from '../utils/notifications'
 import prisma from '../../prisma'
 import { commentAndReplyUser } from './helpers'
 
@@ -46,6 +47,16 @@ export const createComment = async (req: Request, res: Response) => {
   const postId = req.params.postId
   const userId = req.user.uid
 
+  if (!userId) throw createError(401, 'You must be logged in to comment')
+
+  const post = await prisma.post.findUnique({
+    where: {
+      id: postId,
+    },
+  })
+
+  if (!post) throw createError(404, 'Post not found')
+
   const comment = await prisma.comment.create({
     data: {
       commentText,
@@ -53,8 +64,24 @@ export const createComment = async (req: Request, res: Response) => {
       postId,
     },
   })
-
   res.json(comment)
+
+  const authUser = await prisma.user.findUnique({
+    where: {
+      uid: userId,
+    },
+  })
+
+  await createNotification({
+    isRead: false,
+    post_id: postId,
+    type: 'comment_on_post',
+    userWhoCausedNotification: authUser,
+    userIdWhoReceivesNotification: post.userId,
+    meta: {
+      commentText,
+    },
+  })
 }
 
 export const editComment = async (req: Request, res: Response) => {
