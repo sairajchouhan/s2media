@@ -18,9 +18,9 @@ const LeftNav = () => {
   const router = useRouter()
   const { push, pathname } = useRouter()
   const { rqUser, logout, getIdToken } = useAuth()
-  const sockData = useSocket()
+  const notificationsData = useSocket()
 
-  console.log(sockData)
+  console.log(notificationsData)
 
   const handleLogout = async () => {
     const token = await getIdToken()
@@ -71,7 +71,7 @@ const LeftNav = () => {
           icon={NotificationIcon}
           onClick={() => push(paths.notifications)}
           isCountable={true}
-          countValue={sockData?.notifications?.length}
+          countValue={notificationsData?.newNotificationNumber}
         >
           Notifications
         </LeftNavLink>

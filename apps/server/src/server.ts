@@ -17,7 +17,10 @@ import { redis } from './config/redis'
   app.use(express.json())
   app.use(
     cors({
-      origin: process.env.NODE_ENV === 'production' ? 'https://s2media.vercel.app' : 'http://localhost:3000',
+      origin:
+        process.env.NODE_ENV === 'production'
+          ? 'https://s2media.vercel.app'
+          : 'http://localhost:3000',
     })
   )
 
@@ -45,6 +48,8 @@ import { redis } from './config/redis'
   app.use('/api/v1/post/comment/like', routes.commentLikeRoutes)
   app.use('/api/v1/post/reply/like', routes.replyLikeRoutes)
   app.use('/api/v1/settings/profileType', routes.settingsRoutes)
+  app.use('/api/v1/notification', routes.notificationRoutes)
+
   app.use(errorMiddleware)
 
   const PORT = process.env.PORT || 5000

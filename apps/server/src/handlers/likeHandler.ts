@@ -7,6 +7,18 @@ import { createNotification } from '../utils/notifications'
 export const likeAndUnlikePost = async (req: Request, res: Response) => {
   const postId = req.params.postId
   const userId = req.user.uid
+  const authUser = await prisma.user.findUnique({
+    where: {
+      uid: req.user.uid,
+    },
+    include: {
+      profile: {
+        select: {
+          displayName: true,
+        },
+      },
+    },
+  })
 
   const post = await prisma.post.findUnique({
     where: {
@@ -14,9 +26,11 @@ export const likeAndUnlikePost = async (req: Request, res: Response) => {
     },
     include: {
       like: true,
+      user: true,
     },
   })
 
+  if (!authUser) throw createError(404, 'User not found')
   if (!post) throw createError(404, 'post not found')
 
   const liked: boolean = post.like.filter((like) => like.userId === userId).length > 0
@@ -35,8 +49,9 @@ export const likeAndUnlikePost = async (req: Request, res: Response) => {
     await createNotification({
       type: 'like_post',
       post_id: postId,
-      userIdWhoCausedNotification: req.user.uid,
       userIdWhoReceivesNotification: post.userId,
+      userWhoCausedNotification: authUser,
+      isRead: false,
     })
 
     return

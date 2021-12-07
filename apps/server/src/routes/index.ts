@@ -9,6 +9,7 @@ import replyRoutes from './replyRoutes'
 import saveRoutes from './saveRoutes'
 import settingsRoutes from './settingsRoutes'
 import userRoutes from './userRoutes'
+import notificationRoutes from './notificationRoutes'
 
 export default {
   authRoutes,
@@ -22,4 +23,5 @@ export default {
   saveRoutes,
   settingsRoutes,
   userRoutes,
+  notificationRoutes,
 }

@@ -7,13 +7,14 @@ type NotificationType = 'like_post' | 'like_comment' | 'reply_to_comment' | 'com
 interface Notification {
   id?: string
   type: NotificationType
-  userIdWhoCausedNotification: string
   userIdWhoReceivesNotification: string
+  userWhoCausedNotification: any
   post_id: string
   comment_id?: string
   reply_id?: string
   meta?: any
   timestamp?: Date
+  isRead: boolean
 }
 
 const socket_io_port = parseInt(process.env.PORT!) || 8080
@@ -31,7 +32,7 @@ const redis_config = {
   const redisSubscriber = new Redis(redis_config)
   const redis = redisSubscriber.duplicate()
 
-  const ioServer = redisSubscriber.subscribe('NOTIFICATION', (err, count) => {
+  redisSubscriber.subscribe('NOTIFICATION', (err, count) => {
     if (err) {
       console.error('Failed to subscribe: %s', err.message)
     } else {
@@ -68,8 +69,14 @@ const redis_config = {
         0,
         -1
       )
+
+      const parsedNotifications: Notification[] = notifications.map((notification) =>
+        JSON.parse(notification)
+      )
+      console.log(parsedNotifications.filter((noti) => noti.isRead === false).length)
       const notificationData = {
         notifications: notifications.map((notification) => JSON.parse(notification)),
+        newNotificationNumber: parsedNotifications.filter((noti) => !noti.isRead).length,
       }
       console.log(
         `emitting notifications for ${notification.userIdWhoReceivesNotification}`,
@@ -81,8 +88,13 @@ const redis_config = {
 
   const fetchAndEmitNotifications = async (socket: Socket, data: any) => {
     const notifications = await redis.lrange(`user:notification:${data.userId}`, 0, -1)
+
+    const parsedNotifications: Notification[] = notifications.map((notification) =>
+      JSON.parse(notification)
+    )
     const notificationData = {
       notifications: notifications.map((notification) => JSON.parse(notification)),
+      newNotificationNumber: parsedNotifications.filter((noti) => !noti.isRead).length,
     }
     console.log(`emitting notifications for ${data.userId}`, notificationData)
     socket.emit('NOTIFICATION', notificationData)

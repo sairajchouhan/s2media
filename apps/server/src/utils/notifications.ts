@@ -6,13 +6,14 @@ type NotificationType = 'like_post' | 'like_comment' | 'reply_to_comment' | 'com
 interface Notification {
   id?: string
   type: NotificationType
-  userIdWhoCausedNotification: string
   userIdWhoReceivesNotification: string
+  userWhoCausedNotification: any
   post_id: string
   comment_id?: string
   reply_id?: string
   meta?: any
   timestamp?: Date
+  isRead: boolean
 }
 
 export const createNotification = async (notificationObject: Notification) => {

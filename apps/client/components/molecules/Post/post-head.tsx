@@ -58,7 +58,7 @@ export const PostHead = ({ post: { user, id, createdAt }, icon }: PostHeadProps)
         <div className="flex items-center">
           <Link href={paths.profile({ username: user.username }).href}>
             <a className="flex items-center pt-1">
-              <Avatar src={user.avatar} w="w-10" h="h-10" alt="user profile image" />
+              <Avatar src={user.avatar} w="w-10" h="h-10" alt={user.username} />
             </a>
           </Link>
           <div className="flex flex-col pl-2">
@@ -73,7 +73,9 @@ export const PostHead = ({ post: { user, id, createdAt }, icon }: PostHeadProps)
                 </div>
               </a>
             </Link>
-            <p className="text-xs text-gray-500">{formatDistanceToNow(new Date(createdAt), { addSuffix: true })}</p>
+            <p className="text-xs text-gray-500">
+              {formatDistanceToNow(new Date(createdAt), { addSuffix: true })}
+            </p>
           </div>
         </div>
         <div className="">
@@ -104,12 +106,18 @@ export const PostHead = ({ post: { user, id, createdAt }, icon }: PostHeadProps)
         <Model.Head title="Delete Post" toggleOpen={() => setOpen((open) => !open)} />
         <Model.Body>
           <p className="my-3 text-md">
-            🔴 Deleting the post will delete all the likes, comments and replies related to this post
+            🔴 Deleting the post will delete all the likes, comments and replies related to this
+            post
           </p>
         </Model.Body>
         <ModelFoot>
           <div className="flex justify-end">
-            <Button ref={cancelRef} variant="outline" onClick={() => setOpen(!open)} colorScheme="gray">
+            <Button
+              ref={cancelRef}
+              variant="outline"
+              onClick={() => setOpen(!open)}
+              colorScheme="gray"
+            >
               Cancel
             </Button>
             <span className="mx-2"></span>
