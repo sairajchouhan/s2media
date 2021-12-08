@@ -4,6 +4,7 @@ import { v4 as uuid } from 'uuid'
 import { internet, lorem } from 'faker'
 import { get4RandomChars } from '../src/utils/index'
 import { PrismaClient } from '@prisma/client'
+import Redis from 'ioredis'
 
 function getRandomIntInclusive(min: number, max: number) {
   min = Math.ceil(min)
@@ -106,7 +107,44 @@ const addPosts = async () => {
 }
 addPosts
 
-// addPosts()
+/*
+💻 NOTE TO FUTURE SELF:
+=> This function is used to create key value paris in redis which looks like
+'user:SAIRAJ2119' :'<all user details goes here in a string fromat>'
+=> `SAIRAJ2119` here is the identifier and it is capital because the user search
+api returns the matching users in capital letters
+=> And these capital letters are used to look up the user details
+=> This is the reason this functions exists
+*/
+const addUserDataToRedis = async () => {
+  if (process.env.NODE_ENV === 'production') {
+    console.log(' 🚨 🚨 🚨 Nah! 🚨 🚨 🚨')
+    return
+  }
+  const prisma = prismaConnect()
+  //! WARN: this redis instance will not work because the running instance of redis does not have
+  //! port mapping in the docker compose file
+  const redis = new Redis()
+  const allUsers = await prisma.user.findMany({
+    include: {
+      profile: {
+        select: {
+          displayName: true,
+        },
+      },
+    },
+  })
+
+  const allUsersPromises: Array<Promise<any>> = []
+  allUsers.forEach((user) => {
+    const prom = redis.set(`user:${user.uid}`, JSON.stringify(user))
+    allUsersPromises.push(prom)
+  })
+  await Promise.all(allUsersPromises)
+}
+addUserDataToRedis
+
+// addUserDataToRedis()
 //   .then(() => {
 //     console.log('✅')
 //   })
