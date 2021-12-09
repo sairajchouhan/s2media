@@ -32,6 +32,7 @@ import prisma from '../prisma'
 
   app.get('/test', async (_req, res) => {
     console.timeLog('start')
+    // use this when ever new user sings up
     const usernamesObj = await prisma.user.findMany({
       select: {
         username: true,
@@ -54,48 +55,6 @@ import prisma from '../prisma'
       })()
     }
     console.timeEnd('stop')
-    res.send('OK')
-  })
-
-  app.post('/test', async (req, res) => {
-    const q: string = (req.query.q as string) ?? ''
-    if (q.trim() === '') {
-      return res.status(400).send('Bad Request')
-    }
-    const uppserUsername = q.toUpperCase()
-    const result = []
-    const rank = await redis.zrank('users', uppserUsername)
-    if (rank != null) {
-      const temp = await redis.zrange('users', rank, rank + 100)
-      for (const el of temp) {
-        if (!el.startsWith(uppserUsername)) {
-          break
-        }
-        if (el.endsWith('*')) {
-          result.push(el.substring(0, el.length - 1))
-        }
-      }
-    }
-    return res.json({ result })
-  })
-
-  app.get('/user_lookup', async (_req, res) => {
-    const allUsers = await prisma.user.findMany({
-      include: {
-        profile: {
-          select: {
-            displayName: true,
-          },
-        },
-      },
-    })
-
-    const allUsersPromises: Array<Promise<any>> = []
-    allUsers.forEach((user) => {
-      const prom = redis.set(`user:${user.username.toUpperCase()}`, JSON.stringify(user))
-      allUsersPromises.push(prom)
-    })
-    await Promise.all(allUsersPromises)
     res.send('OK')
   })
 

@@ -11,6 +11,38 @@ const io = new Server(httpServer, {
     origin: 'http://localhost:3000',
   },
 })
+const serverOrigin = 'http://localhost:8080'
+
+httpServer.on('request', async (req, res) => {
+  if (req.url?.startsWith('/search') && req.method === 'POST') {
+    const url = new URL(req.url, serverOrigin)
+    const q = url.searchParams.get('q')
+    if (!q || q.trim() === '') {
+      res.statusCode = 400
+      return res.end('Bad Request')
+    }
+
+    const uppserUsername = q.toUpperCase()
+    const result = []
+    const rank = await redis.zrank('users', uppserUsername)
+    if (rank != null) {
+      const temp = await redis.zrange('users', rank, rank + 100)
+      for (const el of temp) {
+        if (!el.startsWith(uppserUsername)) {
+          break
+        }
+        if (el.endsWith('*')) {
+          result.push(el.substring(0, el.length - 1))
+        }
+      }
+    }
+    const respResult = JSON.stringify({ result })
+    res.writeHead(200, {
+      'Content-Type': 'application/json',
+    })
+    res.end(respResult)
+  }
+})
 
 const channels = ['NOTIFICATION', 'REFETCH_NOTIFICATIONS']
 
