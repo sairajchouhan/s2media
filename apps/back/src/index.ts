@@ -14,6 +14,18 @@ const io = new Server(httpServer, {
 const serverOrigin = 'http://localhost:8080'
 
 httpServer.on('request', async (req, res) => {
+  const headers = {
+    'Access-Control-Allow-Origin': 'http://localhost:3000',
+    'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
+    'Access-Control-Max-Age': 2592000, // 30 days
+  }
+
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204, headers)
+    res.end()
+    return
+  }
+
   if (req.url?.startsWith('/search') && req.method === 'POST') {
     const url = new URL(req.url, serverOrigin)
     const q = url.searchParams.get('q')
@@ -23,7 +35,7 @@ httpServer.on('request', async (req, res) => {
     }
 
     const uppserUsername = q.toUpperCase()
-    const result = []
+    const captialUsernames = []
     const rank = await redis.zrank('users', uppserUsername)
     if (rank != null) {
       const temp = await redis.zrange('users', rank, rank + 100)
@@ -32,13 +44,22 @@ httpServer.on('request', async (req, res) => {
           break
         }
         if (el.endsWith('*')) {
-          result.push(el.substring(0, el.length - 1))
+          captialUsernames.push(el.substring(0, el.length - 1))
         }
       }
     }
+
+    const resultString: Array<any> = []
+    captialUsernames.forEach((username) => {
+      resultString.push(redis.get(`user:${username}`))
+    })
+
+    const result = (await Promise.all(resultString)).map((el) => JSON.parse(el))
+
     const respResult = JSON.stringify({ result })
     res.writeHead(200, {
       'Content-Type': 'application/json',
+      ...headers,
     })
     res.end(respResult)
   }

@@ -16,12 +16,14 @@ const Notifications = () => {
       </Head>
       <PageNav title="Notifications" />
       <main className="flex flex-col justify-center">
-        {notifications && notifications.notifications ? (
+        {notifications && notifications?.notifications?.length > 0 ? (
           notifications?.notifications.map((noti: Notification) => (
             <NotificationComp notification={noti} key={noti.id} />
           ))
         ) : (
-          <div>No notifications for now</div>
+          <div className="px-4">
+            <h2 className="mt-6 text-3xl text-center text-indigo-500 ">No Notifications for now</h2>
+          </div>
         )}
       </main>
     </PageLayout>

@@ -32,7 +32,6 @@ import prisma from '../prisma'
 
   app.get('/test', async (_req, res) => {
     console.timeLog('start')
-    // use this when ever new user sings up
     const usernamesObj = await prisma.user.findMany({
       select: {
         username: true,
