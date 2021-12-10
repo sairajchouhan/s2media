@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import createError from 'http-errors'
+import { redis } from '../config/redis'
 import prisma from '../../prisma'
 
 export const toggleProfileType = async (req: Request, res: Response) => {
@@ -7,6 +8,13 @@ export const toggleProfileType = async (req: Request, res: Response) => {
   const user = await prisma.user.findUnique({
     where: {
       uid: userId,
+    },
+    include: {
+      profile: {
+        select: {
+          displayName: true,
+        },
+      },
     },
   })
 
@@ -23,6 +31,8 @@ export const toggleProfileType = async (req: Request, res: Response) => {
         profileType: 'PRIVATE',
       },
     })
+
+    await redis.set(`user:${user.username.toUpperCase()}`, JSON.stringify(user))
     res.json({ user: userUpdated })
     return
   }
@@ -37,6 +47,7 @@ export const toggleProfileType = async (req: Request, res: Response) => {
       },
     })
     res.json({ user: userUpdated })
+    await redis.set(`user:${user.username.toUpperCase()}`, JSON.stringify(user))
     return
   }
 

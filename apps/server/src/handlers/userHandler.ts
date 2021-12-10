@@ -40,6 +40,13 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
     where: {
       uid: req.user.uid,
     },
+    include: {
+      profile: {
+        select: {
+          displayName: true,
+        },
+      },
+    },
   })
 
   const isUserInFirebase = await fbAdmin.auth().getUser(req.user.uid)
@@ -62,6 +69,7 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
         },
       },
     })
+    await redis.set(`user:${user.username.toUpperCase()}`, user)
     res.status(201).json({
       redirect: '/home',
       userFullDetials: user,
@@ -86,10 +94,12 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
       },
     })
     res.status(201).json({ redirect: '/home', user: updatedUser })
+    await redis.set(`user:${user.username.toUpperCase()}`, user)
     return
   }
 
   await redis.setex(`user:session:${req.user.uid}`, ttl, JSON.stringify(user))
+  await redis.set(`user:${user.username.toUpperCase()}`, user)
 
   res.status(200).json({
     redirect: '/home',
@@ -165,6 +175,15 @@ export const updateProfile = async (req: Request, res: Response) => {
     },
   })
 
+  const updatedRedisUser = {
+    ...user,
+    profile: {
+      displayName: profile.displayName,
+    },
+  }
+
+  console.log(updatedRedisUser)
+  await redis.set(`user:${user.username.toUpperCase()}`, JSON.stringify(updatedRedisUser))
   res.json(profile)
 }
 

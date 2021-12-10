@@ -8,6 +8,7 @@ export const Search = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [q, setQ] = useState('')
   const [results, setResults] = useState<any[]>([])
+  console.log(results)
 
   useEffect(() => {
     if (!isOpen) {
@@ -54,7 +55,7 @@ export const Search = () => {
               </div>
             </Popover.Button>
 
-            <Popover.Panel className="absolute left-0 right-0 z-30 mt-1 rounded-md shadow-md">
+            <Popover.Panel className="absolute left-0 right-0 z-30 mt-1 bg-white rounded-md shadow-md">
               <div className="px-4 py-5">
                 {q.trim() === '' ? (
                   <p className="text-sm text-center text-gray-600">Try searching for People</p>
