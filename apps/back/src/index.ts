@@ -103,7 +103,6 @@ httpServer.listen(socket_io_port, () => {
       const notificationData = await getNotificationDataFromRedis(
         notification.userIdWhoReceivesNotification
       )
-      console.log(`emitting notifications for ${notification.userIdWhoReceivesNotification}`)
       socket.emit('NOTIFICATION', notificationData)
     }
 

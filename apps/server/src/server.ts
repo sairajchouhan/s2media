@@ -18,10 +18,7 @@ import prisma from '../prisma'
   app.use(express.json())
   app.use(
     cors({
-      origin:
-        process.env.NODE_ENV === 'production'
-          ? 'https://s2media.vercel.app'
-          : 'http://localhost:3000',
+      origin: 'http://localhost:3000',
     })
   )
 
