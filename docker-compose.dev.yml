@@ -1,14 +1,23 @@
 version: '3.9'
 services:
+  # nginx:
+  #   depends_on:
+  #     - api
+  #     - back
+  #   restart: always
+  #   build:
+  #     dockerfile: Dockerfile.dev
+  #     context: ./apps/nginx
+  #   ports:
+  #     - 80:80
   api:
-    container_name: s2media_server
+    container_name: s2media_api_dev
     build:
       context: ./apps/server
       dockerfile: ./Dockerfile.dev
     depends_on:
       - db
       - redis
-      - back
     ports:
       - 5000:5000
       - 5555:5555
@@ -23,7 +32,7 @@ services:
 
   db:
     image: postgres:latest
-    container_name: s2media_postgres
+    container_name: s2media_postgres_dev
     restart: always
     ports:
       - 5432:5432
@@ -36,12 +45,12 @@ services:
 
   redis:
     image: redis:latest
-    container_name: s2media_redis
+    container_name: s2media_redis_dev
     volumes:
       - redis-data:/data
 
   back:
-    container_name: s2media_back
+    container_name: s2media_back_dev
     build:
       context: ./apps/back
       dockerfile: ./Dockerfile.dev

@@ -5,8 +5,7 @@ import morgan from 'morgan'
 import errorMiddleware from './middlewares/error'
 import routes from './routes'
 import { init } from './utils/initialize'
-import { redis } from './config/redis'
-import prisma from '../prisma'
+
 //
 ;(() => {
   const app = express()
@@ -23,35 +22,8 @@ import prisma from '../prisma'
   )
 
   // Routes
-  app.get('/health', (_req, res) => {
+  app.get('/api/health', async (_req, res) => {
     res.send('OK ✅ ')
-  })
-
-  app.get('/test', async (_req, res) => {
-    console.timeLog('start')
-    const usernamesObj = await prisma.user.findMany({
-      select: {
-        username: true,
-      },
-    })
-    const usernames = usernamesObj.map((user) => user.username)
-
-    for (const username of usernames) {
-      const term = username.toUpperCase()
-      const terms = []
-
-      for (let i = 1; i < term.length; i++) {
-        terms.push(0)
-        terms.push(term.substring(0, i))
-      }
-      terms.push(0)
-      terms.push(term + '*')
-      ;(async () => {
-        await redis.zadd('users', ...terms)
-      })()
-    }
-    console.timeEnd('stop')
-    res.send('OK')
   })
 
   app.use('/api/v1/auth', routes.authRoutes)
@@ -71,6 +43,7 @@ import prisma from '../prisma'
 
   const PORT = process.env.PORT || 5000
   app.listen(PORT, () => {
+    console.log(process.env.DATABASE_URL)
     console.log(`Server is running in ${process.env.NODE_ENV} mode at http://localhost:${PORT}`)
   })
 })()

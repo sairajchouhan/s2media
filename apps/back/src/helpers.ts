@@ -11,7 +11,6 @@ export const getNotificationDataFromRedis = async (userIdWhoReceivesNotification
   const parsedNotifications: Notification[] = notifications.map((notification) =>
     JSON.parse(notification)
   )
-  console.log(parsedNotifications.filter((noti) => noti.isRead === false).length)
   const notificationData = {
     notifications: notifications.map((notification) => JSON.parse(notification)),
     newNotificationNumber: parsedNotifications.filter((noti) => !noti.isRead).length,
@@ -21,6 +20,5 @@ export const getNotificationDataFromRedis = async (userIdWhoReceivesNotification
 
 export const emitNotification = async (socket: Socket, data: any) => {
   const notificationData = await getNotificationDataFromRedis(data.userId)
-  console.log(`emitting notifications for ${data.userId}`, notificationData)
   socket.emit('NOTIFICATION', notificationData)
 }
