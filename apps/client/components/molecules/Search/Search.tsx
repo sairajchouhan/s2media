@@ -20,7 +20,7 @@ export const Search = () => {
   useEffect(() => {
     if (q) {
       axios
-        .post(`http://localhost:8080/search?q=${q}`)
+        .post(`http://localhost:5001/back/search?q=${q}`)
         .then((res) => {
           setResults(res.data.result)
         })

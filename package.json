@@ -36,7 +36,9 @@
     "test:watch:client": "cd apps/client && yarn test:watch",
     "test:watch": "yarn test:watch:client",
     "prettier": "prettier --write ./apps --ignore-unknown",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "dev:up": "docker compose -f docker-compose.dev.yml up",
+    "dev:down": "docker compose -f docker-compose.dev.yml down"
   },
   "devDependencies": {
     "husky": "^7.0.4",

@@ -17,22 +17,19 @@ export function SocketProvider({ children }: ISocketContext) {
   const [notifications, setNotifications] = useState<any>(null)
 
   useEffect(() => {
-    const socket = io('http://localhost:8080', {})
+    const socket = io('http://localhost:5001', {})
     socket.on('NOTIFICATION', (data) => {
       console.log('GOT NOTIFICATIONS')
       setNotifications(data)
       console.log(data)
     })
-
     socket.emit('JOIN_USER_ROOM', rqUser.uid)
-
     if (rqUser) {
       console.log('Emitting GIVE_MY_NOTIFICATIONS')
       socket.emit('GIVE_MY_NOTIFICATIONS', {
         userId: rqUser.uid,
       })
     }
-
     return () => {
       socket.close()
     }

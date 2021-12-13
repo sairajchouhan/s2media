@@ -5,10 +5,10 @@ import { redisSubscriber, redis } from './config'
 import { getNotificationDataFromRedis, emitNotification } from './helpers'
 
 const httpServer = createServer()
-const socket_io_port = parseInt(process.env.PORT!) || 8080
+const socket_io_port = 8080
 const io = new Server(httpServer, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: '*',
   },
 })
 const serverOrigin = 'http://localhost:8080'
@@ -26,7 +26,11 @@ httpServer.on('request', async (req, res) => {
     return
   }
 
-  if (req.url?.startsWith('/search') && req.method === 'POST') {
+  if (req.url === '/back/health' && req.method === 'GET') {
+    res.end('✅')
+  }
+
+  if (req.url?.startsWith('/back/search') && req.method === 'POST') {
     const url = new URL(req.url, serverOrigin)
     const q = url.searchParams.get('q')
     if (!q || q.trim() === '') {
@@ -68,6 +72,7 @@ httpServer.on('request', async (req, res) => {
 const channels = ['NOTIFICATION', 'REFETCH_NOTIFICATIONS']
 
 httpServer.listen(socket_io_port, () => {
+  console.log(`Back server listening on port ${socket_io_port}`)
   redisSubscriber.subscribe(channels, (err, count) => {
     if (err) {
       console.error('Failed to subscribe: %s', err.message)
