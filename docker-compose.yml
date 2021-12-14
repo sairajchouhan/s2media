@@ -1,16 +1,16 @@
 version: '3.9'
 services:
-  # nginx:
-  #   container_name: s2media_nginx
-  #   depends_on:
-  #     - api
-  #     - back
-  #   restart: always
-  #   build:
-  #     dockerfile: Dockerfile
-  #     context: ./apps/nginx
-  #   ports:
-  #     - 8000:80
+  nginx:
+    container_name: s2media_nginx
+    depends_on:
+      - api
+      - back
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./apps/nginx
+    ports:
+      - 8000:80
 
   api:
     container_name: s2media_server
