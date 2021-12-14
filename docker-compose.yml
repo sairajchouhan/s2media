@@ -1,17 +1,5 @@
 version: '3.9'
 services:
-  nginx:
-    container_name: s2media_nginx
-    depends_on:
-      - api
-      - back
-    restart: always
-    build:
-      dockerfile: Dockerfile
-      context: ./apps/nginx
-    ports:
-      - 8000:80
-
   api:
     container_name: s2media_server
     build:
@@ -21,6 +9,8 @@ services:
       - db
       - redis
       - back
+    ports:
+      - 5000:5000
     env_file:
       - ./apps/server/.env
     environment:
@@ -51,6 +41,8 @@ services:
       dockerfile: ./Dockerfile
     environment:
       - REDIS_HOST=redis
+    ports:
+      - 8080:8080
 
 volumes:
   postgres-data:

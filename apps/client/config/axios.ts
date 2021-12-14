@@ -1,17 +1,17 @@
 import axiosMain from 'axios'
 
 export const SERVER_BASE_URL =
-  process.env.NODE_ENV === 'production' ? 'http://localhost:80' : 'http://localhost:5001'
+  process.env.NODE_ENV === 'production' ? 'https://s2m-api.sairaj.me' : 'http://localhost:5000'
 
 export const SERVER_URL =
   process.env.NODE_ENV === 'production'
-    ? 'http://localhost:80/api/v1'
-    : 'http://localhost:5001/api/v1'
+    ? 'https://s2m-api.sairaj.me/api/v1'
+    : 'http://localhost:5000/api/v1'
 
 export const SEARCH_URL =
   process.env.NODE_ENV === 'production'
-    ? `http://localhost:80/back/search`
-    : 'http://localhost:5001/back/search'
+    ? `https://s2m-api.sairaj.me/back/search`
+    : 'http://localhost:5000/back/search'
 
 export const axios = axiosMain.create({
   baseURL: SERVER_URL,
