@@ -17,7 +17,7 @@ import { init } from './utils/initialize'
   app.use(express.json())
   app.use(
     cors({
-      origin: ['http://localhost:3000', 'https://s2media.sairaj.rocks'],
+      origin: ['http://localhost:3000', 'https://s2media.sairaj.rocks/'],
     })
   )
 
