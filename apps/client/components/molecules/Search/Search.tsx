@@ -2,25 +2,25 @@ import { useEffect, useRef, useState } from 'react'
 import { Popover } from '@headlessui/react'
 import axios from 'axios'
 import { Avatar } from '../../atoms/Avatar'
+import { SEARCH_URL } from '../../../config/axios'
 
 export const Search = () => {
   const inputRef = useRef<null | HTMLInputElement>(null)
-  const [isOpen, setIsOpen] = useState(false)
+  // const [isOpen, setIsOpen] = useState(false)
   const [q, setQ] = useState('')
   const [results, setResults] = useState<any[]>([])
   console.log(results)
 
-  useEffect(() => {
-    if (!isOpen) {
-      console.log('executing blur')
-      inputRef.current?.blur()
-    }
-  }, [isOpen])
+  // useEffect(() => {
+  //   if (!isOpen) {
+  //     inputRef.current?.blur()
+  //   }
+  // }, [isOpen])
 
   useEffect(() => {
     if (q) {
       axios
-        .post(`http://localhost:5001/back/search?q=${q}`)
+        .post(`${SEARCH_URL}?q=${q}`)
         .then((res) => {
           setResults(res.data.result)
         })
@@ -30,16 +30,16 @@ export const Search = () => {
     }
   }, [q])
 
-  const stateChanger = (arg: boolean) => {
-    setIsOpen(arg)
-  }
+  // const stateChanger = (arg: boolean) => {
+  //   setIsOpen(arg)
+  // }
 
   return (
     <div className="w-full">
       <Popover className="relative">
-        {({ open }) => (
+        {({}) => (
           <>
-            {open ? stateChanger(true) : stateChanger(false)}
+            {/* {open ? stateChanger(true) : stateChanger(false)} */}
             <Popover.Button as="div">
               <div className="flex items-center w-full">
                 <input

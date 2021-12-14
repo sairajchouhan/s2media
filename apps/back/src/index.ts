@@ -17,7 +17,7 @@ httpServer.on('request', async (req, res) => {
   const headers = {
     'Access-Control-Allow-Origin': 'http://localhost:3000',
     'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
-    'Access-Control-Max-Age': 2592000, // 30 days
+    'Access-Control-Max-Age': 2592000,
   }
 
   if (req.method === 'OPTIONS') {
