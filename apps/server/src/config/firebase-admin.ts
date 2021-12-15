@@ -4,7 +4,7 @@ export const initAdmin = () => {
   let serviceAccount: any
   if (process.env.NODE_ENV === 'production') {
     console.log('IN PRODUCTION')
-    serviceAccount = require('../../admin-dev.json')
+    serviceAccount = require('../../admin.json')
   } else {
     serviceAccount = require('../../admin-dev.json')
   }
