@@ -12,11 +12,14 @@ function getRandomIntInclusive(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-const prismaConnect = () => {
+const defaultUrl =
+  'postgresql://postgres:password@localhost:5432/s2media?schema=public&connection_limit=10&pool_timeout=0'
+
+export const prismaConnect = (url: string = defaultUrl) => {
   const prisma = new PrismaClient({
     datasources: {
       db: {
-        url: 'postgresql://postgres:password@localhost:5432/s2media?schema=public&connection_limit=10&pool_timeout=0',
+        url,
       },
     },
   })
