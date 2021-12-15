@@ -1,4 +1,3 @@
-import { Follow } from '@prisma/client'
 import { Request, Response } from 'express'
 import createError from 'http-errors'
 import prisma from '../../prisma'
@@ -19,7 +18,7 @@ export const followUser = async (req: Request, res: Response) => {
 
   if (!user) throw createError(400, 'User does not exist')
 
-  const userFollowing = user.following.filter((unit: Follow) => userId === unit.followedId)
+  const userFollowing = user.following.filter((unit: any) => userId === unit.followedId)
 
   if (userFollowing.length === 0) {
     await prisma.follow.create({

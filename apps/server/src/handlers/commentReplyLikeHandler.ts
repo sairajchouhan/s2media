@@ -2,7 +2,6 @@ import { Request, Response } from 'express'
 import createError from 'http-errors'
 import { createNotification } from '../utils/notifications'
 import prisma from '../../prisma'
-import { CommentReplyLike } from '@prisma/client'
 
 export const likeOrUnlikeComment = async (req: Request, res: Response) => {
   const commentId = req.params.commentId
@@ -20,8 +19,7 @@ export const likeOrUnlikeComment = async (req: Request, res: Response) => {
   })
 
   if (!comment) throw createError(404, 'Comment not found')
-  const liked: boolean =
-    comment.like.filter((like: CommentReplyLike) => like.userId === userId).length > 0
+  const liked: boolean = comment.like.filter((like: any) => like.userId === userId).length > 0
 
   if (!liked) {
     await prisma.commentReplyLike.create({
@@ -54,7 +52,7 @@ export const likeOrUnlikeComment = async (req: Request, res: Response) => {
 
     return
   } else {
-    const likeId = comment.like.filter((like: CommentReplyLike) => like.userId === userId)[0].id
+    const likeId = comment.like.filter((like: any) => like.userId === userId)[0].id
     await prisma.commentReplyLike.delete({
       where: {
         id: likeId,
@@ -82,8 +80,7 @@ export const likeOrUnlikeReply = async (req: Request, res: Response) => {
   })
 
   if (!reply) throw createError(404, 'Comment not found')
-  const liked: boolean =
-    reply.like.filter((like: CommentReplyLike) => like.userId === userId).length > 0
+  const liked: boolean = reply.like.filter((like: any) => like.userId === userId).length > 0
 
   if (!liked) {
     await prisma.commentReplyLike.create({
@@ -115,7 +112,7 @@ export const likeOrUnlikeReply = async (req: Request, res: Response) => {
 
     return
   } else {
-    const likeId = reply.like.filter((like: CommentReplyLike) => like.userId === userId)[0].id
+    const likeId = reply.like.filter((like: any) => like.userId === userId)[0].id
     await prisma.commentReplyLike.delete({
       where: {
         id: likeId,
