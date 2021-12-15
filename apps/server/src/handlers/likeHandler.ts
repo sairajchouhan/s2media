@@ -3,6 +3,7 @@ import createError from 'http-errors'
 import { redis } from '../config/redis'
 import prisma from '../../prisma'
 import { createNotification } from '../utils/notifications'
+import { Like } from '@prisma/client'
 
 export const likeAndUnlikePost = async (req: Request, res: Response) => {
   const postId = req.params.postId
@@ -33,7 +34,7 @@ export const likeAndUnlikePost = async (req: Request, res: Response) => {
   if (!authUser) throw createError(404, 'User not found')
   if (!post) throw createError(404, 'post not found')
 
-  const liked: boolean = post.like.filter((like) => like.userId === userId).length > 0
+  const liked: boolean = post.like.filter((like: Like) => like.userId === userId).length > 0
 
   if (!liked) {
     await prisma.like.create({
@@ -58,7 +59,7 @@ export const likeAndUnlikePost = async (req: Request, res: Response) => {
 
     return
   } else {
-    const likeId = post.like.filter((like) => like.userId === userId)[0].id
+    const likeId = post.like.filter((like: Like) => like.userId === userId)[0].id
     await prisma.like.delete({
       where: {
         id: likeId,

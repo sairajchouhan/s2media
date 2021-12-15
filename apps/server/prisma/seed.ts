@@ -139,7 +139,7 @@ const addUserDataToRedis = async () => {
   })
 
   const allUsersPromises: Array<Promise<any>> = []
-  allUsers.forEach((user) => {
+  allUsers.forEach((user: any) => {
     const prom = redis.set(`user:${user.username.toUpperCase()}`, JSON.stringify(user))
     allUsersPromises.push(prom)
   })

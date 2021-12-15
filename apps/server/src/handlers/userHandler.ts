@@ -307,7 +307,7 @@ export const getFollowersOfUser = async (req: Request, res: Response) => {
     return
   }
 
-  const followers = data.followers.map((follower) => follower.follower)
+  const followers = data.followers.map((follower: any) => follower.follower)
 
   res.json({ followers })
 }
@@ -348,7 +348,7 @@ export const getFollowingOfUser = async (req: Request, res: Response) => {
     return
   }
 
-  const following = data.following.map((following) => following.followed)
+  const following = data.following.map((following: any) => following.followed)
 
   res.json({ following })
   return

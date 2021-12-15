@@ -1,3 +1,4 @@
+import { Follow } from '@prisma/client'
 import { NextFunction, Request, Response } from 'express'
 import prisma from '../../prisma/'
 
@@ -32,7 +33,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
       return next()
     }
 
-    if (profileUser.followers.some((follower) => follower.followerId === authUser.uid)) {
+    if (profileUser.followers.some((follower: Follow) => follower.followerId === authUser.uid)) {
       return next()
     }
 
@@ -68,7 +69,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
       return next()
     }
 
-    if (post.user.followers.some((follower) => follower.followerId === authUser.uid)) {
+    if (post.user.followers.some((follower: Follow) => follower.followerId === authUser.uid)) {
       return next()
     }
 
