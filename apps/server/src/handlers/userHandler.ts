@@ -69,7 +69,7 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
         },
       },
     })
-    await redis.set(`user:${user.username.toUpperCase()}`, user)
+    await redis.set(`user:${user.username.toUpperCase()}`, JSON.stringify(user))
     res.status(201).json({
       redirect: '/home',
       userFullDetials: user,
@@ -94,12 +94,12 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
       },
     })
     res.status(201).json({ redirect: '/home', user: updatedUser })
-    await redis.set(`user:${user.username.toUpperCase()}`, user)
+    await redis.set(`user:${user.username.toUpperCase()}`, JSON.stringify(user))
     return
   }
 
   await redis.setex(`user:session:${req.user.uid}`, ttl, JSON.stringify(user))
-  await redis.set(`user:${user.username.toUpperCase()}`, user)
+  await redis.set(`user:${user.username.toUpperCase()}`, JSON.stringify(user))
 
   res.status(200).json({
     redirect: '/home',
