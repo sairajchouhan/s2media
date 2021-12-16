@@ -75,7 +75,7 @@ httpServer.on('request', async (req, res) => {
 const channels = ['NOTIFICATION', 'REFETCH_NOTIFICATIONS']
 
 httpServer.listen(socket_io_port, () => {
-  console.log(`Back server listening on port ${socket_io_port}`)
+  console.log(`Back server listening on port ${socket_io_port} in ${process.env.NODE_ENV} mode`)
   redisSubscriber.subscribe(channels, (err, count) => {
     if (err) {
       console.error('Failed to subscribe: %s', err.message)
