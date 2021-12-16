@@ -78,43 +78,40 @@ const technologies = [
 
 export default function Landing() {
   return (
-    <>
-      <UnAuthenticatedLayout>
-        <section className="flex pt-16" style={{ height: 'calc(100vh - 58px)' }}>
-          <div className="flex-1 pt-16 pr-16">
-            <h1
-              style={{
-                lineHeight: '1.15',
-              }}
-              className="text-transparent text-indigo-600 text-7xl"
-            >
-              Simple Social Media
-            </h1>
-            <p className="my-4 text-lg text-gray-700">
-              A social media website built by collecting the best parts of top social media wesites
-              like Instagram, Linkdin and Twitter
-            </p>
-            <Link href="/signup" passHref>
-              <button className="px-12 py-3 mt-2 text-lg text-white rounded-md bg-gradient-to-tl from-indigo-500 to-pink-500">
-                Try it out
-              </button>
-            </Link>
-          </div>
-          <div className="flex-1 pt-8">
-            <img src="/landing-2.svg" className="block" alt="" />
-          </div>
-        </section>
-        <section className="py-8">
-          <h1 className="mb-24 font-bold text-center text-gray-800 text-7xl">Tech Stack Used</h1>
-          <div className="grid grid-cols-2 gap-12">
-            {technologies.map((tech) => (
-              <EachTech {...tech} key={tech.title} />
-            ))}
-          </div>
-        </section>
-      </UnAuthenticatedLayout>
-      <Footer />
-    </>
+    <UnAuthenticatedLayout>
+      <section className="flex pt-16" style={{ height: 'calc(100vh - 58px)' }}>
+        <div className="flex-1 pt-16 pr-16">
+          <h1
+            style={{
+              lineHeight: '1.15',
+            }}
+            className="text-transparent text-indigo-600 text-7xl"
+          >
+            Simple Social Media
+          </h1>
+          <p className="my-4 text-lg text-gray-700">
+            A social media website built by collecting the best parts of top social media wesites
+            like Instagram, Linkdin and Twitter
+          </p>
+          <Link href="/signup" passHref>
+            <button className="px-12 py-3 mt-2 text-lg text-white rounded-md bg-gradient-to-tl from-indigo-500 to-pink-500">
+              Try it out
+            </button>
+          </Link>
+        </div>
+        <div className="flex-1 pt-8">
+          <img src="/landing-2.svg" className="block" alt="" />
+        </div>
+      </section>
+      <section className="py-8">
+        <h1 className="mb-24 font-bold text-center text-gray-800 text-7xl">Tech Stack Used</h1>
+        <div className="grid grid-cols-2 gap-12">
+          {technologies.map((tech) => (
+            <EachTech {...tech} key={tech.title} />
+          ))}
+        </div>
+      </section>
+    </UnAuthenticatedLayout>
   )
 }
 
