@@ -19,5 +19,6 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           script: |
-            whoami
-            ls -al
+            cd /root/code/s2media
+            git pull
+            docker compose up --build -d

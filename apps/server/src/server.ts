@@ -22,7 +22,7 @@ import { init } from './utils/initialize'
   )
 
   // Routes
-  app.get('/api/health', async (_req, res) => {
+  app.get('/api/v1/health', async (_req, res) => {
     res.send('OK ✅ ')
   })
 
