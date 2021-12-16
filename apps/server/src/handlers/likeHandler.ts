@@ -33,7 +33,7 @@ export const likeAndUnlikePost = async (req: Request, res: Response) => {
   if (!authUser) throw createError(404, 'User not found')
   if (!post) throw createError(404, 'post not found')
 
-  const liked: boolean = post.like.filter((like: any) => like.userId === userId).length > 0
+  const liked: boolean = post.like.filter((like) => like.userId === userId).length > 0
 
   if (!liked) {
     await prisma.like.create({
@@ -58,7 +58,7 @@ export const likeAndUnlikePost = async (req: Request, res: Response) => {
 
     return
   } else {
-    const likeId = post.like.filter((like: any) => like.userId === userId)[0].id
+    const likeId = post.like.filter((like) => like.userId === userId)[0].id
     await prisma.like.delete({
       where: {
         id: likeId,

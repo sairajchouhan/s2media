@@ -18,7 +18,7 @@ export const followUser = async (req: Request, res: Response) => {
 
   if (!user) throw createError(400, 'User does not exist')
 
-  const userFollowing = user.following.filter((unit: any) => userId === unit.followedId)
+  const userFollowing = user.following.filter((unit) => userId === unit.followedId)
 
   if (userFollowing.length === 0) {
     await prisma.follow.create({
