@@ -6,16 +6,19 @@ import { getNotificationDataFromRedis, emitNotification } from './helpers'
 
 const httpServer = createServer()
 const socket_io_port = 8080
+const corsOrigin =
+  process.env.NODE_ENV === 'production' ? 'https://s2media.sairaj.rocks' : 'http://localhost:3000'
+
 const io = new Server(httpServer, {
   cors: {
-    origin: '*',
+    origin: corsOrigin,
   },
 })
 const serverOrigin = 'http://localhost:8080'
 
 httpServer.on('request', async (req, res) => {
   const headers = {
-    'Access-Control-Allow-Origin': 'http://localhost:3000',
+    'Access-Control-Allow-Origin': corsOrigin,
     'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
     'Access-Control-Max-Age': 2592000,
   }
