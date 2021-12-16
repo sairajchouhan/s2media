@@ -1,5 +1,6 @@
 import UnAuthenticatedLayout from '../components/layouts/UnAuthenticatedLayout'
 import Link from 'next/link'
+import { Footer } from '../components/molecules/Footer'
 
 const technologies = [
   {
@@ -64,12 +65,6 @@ const technologies = [
     img: '/icons/postgres.svg',
   },
   {
-    title: 'Socket.io',
-    description: 'Bidirectional and low-latency communication for every platform',
-    img: '/icons/socket-io.svg',
-  },
-
-  {
     title: 'Firebase',
     description: 'Firebase is a cloud platform as a service (CaaS)',
     img: '/icons/firebase.svg',
@@ -83,40 +78,43 @@ const technologies = [
 
 export default function Landing() {
   return (
-    <UnAuthenticatedLayout>
-      <section className="flex pt-16" style={{ height: 'calc(100vh - 58px)' }}>
-        <div className="flex-1 pt-16 pr-16">
-          <h1
-            style={{
-              lineHeight: '1.15',
-            }}
-            className="text-transparent text-indigo-600 text-7xl"
-          >
-            Simple Social Media
-          </h1>
-          <p className="my-4 text-lg text-gray-700">
-            A social media website built by collecting the best parts of top social media wesites
-            like Instagram, Linkdin and Twitter
-          </p>
-          <Link href="/signup" passHref>
-            <button className="px-12 py-3 mt-2 text-lg text-white rounded-md bg-gradient-to-tl from-indigo-500 to-pink-500">
-              Try it out
-            </button>
-          </Link>
-        </div>
-        <div className="flex-1 pt-8">
-          <img src="/landing-2.svg" className="block" alt="" />
-        </div>
-      </section>
-      <section className="py-8">
-        <h1 className="mb-24 font-bold text-center text-gray-800 text-7xl">Tech Stack Used</h1>
-        <div className="grid grid-cols-2 gap-12">
-          {technologies.map((tech) => (
-            <EachTech {...tech} key={tech.title} />
-          ))}
-        </div>
-      </section>
-    </UnAuthenticatedLayout>
+    <>
+      <UnAuthenticatedLayout>
+        <section className="flex pt-16" style={{ height: 'calc(100vh - 58px)' }}>
+          <div className="flex-1 pt-16 pr-16">
+            <h1
+              style={{
+                lineHeight: '1.15',
+              }}
+              className="text-transparent text-indigo-600 text-7xl"
+            >
+              Simple Social Media
+            </h1>
+            <p className="my-4 text-lg text-gray-700">
+              A social media website built by collecting the best parts of top social media wesites
+              like Instagram, Linkdin and Twitter
+            </p>
+            <Link href="/signup" passHref>
+              <button className="px-12 py-3 mt-2 text-lg text-white rounded-md bg-gradient-to-tl from-indigo-500 to-pink-500">
+                Try it out
+              </button>
+            </Link>
+          </div>
+          <div className="flex-1 pt-8">
+            <img src="/landing-2.svg" className="block" alt="" />
+          </div>
+        </section>
+        <section className="py-8">
+          <h1 className="mb-24 font-bold text-center text-gray-800 text-7xl">Tech Stack Used</h1>
+          <div className="grid grid-cols-2 gap-12">
+            {technologies.map((tech) => (
+              <EachTech {...tech} key={tech.title} />
+            ))}
+          </div>
+        </section>
+      </UnAuthenticatedLayout>
+      <Footer />
+    </>
   )
 }
 
@@ -134,7 +132,7 @@ type TechType =
 
 const EachTech = ({ description, img, title }: TechType) => {
   return (
-    <div className="flex flex-col items-center justify-center col-span-1 py-12 text-center rounded-md bg-gray-50 ">
+    <div className="flex flex-col items-center justify-center col-span-1 py-12 text-center bg-gray-100 rounded-md bg-opacity-40 hover:bg-opacity-70">
       <img src={img} className="w-24 h-auto mb-3" alt={title} />
       {title ? <p className="text-xl font-medium text-gray-700">{title}</p> : null}
       <p className="w-1/2 mt-1">{description}</p>

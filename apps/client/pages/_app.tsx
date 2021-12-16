@@ -6,17 +6,12 @@ import AuthenticatedLayout from '../components/layouts/AuthenticatedLayout'
 import { AuthContextProvider } from '../context/authContext'
 import { SocketProvider } from '../context/socketContext'
 import { ToastProvider } from '../context/toastContext'
+import { Footer } from '../components/molecules/Footer'
 import '../styles/globals.css'
 
 const noAuthRequiredPages = ['/login', '/signup', '/']
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-    },
-  },
-})
+const queryClient = new QueryClient({})
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter()
@@ -25,7 +20,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ToastProvider>
         <AuthContextProvider>
           {noAuthRequiredPages.includes(router.pathname) ? (
-            <Component {...pageProps} />
+            <>
+              <Component {...pageProps} />
+              <Footer />
+            </>
           ) : (
             <SocketProvider>
               <AuthenticatedLayout>

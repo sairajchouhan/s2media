@@ -53,7 +53,7 @@ const Signup = () => {
       <Head>
         <title>SignUp / S2Media</title>
       </Head>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center" style={{ height: 'calc(100vh - 58px)' }}>
         <h1 className="my-4 text-5xl">Signup</h1>
         <div className="flex flex-col w-1/3">
           {error.isError ? (
