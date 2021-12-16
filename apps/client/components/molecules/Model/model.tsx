@@ -13,7 +13,13 @@ export interface ModelProps {
   children: React.ReactNode
 }
 
-export const BaseModel = ({ open, toggleOpen, initialFoucsRef, center = false, children }: ModelProps) => {
+export const BaseModel = ({
+  open,
+  toggleOpen,
+  initialFoucsRef,
+  center = false,
+  children,
+}: ModelProps) => {
   return (
     <>
       <Transition appear show={open} as={Fragment}>
@@ -36,11 +42,11 @@ export const BaseModel = ({ open, toggleOpen, initialFoucsRef, center = false, c
               <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-40" />
             </Transition.Child>
 
-            {center && (
+            {center ? (
               <span className="inline-block h-screen align-middle" aria-hidden="true">
                 &#8203;
               </span>
-            )}
+            ) : null}
 
             <Transition.Child
               as="div"

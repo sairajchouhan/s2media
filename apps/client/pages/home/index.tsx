@@ -58,8 +58,7 @@ const Home = () => {
         <main>
           {isLoading ? (
             <CircleLoader className="pt-10" />
-          ) : (
-            posts &&
+          ) : posts ? (
             posts.pages.map((page: any) => (
               <React.Fragment key={page.nextCursor || 'undefined'}>
                 {page.posts.map((post: PostWithBaseUser) => (
@@ -69,7 +68,7 @@ const Home = () => {
                 ))}
               </React.Fragment>
             ))
-          )}
+          ) : null}
           <span style={{ visibility: 'hidden' }} ref={ref}>
             intersection observer marker
           </span>

@@ -50,7 +50,6 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
                   Authorization: `Bearer ${idToken}`,
                 },
               })
-              // nookies.set(undefined, 'idk', idToken, { path: '/' })
               const {
                 data: { userFullDetials },
               } = userResp

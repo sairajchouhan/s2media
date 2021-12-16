@@ -17,12 +17,14 @@ export const PageNav = ({ title, subtitle }: PageNavProps) => {
           <IconButton icon={BackIcon} onClick={() => back()} hoverBgColor="bg-blue-50" />
         </div>
         <div className="flex flex-col">
-          <p className={`text-lg font-extrabold cursor-default ${subtitle ? 'leading-5' : ''} `}>{title}</p>
-          {subtitle && (
+          <p className={`text-lg font-extrabold cursor-default ${subtitle ? 'leading-5' : ''} `}>
+            {title}
+          </p>
+          {subtitle ? (
             <a role="link" className="text-sm leading-4 text-gray-500 cursor-pointer">
               {subtitle}
             </a>
-          )}
+          ) : null}
         </div>
       </div>
     </div>

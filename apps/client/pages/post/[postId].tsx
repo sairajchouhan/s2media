@@ -101,17 +101,18 @@ const EachPost = () => {
                 <div>Something went wrong</div>
               ) : (
                 <div>
-                  {commentData &&
-                    commentData.pages.map((page: any) => (
-                      <React.Fragment key={page.nextCursor || 'lastPage'}>
-                        {page.comment.map((comment: any) => (
-                          <Comment key={comment.id} comment={comment} />
-                        ))}
-                      </React.Fragment>
-                    ))}
+                  {commentData
+                    ? commentData.pages.map((page: any) => (
+                        <React.Fragment key={page.nextCursor || 'lastPage'}>
+                          {page.comment.map((comment: any) => (
+                            <Comment key={comment.id} comment={comment} />
+                          ))}
+                        </React.Fragment>
+                      ))
+                    : null}
                 </div>
               )}
-              {hasNextPage && (
+              {hasNextPage ? (
                 <Button
                   disabled={isFetchingNextPage}
                   variant="solid"
@@ -120,7 +121,7 @@ const EachPost = () => {
                 >
                   {isFetchingNextPage ? 'loading more comments..' : 'show more comments'}
                 </Button>
-              )}
+              ) : null}
             </section>
           </>
         )}

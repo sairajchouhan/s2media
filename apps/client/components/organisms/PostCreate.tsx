@@ -90,14 +90,21 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
           <div className="mt-4">
             <div className="flex items-start h-full space-x-4">
               <div className="h-full">
-                {rqUser.avatar && <Avatar src={rqUser.avatar} w="w-10" h="h-10" alt="authenticated rqUser avatar" />}
+                {rqUser.avatar ? (
+                  <Avatar
+                    src={rqUser.avatar ?? undefined}
+                    w="w-10"
+                    h="h-10"
+                    alt="authenticated rqUser avatar"
+                  />
+                ) : null}
               </div>
               <div className="flex items-center flex-1 h-full">
                 <AutoGrowTextArea initialFocusRef={textareaRef} />
               </div>
             </div>
             <div className="mt-3">
-              {previewUrl && (
+              {previewUrl ? (
                 <div className="relative flex justify-center w-full h-auto">
                   <div className="overflow-hidden rounded-lg">
                     <img src={previewUrl} className="block" alt="preview url" />
@@ -115,7 +122,7 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
                     />
                   </div>
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
         </ModelBody>

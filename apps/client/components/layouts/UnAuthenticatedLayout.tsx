@@ -16,14 +16,14 @@ const UnAuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      {!rqUser && (
+      {!rqUser ? (
         <>
           <header>
             <Nav />
           </header>
           <section className="container w-5/6 mx-auto">{children}</section>
         </>
-      )}
+      ) : null}
     </>
   )
 }

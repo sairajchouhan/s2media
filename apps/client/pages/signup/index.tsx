@@ -56,7 +56,9 @@ const Signup = () => {
       <div className="flex flex-col items-center">
         <h1 className="my-4 text-5xl">Signup</h1>
         <div className="flex flex-col w-1/3">
-          {error.isError && <div className="p-3 my-3 text-sm text-white bg-red-500 rounded-md">{error.message}</div>}
+          {error.isError ? (
+            <div className="p-3 my-3 text-sm text-white bg-red-500 rounded-md">{error.message}</div>
+          ) : null}
           <div className="mb-5">
             <Input
               id="email"
