@@ -6,6 +6,7 @@ import { formatBufferTo64 } from '../config/data-uri'
 import { get4RandomChars } from '../utils'
 import fbAdmin from 'firebase-admin'
 import { redis } from '../config/redis'
+import { storeAllCombinationsOfUsername } from '../utils/redis'
 
 const ttl = 24 * 60 * 60 * 30
 
@@ -69,11 +70,14 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
         },
       },
     })
-    await redis.set(`user:${user.username.toUpperCase()}`, JSON.stringify(user))
     res.status(201).json({
       redirect: '/home',
       userFullDetials: user,
     })
+
+    await redis.set(`user:${user.username.toUpperCase()}`, JSON.stringify(user))
+    await storeAllCombinationsOfUsername(user.username)
+
     return
   }
 
@@ -95,16 +99,18 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
     })
     res.status(201).json({ redirect: '/home', user: updatedUser })
     await redis.set(`user:${user.username.toUpperCase()}`, JSON.stringify(user))
+    await storeAllCombinationsOfUsername(user.username)
     return
   }
-
-  await redis.setex(`user:session:${req.user.uid}`, ttl, JSON.stringify(user))
-  await redis.set(`user:${user.username.toUpperCase()}`, JSON.stringify(user))
 
   res.status(200).json({
     redirect: '/home',
     userFullDetials: user,
   })
+
+  await redis.setex(`user:session:${req.user.uid}`, ttl, JSON.stringify(user))
+  await redis.set(`user:${user.username.toUpperCase()}`, JSON.stringify(user))
+  await storeAllCombinationsOfUsername(user.username)
 }
 
 export const deleteAuthUserCache = async (req: Request, res: Response) => {

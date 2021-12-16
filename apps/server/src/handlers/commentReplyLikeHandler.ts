@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import createError from 'http-errors'
-import { createNotification } from '../utils/notifications'
+import { createNotification } from '../utils/redis'
 import prisma from '../../prisma'
 
 export const likeOrUnlikeComment = async (req: Request, res: Response) => {

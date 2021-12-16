@@ -24,8 +24,8 @@ export function SocketProvider({ children }: ISocketContext) {
       setNotifications(data)
       console.log(data)
     })
-    socket.emit('JOIN_USER_ROOM', rqUser.uid)
     if (rqUser) {
+      socket.emit('JOIN_USER_ROOM', rqUser.uid)
       console.log('Emitting GIVE_MY_NOTIFICATIONS')
       socket.emit('GIVE_MY_NOTIFICATIONS', {
         userId: rqUser.uid,

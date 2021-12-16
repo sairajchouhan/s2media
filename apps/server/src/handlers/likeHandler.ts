@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import createError from 'http-errors'
 import { redis } from '../config/redis'
 import prisma from '../../prisma'
-import { createNotification } from '../utils/notifications'
+import { createNotification } from '../utils/redis'
 
 export const likeAndUnlikePost = async (req: Request, res: Response) => {
   const postId = req.params.postId
