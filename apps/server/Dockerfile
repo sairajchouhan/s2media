@@ -10,6 +10,7 @@ RUN yarn install --frozen-lockfile
 
 COPY ./ ./
 
+RUN npx prisma generate
 
 RUN yarn build
 

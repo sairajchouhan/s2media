@@ -21,7 +21,7 @@ const UnAuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
           <header>
             <Nav />
           </header>
-          <section className="container w-3/4 mx-auto">{children}</section>
+          <section className="container w-5/6 mx-auto">{children}</section>
         </>
       )}
     </>
