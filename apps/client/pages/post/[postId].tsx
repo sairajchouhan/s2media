@@ -27,6 +27,7 @@ const EachPost = () => {
   } = useQuery<PostWithBaseUser, AxiosError>(
     GET_ONE_POST.queryKey(params.postId as string),
     async () => {
+      await new Promise((res) => setTimeout(res, 4000))
       const idToken = await getIdToken()
       const { data } = await axios.get(GET_ONE_POST.path(params.postId as string), {
         headers: {
@@ -79,54 +80,55 @@ const EachPost = () => {
       </div>
     ) : null
   }
-  if (!post) return null
 
   return (
-    <PageLayout>
+    <>
       <Head>
         <title>Post / S2Media</title>
       </Head>
-      <PageNav title="Post" />
-      <main className="">
-        {isLoading ? (
-          <CircleLoader className="pt-10" />
-        ) : (
-          <>
-            <Post post={post} />
-            <section className="px-3 pb-10 mb-20 border-opacity-80">
-              <CommentReplyInput isReply={false} postId={post.id} />
-              {isLoadingComments ? (
-                <CircleLoader />
-              ) : isErrorComments ? (
-                <div>Something went wrong</div>
-              ) : (
-                <div>
-                  {commentData
-                    ? commentData.pages.map((page: any) => (
-                        <React.Fragment key={page.nextCursor || 'lastPage'}>
-                          {page.comment.map((comment: any) => (
-                            <Comment key={comment.id} comment={comment} />
-                          ))}
-                        </React.Fragment>
-                      ))
-                    : null}
-                </div>
-              )}
-              {hasNextPage ? (
-                <Button
-                  disabled={isFetchingNextPage}
-                  variant="solid"
-                  colorScheme="gray"
-                  onClick={handleClickMoreComments}
-                >
-                  {isFetchingNextPage ? 'loading more comments..' : 'show more comments'}
-                </Button>
-              ) : null}
-            </section>
-          </>
-        )}
-      </main>
-    </PageLayout>
+      <PageLayout>
+        <PageNav title="Post" />
+        <main className="">
+          {isLoading ? (
+            <CircleLoader className="pt-10" />
+          ) : post ? (
+            <>
+              <Post post={post} />
+              <section className="px-3 pb-10 mb-20 border-opacity-80">
+                <CommentReplyInput isReply={false} postId={post.id} />
+                {isLoadingComments ? (
+                  <CircleLoader />
+                ) : isErrorComments ? (
+                  <div>Something went wrong</div>
+                ) : (
+                  <div>
+                    {commentData
+                      ? commentData.pages.map((page: any) => (
+                          <React.Fragment key={page.nextCursor || 'lastPage'}>
+                            {page.comment.map((comment: any) => (
+                              <Comment key={comment.id} comment={comment} />
+                            ))}
+                          </React.Fragment>
+                        ))
+                      : null}
+                  </div>
+                )}
+                {hasNextPage ? (
+                  <Button
+                    disabled={isFetchingNextPage}
+                    variant="solid"
+                    colorScheme="gray"
+                    onClick={handleClickMoreComments}
+                  >
+                    {isFetchingNextPage ? 'loading more comments..' : 'show more comments'}
+                  </Button>
+                ) : null}
+              </section>
+            </>
+          ) : null}
+        </main>
+      </PageLayout>
+    </>
   )
 }
 
