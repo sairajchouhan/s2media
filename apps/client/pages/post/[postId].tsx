@@ -1,8 +1,8 @@
 import type { AxiosError } from 'axios'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import React from 'react'
-import { useInfiniteQuery, useQuery } from 'react-query'
+import React, { useEffect } from 'react'
+import { useInfiniteQuery, useQuery, useQueryClient } from 'react-query'
 import { Button } from '../../components/atoms/Button'
 import { CircleLoader } from '../../components/atoms/CircleLoader'
 import { Comment, CommentReplyInput } from '../../components/molecules/Comment'
@@ -15,6 +15,7 @@ import { PostWithBaseUser } from '../../types/post'
 import { GET_COMMENTS_FOR_POST, GET_ONE_POST } from '../../utils/querykeysAndPaths'
 
 const EachPost = () => {
+  const queryClient = useQueryClient()
   const router = useRouter()
   const params = router.query
   const { getIdToken } = useAuth()
@@ -67,6 +68,12 @@ const EachPost = () => {
       },
     }
   )
+
+  useEffect(() => {
+    return () => {
+      queryClient.removeQueries(GET_ONE_POST.queryKey(params.postId as string))
+    }
+  }, [params.postId, queryClient])
 
   const handleClickMoreComments = () => {
     fetchNextPage()

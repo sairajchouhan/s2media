@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import React, { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
-import { useInfiniteQuery } from 'react-query'
+import { useInfiniteQuery, useQueryClient } from 'react-query'
 import { CircleLoader } from '../../components/atoms/CircleLoader'
 import { PageLayout } from '../../components/molecules/Page'
 import { Post } from '../../components/organisms/Post'
@@ -12,6 +12,7 @@ import { GET_POSTS_FOR_HOME } from '../../utils/querykeysAndPaths'
 
 const Home = () => {
   const { ref, inView } = useInView()
+  const queryClient = useQueryClient()
   const { getIdToken } = useAuth()
 
   const {
@@ -41,10 +42,17 @@ const Home = () => {
   )
 
   useEffect(() => {
-    if (inView && hasNextPage) {
+    return () => {
+      queryClient.removeQueries(GET_POSTS_FOR_HOME.queryKey())
+    }
+  }, [queryClient])
+
+  useEffect(() => {
+    if (posts && inView && hasNextPage) {
+      console.log('fetching nextpage')
       fetchNextPage()
     }
-  }, [fetchNextPage, hasNextPage, inView])
+  }, [fetchNextPage, hasNextPage, inView, posts])
 
   if (isError) return <p>Error!</p>
 
@@ -54,15 +62,15 @@ const Home = () => {
         <title>Home / S2Media</title>
       </Head>
       <PageLayout>
-        {/* <Stories /> */}
         <main>
           {isLoading ? (
             <CircleLoader className="pt-10" />
           ) : posts ? (
             posts.pages.map((page: any) => (
-              <React.Fragment key={page.nextCursor || 'undefined'}>
+              <React.Fragment key={page.nextCursor || 'HomePostsUndefined'}>
                 {page.posts.map((post: PostWithBaseUser) => (
                   <React.Fragment key={post.id}>
+                    {console.log('yai')}
                     <Post post={post} />
                   </React.Fragment>
                 ))}
@@ -73,6 +81,8 @@ const Home = () => {
             intersection observer marker
           </span>
           {isFetchingNextPage ? <CircleLoader className="pb-10" /> : null}
+
+          {/* <Post post={posts?.pages[0]?.posts[0]} /> */}
         </main>
       </PageLayout>
     </>

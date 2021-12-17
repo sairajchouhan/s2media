@@ -18,6 +18,7 @@ type AuthContextType = {
   oAuthLogin: (provider: string) => Promise<any>
   getIdToken: () => Promise<string | undefined>
   rqUser: any
+  refetchRqUser: any
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType)
@@ -76,7 +77,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     return () => unsub()
   }, [router])
 
-  const { data } = useQuery(
+  const { data, refetch } = useQuery(
     GET_PROFILE_USER.queryKey(user?.username as string),
     async () => {
       const { data } = await axios.get(GET_PROFILE_USER.path(user?.username as string), {
@@ -128,6 +129,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     oAuthLogin,
     getIdToken,
     rqUser: data?.user,
+    refetchRqUser: refetch,
   }
 
   return (

@@ -11,8 +11,8 @@ export interface PostFootInterface {
 }
 
 export const PostFoot = ({ post }: PostFootInterface) => {
-  const { rqUser, getIdToken } = useAuth()
   const router = useRouter()
+  const { rqUser, getIdToken, refetchRqUser } = useAuth()
   const [likeCount, setLikeCount] = useState<number>(post.like.length)
   const [userLiked, setUserLiked] = useState<boolean>(
     post.like.some((like: any) => like.userId === rqUser?.uid)
@@ -21,6 +21,19 @@ export const PostFoot = ({ post }: PostFootInterface) => {
   const [userSaved, setUserSaved] = useState<boolean>(
     rqUser.save.some((save: any) => save.postId === post.id)
   )
+
+  // const memoLikeCount = useMemo(() => {
+  //   return post.like.length
+  // }, [post])
+
+  // const memoUserLiked = useMemo(() => {
+  //   return post.like.some((like: any) => like.userId === rqUser?.uid)
+  // }, [post, rqUser])
+
+  if (post.caption === 'asfd') {
+    // console.log(memoLikeCount)
+    // console.log(memoUserLiked)
+  }
 
   if (!rqUser) return null
 
@@ -69,6 +82,7 @@ export const PostFoot = ({ post }: PostFootInterface) => {
           },
         }
       )
+      refetchRqUser()
     } catch (err) {
       setUserSaved((state) => !state)
       console.error(err)
