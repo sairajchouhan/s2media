@@ -15,6 +15,9 @@ import { DeleteIcon } from '../../icons/DeleteIcon'
 import { Menu } from '../Menu'
 import { Model } from '../Model'
 import { ModelFoot } from '../Model/model-foot'
+import { useQueryClient } from 'react-query'
+import { useRouter } from 'next/router'
+import { GET_POSTS_FOR_HOME, GET_PROFILE_USER_POSTS } from '../../../utils/querykeysAndPaths'
 
 export interface PostHeadProps {
   icon: LeftNavIconComp
@@ -22,6 +25,8 @@ export interface PostHeadProps {
 }
 
 export const PostHead = ({ post: { user, id, createdAt }, icon }: PostHeadProps) => {
+  const queryClient = useQueryClient()
+  const { pathname, query } = useRouter()
   const toast = useToast()
   const { rqUser: authUser, getIdToken } = useAuth()
   const cancelRef = useRef<HTMLButtonElement | null>(null)
@@ -38,9 +43,16 @@ export const PostHead = ({ post: { user, id, createdAt }, icon }: PostHeadProps)
       return res.data
     },
     {
-      onSuccess: (_data) => {
+      onSuccess: async (_data) => {
         setOpen(false)
         toast({ type: 'success', message: 'Post deleted successfully' })
+        if (pathname.startsWith('/profile')) {
+          const queryKey = GET_PROFILE_USER_POSTS.queryKey((query as any).index[0])
+          await queryClient.invalidateQueries(queryKey)
+        }
+        if (pathname.startsWith('/home')) {
+          await queryClient.invalidateQueries(GET_POSTS_FOR_HOME.queryKey())
+        }
       },
       onError: (_err) => {
         toast({ type: 'error', message: 'Something went wrong :( Try again' })
@@ -96,7 +108,9 @@ export const PostHead = ({ post: { user, id, createdAt }, icon }: PostHeadProps)
                 Delete
               </Menu.Item>
             ) : (
-              <Menu.Item>Report</Menu.Item>
+              <Menu.Item onClick={() => toast({ message: 'Post Repoted', type: 'success' })}>
+                Report
+              </Menu.Item>
             )}
           </Menu>
         </div>
