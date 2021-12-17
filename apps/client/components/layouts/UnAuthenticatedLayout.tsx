@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import { useAuth } from '../../context/authContext'
 import Nav from '../organisms/Nav'
+import { Footer } from '../molecules/Footer'
 
 const UnAuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   const { rqUser } = useAuth()
@@ -22,6 +23,7 @@ const UnAuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
             <Nav />
           </header>
           <section className="container w-5/6 mx-auto">{children}</section>
+          <Footer />
         </>
       ) : null}
     </>
