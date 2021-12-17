@@ -28,6 +28,7 @@ export interface BaseUser {
 
 export interface AuthUser extends BaseUser {
   idToken: string
+  isNewSignup: boolean
 }
 
 export interface ProfileUser extends BaseUser {}

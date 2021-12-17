@@ -10,7 +10,7 @@ import Link from 'next/link'
 import { internet } from 'faker'
 
 const Signup = () => {
-  const { signup, oAuthLogin } = useAuth()
+  const { signup, oAuthLogin, loading: authLoading } = useAuth()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState({ isError: false, message: '' })
   const [data, setData] = useState({
@@ -103,7 +103,12 @@ const Signup = () => {
             />
           </div>
           <div className="mt-2"></div>
-          <Button onClick={handleSignup} loading={loading} className="" colorScheme="indigo">
+          <Button
+            onClick={handleSignup}
+            loading={loading || authLoading}
+            className=""
+            colorScheme="indigo"
+          >
             Submit
           </Button>
           <div className="my-3"></div>

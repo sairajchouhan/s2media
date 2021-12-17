@@ -109,7 +109,7 @@ const genNotitification = (notificationObj: Notification) => {
         <p>
           Welcome{' '}
           <span className="font-semibold text-indigo-500">
-            {notificationObj.meta.user.profile.displayName ?? notificationObj.meta.user.username}
+            {notificationObj.meta.user?.profile?.displayName ?? notificationObj.meta.user.username}
           </span>{' '}
           to S2Media I am glad you are here {'🥳 🎉 '}
         </p>
@@ -154,12 +154,8 @@ export const NotificationComp = ({ notification }: INotification) => {
   }
 
   return (
-    <Link href={href}>
-      <a
-        onClick={() =>
-          notification.type !== 'user_sign_up' ? markNotificationRead(notification) : {}
-        }
-      >
+    <Link href={notification.type === 'user_sign_up' ? '' : href}>
+      <a onClick={() => markNotificationRead(notification)}>
         <div
           className={`p-3 cursor-pointer border-b border-opacity-80 ${
             !notification.isRead ? 'bg-blue-50' : ''

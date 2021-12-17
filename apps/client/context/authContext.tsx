@@ -19,6 +19,7 @@ type AuthContextType = {
   getIdToken: () => Promise<string | undefined>
   rqUser: any
   refetchRqUser: any
+  loading: boolean
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType)
@@ -26,10 +27,11 @@ export const useAuth = () => useContext(AuthContext)
 
 const fromPaths = ['/login', '/signup']
 
-const formatUser = (user: BaseUser, idToken: string): AuthUser => {
+const formatUser = (user: BaseUser, idToken: string, isNewSignup: boolean): AuthUser => {
   return {
     ...user,
     idToken,
+    isNewSignup,
   }
 }
 
@@ -52,12 +54,9 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
                 },
               })
               const {
-                data: { userFullDetials },
+                data: { userFullDetials, isNewSignup },
               } = userResp
-              setUser(formatUser(userFullDetials, idToken))
-              if (fromPaths.includes(router.pathname)) {
-                router.push('/home')
-              }
+              setUser(formatUser(userFullDetials, idToken, isNewSignup))
             } catch (err) {
               console.log(err)
               setUser(null)
@@ -91,6 +90,12 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
       enabled: !!user,
       onSuccess: () => {
         setLoading(false)
+        if (user?.isNewSignup) {
+          router.push('/home')
+        }
+        if (fromPaths.includes('/login') && !user?.isNewSignup) {
+          router.push('/home')
+        }
       },
       onError: () => {
         toast({ message: 'Somethig went wrong', type: 'error' })
@@ -130,6 +135,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     getIdToken,
     rqUser: data?.user,
     refetchRqUser: refetch,
+    loading,
   }
 
   return (

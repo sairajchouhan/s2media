@@ -49,7 +49,6 @@ const Home = () => {
 
   useEffect(() => {
     if (posts && inView && hasNextPage) {
-      console.log('fetching nextpage')
       fetchNextPage()
     }
   }, [fetchNextPage, hasNextPage, inView, posts])
@@ -70,7 +69,6 @@ const Home = () => {
               <React.Fragment key={page.nextCursor || 'HomePostsUndefined'}>
                 {page.posts.map((post: PostWithBaseUser) => (
                   <React.Fragment key={post.id}>
-                    {console.log('yai')}
                     <Post post={post} />
                   </React.Fragment>
                 ))}

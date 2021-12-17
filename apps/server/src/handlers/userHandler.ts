@@ -4,7 +4,6 @@ import prisma from '../../prisma'
 import { cloudinaryUserProfileImageUpload } from '../config/cloudinary'
 import { formatBufferTo64 } from '../config/data-uri'
 import { get4RandomChars } from '../utils'
-import fbAdmin from 'firebase-admin'
 import { redis } from '../config/redis'
 import { createNotification, storeAllCombinationsOfUsername } from '../utils/redis'
 import { v4 as uuid } from 'uuid'
@@ -32,6 +31,7 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
     res.status(200).json({
       redirect: '/home',
       userFullDetials: JSON.parse(cacheUser),
+      isNewSignup: false,
     })
     return
   }
@@ -51,44 +51,18 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
     },
   })
 
-  const isUserInFirebase = await fbAdmin.auth().getUser(req.user.uid)
-
-  if (isUserInFirebase && !user) {
-    const username = req.user.email.split('@')[0]
-
-    user = await prisma.user.create({
-      data: {
-        uid: req.user.uid,
-        email: req.user.email,
-        username: `${username}_${get4RandomChars()}`,
-        avatar: req.user.picture ?? null,
-        provider: req.user.firebase.sign_in_provider,
-        profile: {
-          create: {
-            bio: null,
-            displayName: username,
-          },
-        },
-      },
-    })
-    res.status(201).json({
+  if (user) {
+    console.log(400000)
+    res.status(200).json({
       redirect: '/home',
       userFullDetials: user,
+      isNewSignup: false,
     })
-
-    await redis.set(`user:${user.username.toUpperCase()}`, JSON.stringify(user))
-    await storeAllCombinationsOfUsername(user.username)
-
-    return
-  }
-
-  if (!isUserInFirebase && user) {
-    // TODO: delete the user and all this belongings
   }
 
   // if user signs up with google eventhough he has email/pass account
   // already in firebase then this will update the user's avatar
-  if (user.provider !== req.user.firebase.sign_in_provider) {
+  if (user && user.provider !== req.user.firebase.sign_in_provider) {
     const updatedUser = await prisma.user.update({
       where: {
         email: req.user.email,
@@ -98,16 +72,43 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
         avatar: req.user.picture ?? null,
       },
     })
-    res.status(201).json({ redirect: '/home', user: updatedUser })
+    console.log(200000)
+    res.status(201).json({ redirect: '/home', user: updatedUser, isNewSignup: false })
     await redis.set(`user:${user.username.toUpperCase()}`, JSON.stringify(user))
     await storeAllCombinationsOfUsername(user.username)
 
     return
   }
 
+  const username = req.user.email.split('@')[0]
+
+  user = await prisma.user.create({
+    data: {
+      uid: req.user.uid,
+      email: req.user.email,
+      username: `${username}_${get4RandomChars()}`,
+      avatar: req.user.picture ?? null,
+      provider: req.user.firebase.sign_in_provider,
+      profile: {
+        create: {
+          bio: null,
+          displayName: username,
+        },
+      },
+    },
+    include: {
+      profile: {
+        select: {
+          displayName: true,
+        },
+      },
+    },
+  })
+
   res.status(200).json({
     redirect: '/home',
     userFullDetials: user,
+    isNewSignup: true,
   })
 
   await redis.setex(`user:session:${req.user.uid}`, ttl, JSON.stringify(user))
