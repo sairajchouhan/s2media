@@ -3,8 +3,10 @@ import { Popover } from '@headlessui/react'
 import axios from 'axios'
 import { Avatar } from '../../atoms/Avatar'
 import { SEARCH_URL } from '../../../config/axios'
+import { useRouter } from 'next/router'
 
 export const Search = () => {
+  const router = useRouter()
   const inputRef = useRef<null | HTMLInputElement>(null)
   // const [isOpen, setIsOpen] = useState(false)
   const [q, setQ] = useState('')
@@ -37,7 +39,7 @@ export const Search = () => {
   return (
     <div className="w-full">
       <Popover className="relative">
-        {({}) => (
+        {({ close }) => (
           <>
             {/* {open ? stateChanger(true) : stateChanger(false)} */}
             <Popover.Button as="div">
@@ -65,7 +67,14 @@ export const Search = () => {
                   <div>
                     {results.length > 0 ? (
                       results.map((result) => (
-                        <div key={result.uid} className="flex items-center py-2">
+                        <div
+                          onClick={() => {
+                            router.push(`/profile/${result.username}`)
+                            close()
+                          }}
+                          key={result.uid}
+                          className="flex items-center py-2"
+                        >
                           <Avatar src={result.avatar ?? null} w="w-10" h="h-10" />
                           <div className="flex flex-col ml-4">
                             <div className="text-base font-bold ml-0.5 text-gray-800 cursor-pointer">
