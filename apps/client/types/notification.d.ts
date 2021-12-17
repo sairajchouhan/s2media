@@ -5,6 +5,7 @@ export type NotificationType =
   | 'reply_to_comment'
   | 'comment_on_post'
   | 'follow'
+  | 'user_sign_up'
 
 export interface Notification {
   id?: string
