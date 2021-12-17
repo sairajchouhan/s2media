@@ -4,14 +4,7 @@ import { useAuth } from '../../context/authContext'
 import { useSocket } from '../../context/socketContext'
 import { paths } from '../../utils/paths'
 import { LeftNavPostBtn } from '../atoms/LeftNavPostBtn/LeftNavPostBtn'
-import {
-  HomeIcon,
-  LogoutIcon,
-  MessageIcon,
-  NotificationIcon,
-  ProfileIcon,
-  SettingsIcon,
-} from '../icons'
+import { HomeIcon, LogoutIcon, NotificationIcon, ProfileIcon, SettingsIcon } from '../icons'
 import { LeftNavBrand, LeftNavLink, LeftNavUser } from '../molecules/LeftNav'
 
 const LeftNav = () => {
@@ -50,13 +43,13 @@ const LeftNav = () => {
         <LeftNavLink active={isActive(paths.home)} icon={HomeIcon} onClick={() => push(paths.home)}>
           Home
         </LeftNavLink>
-        <LeftNavLink
+        {/* <LeftNavLink
           active={pathname === paths.messages}
           icon={MessageIcon}
           onClick={() => push(paths.messages)}
         >
           Messages
-        </LeftNavLink>
+        </LeftNavLink> */}
         <LeftNavLink
           active={pathname.split('/').includes('profile')}
           icon={ProfileIcon}

@@ -37,6 +37,7 @@ export const ProfileCardAction = ({
     },
     {
       onMutate: () => {
+        setUserFollowed((prev) => !prev)
         const currentUserFollowed = userFollowed
         return { currentUserFollowed }
       },
@@ -46,12 +47,11 @@ export const ProfileCardAction = ({
           setUserFollowed(context?.currentUserFollowed)
         }
       },
-      onSuccess: async (data, vars, context) => {
+      onSuccess: async (data) => {
         if (data) {
           const res = await queryClient.invalidateQueries(
             GET_PROFILE_USER.queryKey((router as any).query.index[0])
           )
-          setUserFollowed(!context?.currentUserFollowed)
           console.log(res)
         }
       },
