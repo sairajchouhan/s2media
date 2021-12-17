@@ -59,7 +59,14 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
     <>
       <ToastContext.Provider value={toast}>
         <Transition appear show={isOpen} as={React.Fragment}>
-          <div className="absolute bottom-0 z-50 transform -translate-x-1/2 left-1/2">
+          <div
+            className="absolute bottom-0 z-50"
+            style={{
+              left: '50%',
+              marginBottom: '1rem',
+              transform: 'translateX(-50%)',
+            }}
+          >
             <div className="flex items-end justify-center px-4 text-center">
               <Transition.Child
                 as={React.Fragment}
@@ -71,7 +78,7 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
                 leaveTo="opacity-0 scale-95"
               >
                 <div
-                  className={`inline-block w-full max-w-md px-4 py-3 mb-6 overflow-hidden text-left align-middle transition-all transform  rounded-md shadow-xl`}
+                  className={`inline-block w-full max-w-md px-4 py-3 overflow-hidden text-left align-middle transition-all transform  rounded-md shadow-xl`}
                   style={{ backgroundColor: getToastBg(toastInfo.type) }}
                 >
                   <div className="flex items-center ">
