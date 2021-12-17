@@ -50,7 +50,7 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
     setIsOpen(true)
     setTimeout(async () => {
       setIsOpen(false)
-      await new Promise((res) => setTimeout(res, 100))
+      await new Promise((res) => setTimeout(res, 250))
       setToastInfo((info) => ({ ...info, message: '' }))
     }, duration)
   }
@@ -59,8 +59,8 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
     <>
       <ToastContext.Provider value={toast}>
         <Transition appear show={isOpen} as={React.Fragment}>
-          <div className="absolute inset-0 z-10 overflow-y-auto">
-            <div className="flex items-end justify-center min-h-screen px-4 text-center">
+          <div className="absolute bottom-0 z-50 transform -translate-x-1/2 left-1/2">
+            <div className="flex items-end justify-center px-4 text-center">
               <Transition.Child
                 as={React.Fragment}
                 enter="ease-out duration-300"
