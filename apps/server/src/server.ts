@@ -38,6 +38,7 @@ import { init } from './utils/initialize'
   app.use('/api/v1/post/reply/like', routes.replyLikeRoutes)
   app.use('/api/v1/settings/profileType', routes.settingsRoutes)
   app.use('/api/v1/notification', routes.notificationRoutes)
+  app.use('/api/v1/recommendation', routes.recommendationRoutes)
 
   app.use(errorMiddleware)
 
