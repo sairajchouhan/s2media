@@ -108,7 +108,9 @@ export const PostHead = ({ post: { user, id, createdAt }, icon }: PostHeadProps)
                 Delete
               </Menu.Item>
             ) : (
-              <Menu.Item onClick={() => toast({ message: 'Post Repoted', type: 'success' })}>
+              <Menu.Item
+                onClick={() => toast({ message: 'Post reported successfully', type: 'success' })}
+              >
                 Report
               </Menu.Item>
             )}

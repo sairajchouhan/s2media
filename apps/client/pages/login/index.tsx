@@ -6,6 +6,7 @@ import { Input } from '../../components/atoms/Input'
 import UnAuthenticatedLayout from '../../components/layouts/UnAuthenticatedLayout'
 import { useAuth } from '../../context/authContext'
 import { providerNames } from '../../utils/oAuthProviders'
+import Link from 'next/link'
 
 const Login = () => {
   const { login, oAuthLogin } = useAuth()
@@ -57,7 +58,7 @@ const Login = () => {
         <title>Login / S2Media</title>
       </Head>
       <div className="flex flex-col items-center" style={{ height: 'calc(100vh - 58px)' }}>
-        <h1 className="my-4 text-5xl">Login</h1>
+        <h1 className="my-8 font-semibold text-gray-700 text-7xl">Login</h1>
 
         <div className="flex flex-col w-1/3">
           {error.isError ? (
@@ -96,6 +97,12 @@ const Login = () => {
               <p className="ml-3">Login With Google</p>
             </div>
           </Button>
+          <div className="flex justify-center mt-4 text-sm text-gray-500">
+            <p className="mr-1">Dont have an account? </p>
+            <Link href="/signup">
+              <a className="font-medium hover:underline">Signup</a>
+            </Link>
+          </div>
         </div>
       </div>
     </UnAuthenticatedLayout>

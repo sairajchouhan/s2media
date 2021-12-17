@@ -6,6 +6,8 @@ import { Input } from '../../components/atoms/Input/Input'
 import UnAuthenticatedLayout from '../../components/layouts/UnAuthenticatedLayout'
 import { useAuth } from '../../context/authContext'
 import { providerNames } from '../../utils/oAuthProviders'
+import Link from 'next/link'
+import { internet } from 'faker'
 
 const Signup = () => {
   const { signup, oAuthLogin } = useAuth()
@@ -48,14 +50,33 @@ const Signup = () => {
     await oAuthLogin(providerName)
   }
 
+  const generateRandomCredentials = () => {
+    console.log('double clicked')
+    const email = internet.email()
+    const password = internet.password()
+    setData({
+      email,
+      password,
+    })
+  }
+
   return (
     <UnAuthenticatedLayout>
       <Head>
         <title>SignUp / S2Media</title>
       </Head>
       <div className="flex flex-col items-center" style={{ height: 'calc(100vh - 58px)' }}>
-        <h1 className="my-4 text-5xl">Signup</h1>
-        <div className="flex flex-col w-1/3">
+        <h1 className="mt-8 font-semibold text-gray-700 text-7xl">Signup</h1>
+        <div className="my-8">
+          <button
+            onDoubleClick={generateRandomCredentials}
+            className="px-2 py-1 bg-gray-200 rounded cursor-pointer hover:underline"
+          >
+            Double Click me
+          </button>{' '}
+          to Generate random credentails
+        </div>
+        <div className="flex flex-col max-w-full w-96">
           {error.isError ? (
             <div className="p-3 my-3 text-sm text-white bg-red-500 rounded-md">{error.message}</div>
           ) : null}
@@ -82,7 +103,7 @@ const Signup = () => {
             />
           </div>
           <div className="mt-2"></div>
-          <Button onClick={handleSignup} loading={loading} className="py-2" colorScheme="indigo">
+          <Button onClick={handleSignup} loading={loading} className="" colorScheme="indigo">
             Submit
           </Button>
           <div className="my-3"></div>
@@ -92,6 +113,12 @@ const Signup = () => {
               <p className="ml-3">Signup With Google</p>
             </div>
           </Button>
+          <div className="flex justify-center mt-4 text-sm text-gray-500">
+            <p className="mr-1">Already have an account? </p>
+            <Link href="/login">
+              <a className="font-medium hover:underline">Login</a>
+            </Link>
+          </div>
         </div>
       </div>
     </UnAuthenticatedLayout>
