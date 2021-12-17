@@ -27,7 +27,6 @@ const EachPost = () => {
   } = useQuery<PostWithBaseUser, AxiosError>(
     GET_ONE_POST.queryKey(params.postId as string),
     async () => {
-      await new Promise((res) => setTimeout(res, 4000))
       const idToken = await getIdToken()
       const { data } = await axios.get(GET_ONE_POST.path(params.postId as string), {
         headers: {

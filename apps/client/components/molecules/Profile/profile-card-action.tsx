@@ -1,20 +1,26 @@
-import { useEffect, useState } from 'react'
-import { useMutation } from 'react-query'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { useMutation, useQueryClient } from 'react-query'
 import { axios } from '../../../config/axios'
 import { useAuth } from '../../../context/authContext'
 import { BaseUser } from '../../../types'
+import { GET_PROFILE_USER } from '../../../utils/querykeysAndPaths'
 import { Button } from '../../atoms/Button'
 
-export const ProfileCardAction = ({ profileUser, toggleOpen }: { profileUser: BaseUser; toggleOpen: () => void }) => {
+export const ProfileCardAction = ({
+  profileUser,
+  toggleOpen,
+}: {
+  profileUser: BaseUser
+  toggleOpen: () => void
+}) => {
   const { rqUser, getIdToken } = useAuth()
-  const [userFollowed, setUserFollowed] = useState<boolean | undefined>()
-
-  useEffect(() => {
-    if (rqUser && profileUser) {
-      const value = rqUser?.following.filter((following: any) => following.followedId === profileUser.uid).length > 0
-      setUserFollowed(value)
-    }
-  }, [profileUser, rqUser])
+  const router = useRouter()
+  const queryClient = useQueryClient()
+  const [userFollowed, setUserFollowed] = useState<boolean | undefined>(() => {
+    if (!rqUser || !profileUser) return
+    return rqUser?.following.some((following: any) => following.followedId === profileUser.uid)
+  })
 
   const followUserMutation = useMutation(
     async (toBeFollowedUserId: string) => {
@@ -34,15 +40,19 @@ export const ProfileCardAction = ({ profileUser, toggleOpen }: { profileUser: Ba
         const currentUserFollowed = userFollowed
         return { currentUserFollowed }
       },
-      onError: (err, vars, context) => {
+      onError: (err, _vars, context) => {
         context?.currentUserFollowed
         if (err) {
           setUserFollowed(context?.currentUserFollowed)
         }
       },
-      onSuccess: (data, vars, context) => {
+      onSuccess: async (data, vars, context) => {
         if (data) {
+          const res = await queryClient.invalidateQueries(
+            GET_PROFILE_USER.queryKey((router as any).query.index[0])
+          )
           setUserFollowed(!context?.currentUserFollowed)
+          console.log(res)
         }
       },
     }
