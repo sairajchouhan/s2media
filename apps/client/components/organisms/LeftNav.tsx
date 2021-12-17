@@ -20,8 +20,6 @@ const LeftNav = () => {
   const { rqUser, logout, getIdToken } = useAuth()
   const notificationsData = useSocket()
 
-  console.log(notificationsData)
-
   const handleLogout = async () => {
     const token = await getIdToken()
     await logout()

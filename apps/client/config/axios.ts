@@ -18,5 +18,3 @@ export const SEARCH_URL =
 export const axios = axiosMain.create({
   baseURL: SERVER_URL,
 })
-
-console.log(SERVER_URL, SERVER_BASE_URL, SEARCH_URL)

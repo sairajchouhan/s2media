@@ -10,7 +10,13 @@ import '../styles/globals.css'
 
 const noAuthRequiredPages = ['/login', '/signup', '/']
 
-const queryClient = new QueryClient({})
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: process.env.NODE_ENV === 'production',
+    },
+  },
+})
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter()

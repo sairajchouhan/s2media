@@ -11,7 +11,6 @@ export const Search = () => {
   // const [isOpen, setIsOpen] = useState(false)
   const [q, setQ] = useState('')
   const [results, setResults] = useState<any[]>([])
-  console.log(results)
 
   // useEffect(() => {
   //   if (!isOpen) {
