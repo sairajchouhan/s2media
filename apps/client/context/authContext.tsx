@@ -91,10 +91,12 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
       onSuccess: () => {
         setLoading(false)
         if (user?.isNewSignup) {
+          console.log('redirecting to home from 1')
           router.push('/home')
-        }
-        if (fromPaths.includes('/login') && !user?.isNewSignup) {
+        } else if (router.pathname === '/login') {
+          console.log('redirecting to home from 2')
           router.push('/home')
+        } else {
         }
       },
       onError: () => {
