@@ -4,12 +4,14 @@ export type NotificationType =
   | 'like_reply'
   | 'reply_to_comment'
   | 'comment_on_post'
+  | 'follow'
+
 export interface Notification {
   id?: string
   type: NotificationType
   userIdWhoReceivesNotification: string
   userWhoCausedNotification: any
-  post_id: string
+  post_id?: string
   comment_id?: string
   reply_id?: string
   meta?: any

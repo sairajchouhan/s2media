@@ -94,6 +94,16 @@ const genNotitification = (notificationObj: Notification) => {
         </p>
       )
       break
+    case 'follow':
+      notification.jsx = (
+        <p>
+          <span className="font-semibold text-indigo-500">
+            @{notificationObj.userWhoCausedNotification.username}
+          </span>{' '}
+          started following you{' '}
+        </p>
+      )
+      break
   }
   return notification
 }
@@ -102,13 +112,16 @@ interface INotification {
   notification: Notification
 }
 
-const genNotificationHref = (postId: string) => {
-  return `/post/${postId}`
+const genNotificationHref = (noti: Notification) => {
+  if (noti.type === 'follow') {
+    return `/profile/${noti.userWhoCausedNotification.username}`
+  }
+  return `/post/${noti.post_id}`
 }
 
 export const NotificationComp = ({ notification }: INotification) => {
   const { getIdToken } = useAuth()
-  const [href] = useState(() => genNotificationHref(notification.post_id))
+  const [href] = useState(() => genNotificationHref(notification))
   const [notiJsx] = useState(() => genNotitification(notification).jsx)
 
   const markNotificationRead = async (notification: Notification) => {

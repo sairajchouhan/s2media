@@ -14,10 +14,16 @@ export const Post = ({ post }: PostProps) => {
       <main className="pt-5 pb-3">
         {post.caption ? (
           <div className="">
-            <p className="items-end flex-1 text-lg font-normal leading-6 text-gray-900">{post.caption}</p>
+            <p className="items-end flex-1 text-lg font-normal leading-6 text-gray-900">
+              {post.caption}
+            </p>
           </div>
         ) : null}
-        {post.url ? <img src={post.url} alt={post.caption} /> : null}
+        {post.url ? (
+          <div className="mt-3 overflow-hidden rounded-md">
+            <img src={post.url} alt={post.caption} />
+          </div>
+        ) : null}
       </main>
       <PostFoot post={post} />
     </div>
