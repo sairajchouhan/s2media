@@ -4,7 +4,14 @@ import { useAuth } from '../../context/authContext'
 import { useSocket } from '../../context/socketContext'
 import { paths } from '../../utils/paths'
 import { LeftNavPostBtn } from '../atoms/LeftNavPostBtn/LeftNavPostBtn'
-import { HomeIcon, LogoutIcon, NotificationIcon, ProfileIcon, SettingsIcon } from '../icons'
+import {
+  HomeIcon,
+  LogoutIcon,
+  NotificationIcon,
+  ProfileIcon,
+  SettingsIcon,
+  SavedIcon,
+} from '../icons'
 import { LeftNavBrand, LeftNavLink, LeftNavUser } from '../molecules/LeftNav'
 
 const LeftNav = () => {
@@ -65,6 +72,14 @@ const LeftNav = () => {
           countValue={notificationsData?.newNotificationNumber}
         >
           Notifications
+        </LeftNavLink>
+
+        <LeftNavLink
+          active={pathname === paths.saved}
+          icon={SavedIcon}
+          onClick={() => push(paths.saved)}
+        >
+          Saved
         </LeftNavLink>
 
         <LeftNavLink

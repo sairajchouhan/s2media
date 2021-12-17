@@ -58,6 +58,7 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
       userFullDetials: user,
       isNewSignup: false,
     })
+    return
   }
 
   // if user signs up with google eventhough he has email/pass account
