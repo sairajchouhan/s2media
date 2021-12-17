@@ -1,6 +1,7 @@
 import { Switch } from '@headlessui/react'
 import Head from 'next/head'
 import { useState } from 'react'
+import { useQueryClient } from 'react-query'
 import { Button } from '../../components/atoms/Button'
 import { Model } from '../../components/molecules/Model/model'
 import { PageLayout } from '../../components/molecules/Page'
@@ -8,9 +9,10 @@ import { PageNav } from '../../components/molecules/Page/page-nav'
 import { axios } from '../../config/axios'
 import { useAuth } from '../../context/authContext'
 import { useToast } from '../../context/toastContext'
-import { CHANGE_USER_PROFILE_TYPE } from '../../utils/querykeysAndPaths'
+import { CHANGE_USER_PROFILE_TYPE, GET_PROFILE_USER } from '../../utils/querykeysAndPaths'
 
 const Settings = () => {
+  const queryClient = useQueryClient()
   const toast = useToast()
   const { rqUser, getIdToken } = useAuth()
   const [enabled, setEnabled] = useState(() => rqUser?.profileType === 'PRIVATE')
@@ -34,6 +36,7 @@ const Settings = () => {
           },
         }
       )
+      await queryClient.invalidateQueries(GET_PROFILE_USER.queryKey(rqUser.username))
       toast({
         type: 'success',
         message: `Profile type changed to ${enabled ? 'PRIVATE' : 'PUBLIC'}`,

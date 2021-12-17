@@ -22,21 +22,15 @@ const Profile = () => {
     data: userData,
     isLoading,
     isError,
-  } = useQuery(
-    GET_PROFILE_USER.queryKey((router as any).query.index[0]),
-    async ({ queryKey }) => {
-      const idToken = await getIdToken()
-      const { data } = await axios.get(GET_PROFILE_USER.path(queryKey[1]), {
-        headers: {
-          Authorization: `Bearer ${idToken}`,
-        },
-      })
-      return data
-    },
-    {
-      enabled: !!(router as any).query.index[0],
-    }
-  )
+  } = useQuery(GET_PROFILE_USER.queryKey((router as any).query.index[0]), async ({ queryKey }) => {
+    const idToken = await getIdToken()
+    const { data } = await axios.get(GET_PROFILE_USER.path(queryKey[1]), {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    })
+    return data
+  })
 
   console.log(userData)
 
@@ -96,7 +90,10 @@ const Profile = () => {
         <>
           <PageNav title="Profile" subtitle={`@${userData.user.username}`} />
           <main className="flex flex-col mt-4">
-            <ProfileCard profileUser={userData.user} canViewFullProfile={userData.canViewFullProfile} />
+            <ProfileCard
+              profileUser={userData.user}
+              canViewFullProfile={userData.canViewFullProfile}
+            />
             {userData.canViewFullProfile ? (
               <>
                 <ProfileNav active={active} username={userData.user.username} />
