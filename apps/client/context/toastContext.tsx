@@ -44,7 +44,7 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
     type: 'success',
   })
 
-  const toast = ({ duration = 3000, message, type }: ToastArgs) => {
+  const toast = ({ duration = 300000, message, type }: ToastArgs) => {
     if (message.trim() === '') return
     setToastInfo({ message, type })
     setIsOpen(true)
