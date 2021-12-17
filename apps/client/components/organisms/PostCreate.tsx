@@ -2,7 +2,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import { axios } from '../../config/axios'
 import { useAuth } from '../../context/authContext'
-import { CREATE_POST } from '../../utils/querykeysAndPaths'
+import { CREATE_POST, GET_POSTS_FOR_HOME } from '../../utils/querykeysAndPaths'
 import { AutoGrowTextArea } from '../atoms/AutoGrowTextArea'
 import { Avatar } from '../atoms/Avatar'
 import { Button } from '../atoms/Button'
@@ -11,12 +11,15 @@ import { CancenIcon } from '../icons/CancenIcon'
 import { Model } from '../molecules/Model'
 import { ModelBody } from '../molecules/Model/model-body'
 import { PhotographIcon } from '@heroicons/react/outline'
+import { useQueryClient } from 'react-query'
+
 export interface PostCreateInterface {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
+  const queryClient = useQueryClient()
   const { rqUser, getIdToken } = useAuth()
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [selectedFile, setSelectedFile] = useState<Blob | null>(null)
@@ -66,7 +69,7 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
     try {
       console.log(formData)
       setLoading((l) => !l)
-      const res = await axios.post(CREATE_POST.path, formData, {
+      await axios.post(CREATE_POST.path, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -74,9 +77,8 @@ export const PostCreate = ({ open, setOpen }: PostCreateInterface) => {
       setOpen((open) => !open)
       setSelectedFile(null)
       setPreviewUrl(null)
-      console.log(res)
+      await queryClient.invalidateQueries(GET_POSTS_FOR_HOME.queryKey())
     } catch (err) {
-      console.log('err ra babu')
       console.log(err)
     }
     setLoading((l) => !l)
