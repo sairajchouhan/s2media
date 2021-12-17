@@ -18,11 +18,11 @@ type ToastArgs = {
 const getToastBg = (type: 'success' | 'error') => {
   switch (type) {
     case 'success':
-      return 'bg-green-500'
+      return 'rgb(16, 185, 129)'
     case 'error':
-      return 'bg-red-500'
+      return 'rgb(239, 68, 68)'
     default:
-      return 'bg-green-500'
+      return 'rgb(16, 185, 129)'
   }
 }
 
@@ -71,9 +71,8 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
                 leaveTo="opacity-0 scale-95"
               >
                 <div
-                  className={`inline-block w-full max-w-md px-4 py-3 mb-6 overflow-hidden text-left align-middle transition-all transform  rounded-md shadow-xl ${getToastBg(
-                    toastInfo.type
-                  )}`}
+                  className={`inline-block w-full max-w-md px-4 py-3 mb-6 overflow-hidden text-left align-middle transition-all transform  rounded-md shadow-xl`}
+                  style={{ backgroundColor: getToastBg(toastInfo.type) }}
                 >
                   <div className="flex items-center ">
                     {getToastIcon(toastInfo.type)}

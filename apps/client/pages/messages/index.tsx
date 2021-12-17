@@ -17,7 +17,7 @@ const Messages = () => {
           onClick={() => {
             toast({
               message: 'test jest',
-              type: 'success',
+              type: 'error',
             })
           }}
         >
