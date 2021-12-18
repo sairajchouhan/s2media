@@ -247,10 +247,11 @@ export const getAllPostsOfUser = async (req: Request, res: Response) => {
 
   const where: Record<string, any> = {}
 
-  if (username) {
+  if (username && !likeBool && !saveBool) {
     where.user = {}
     where.user.username = username
   }
+
   if (likeBool) {
     where['like'] = {
       some: {
