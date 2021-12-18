@@ -5,6 +5,7 @@ import { useAuth } from '../../context/authContext'
 import { useToast } from '../../context/toastContext'
 import { useFileUpload } from '../../hooks/useFileUpload'
 import { AuthUser } from '../../types/user'
+import { Avatar } from '../atoms/Avatar'
 import { Button } from '../atoms/Button'
 import { Input } from '../atoms/Input'
 import { EditIcon } from '../icons'
@@ -73,7 +74,11 @@ export const EditProfile = ({ open, setOpen, profileUser }: EditProfileProps) =>
       })
       return toggleOpen()
     }
-    if (profile.name === profileUser.profile.displayName && profile.bio === profileUser.profile.bio && !selectedFile) {
+    if (
+      profile.name === profileUser.profile.displayName &&
+      profile.bio === profileUser.profile.bio &&
+      !selectedFile
+    ) {
       return toggleOpen()
     }
     profileUpdateMutation.mutate()
@@ -91,9 +96,19 @@ export const EditProfile = ({ open, setOpen, profileUser }: EditProfileProps) =>
           <div className="relative ">
             <div className="w-40 h-40 overflow-hidden rounded-full ">
               {previewUrl ? (
-                <img src={previewUrl} className="object-cover object-center w-full h-full" alt="preview url" />
+                <img
+                  src={previewUrl}
+                  className="object-cover object-center w-full h-full"
+                  alt="preview url"
+                />
+              ) : profileUser.avatar === null ? (
+                <Avatar w="full" h="full" />
               ) : (
-                <img src={profileUser.avatar as any} className="block w-full h-full" alt="user profile avatar" />
+                <img
+                  src={profileUser.avatar as any}
+                  className="block w-full h-full"
+                  alt="user profile avatar"
+                />
               )}
             </div>
             <div className="absolute bottom-2 right-2">
@@ -159,7 +174,11 @@ export const EditProfile = ({ open, setOpen, profileUser }: EditProfileProps) =>
           >
             Cancel
           </Button>
-          <Button loading={profileUpdateMutation.isLoading} colorScheme="indigo" onClick={handleUpdateProfile}>
+          <Button
+            loading={profileUpdateMutation.isLoading}
+            colorScheme="indigo"
+            onClick={handleUpdateProfile}
+          >
             Update
           </Button>
         </div>

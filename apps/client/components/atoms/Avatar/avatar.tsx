@@ -11,7 +11,11 @@ export const Avatar = ({ src = null, alt, w = 'w-6', h = 'h-6' }: AvatarProps) =
   if (src === null || !src) {
     return (
       <div className={`${w} ${h} `}>
-        <img src="/dummyUser.svg" className="block rounded-full" alt="Deafult User Profile" />
+        <img
+          src="/dummyUser.svg"
+          className="block w-full rounded-full"
+          alt="Deafult User Profile"
+        />
       </div>
     )
   }
