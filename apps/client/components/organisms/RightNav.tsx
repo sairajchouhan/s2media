@@ -13,7 +13,7 @@ const RightNav = () => {
     ['recommendations', 'follow'],
     async () => {
       const token = await getIdToken()
-      const res = await axios.get('/recommendation/follow', {
+      const res = await axios.get('/recommendation/new', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -32,12 +32,12 @@ const RightNav = () => {
       </div>
       <div className="w-full ">
         <section className="p-4 mt-4 bg-gray-100 bg-opacity-50 rounded-lg">
-          <h2 className="mb-2 -mt-2 text-xl font-bold text-gray-700">Follow</h2>
+          <h2 className="mb-2 -mt-2 text-xl font-bold text-gray-700">New to S2Media</h2>
           <main className="flex flex-col ">
             {isLoading ? (
               <CircleLoader />
             ) : (
-              data.users.map((user: any) => <FollowCard user={user} key={user.uid} />)
+              data.users.map((user: any) => <NewSignupCard user={user} key={user.uid} />)
             )}
           </main>
         </section>
@@ -61,7 +61,7 @@ const RightNav = () => {
   )
 }
 
-const FollowCard = ({ user }: any) => {
+const NewSignupCard = ({ user }: any) => {
   const router = useRouter()
   return (
     <div>

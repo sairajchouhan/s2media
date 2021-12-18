@@ -19,3 +19,25 @@ export const getFollowRecommendations = async (_req: Request, res: Response) => 
 
   res.json({ users: randomUsers })
 }
+
+export const recentSignUpUsers = async (req: Request, res: Response) => {
+  const users = await prisma.user.findMany({
+    take: 6,
+    orderBy: {
+      createdAt: 'desc',
+    },
+    include: {
+      profile: {
+        select: {
+          displayName: true,
+        },
+      },
+    },
+    where: {
+      NOT: {
+        email: req.user.email,
+      },
+    },
+  })
+  res.json({ users })
+}
