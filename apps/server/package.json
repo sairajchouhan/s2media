@@ -15,7 +15,7 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate:deploy": "prisma migrate deploy",
     "prisma:migrate:dev": "prisma migrate dev",
-    "docker:start": "yarn prisma generate && yarn dev"
+    "docker:start": "yarn prisma:migrate:dev && yarn prisma:generate && yarn dev"
   },
   "keywords": [
     "express",

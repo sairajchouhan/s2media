@@ -56,6 +56,13 @@ export const allPosts = async (req: Request, res: Response) => {
         },
       },
     },
+    where: {
+      user: {
+        NOT: {
+          profileType: 'PRIVATE',
+        },
+      },
+    },
     skip: cursor ? 1 : 0,
     cursor: cursorObj,
     take: postCount,
