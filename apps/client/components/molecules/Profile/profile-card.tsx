@@ -1,6 +1,6 @@
-import Image from 'next/image'
 import { useState } from 'react'
 import { AuthUser } from '../../../types/'
+import { Avatar } from '../../atoms/Avatar'
 import { EditProfile } from '../../organisms/EditProfile'
 import { ProfileCardAction } from './profile-card-action'
 import { ProfileCardStats } from './profile-card-stats'
@@ -20,15 +20,7 @@ export const ProfileCard = ({ profileUser, canViewFullProfile }: ProfileCardProp
   return (
     <div className="flex flex-wrap px-2 py-2">
       <div className="flex-shrink block mx-auto">
-        <Image
-          src={profileUser.avatar ?? '/dummyUser.svg'}
-          alt={profileUser.username}
-          className="rounded-full"
-          width="150"
-          height="150"
-          objectFit="cover"
-          objectPosition="center"
-        />
+        <Avatar src={profileUser.avatar ?? '/dummyUser.svg'} w="150" h="150" />
       </div>
       <div className="flex-1 p-2 ml-5 space-y-2">
         <div>
