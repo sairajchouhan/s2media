@@ -21,8 +21,8 @@ export const Avatar = ({ src = null, alt, w = 'w-6', h = 'h-6' }: AvatarProps) =
   }
 
   return (
-    <div className={`${w} ${h}`}>
-      <img src={src} alt={alt} className="block rounded-full" />
+    <div className={`${w} ${h} overflow-hidden rounded-full`}>
+      <img src={src} alt={alt} className={``} />
     </div>
   )
 }

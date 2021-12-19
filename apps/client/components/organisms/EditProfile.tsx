@@ -101,16 +101,16 @@ export const EditProfile = ({ open, setOpen, profileUser }: EditProfileProps) =>
                   className="object-cover object-center w-full h-full"
                   alt="preview url"
                 />
-              ) : profileUser.avatar === null ? (
-                <Avatar w="full" h="full" />
               ) : (
-                <img
+                <Avatar
                   src={profileUser.avatar as any}
-                  className="block w-full h-full"
                   alt="user profile avatar"
+                  w="w-42"
+                  h="h-42"
                 />
               )}
             </div>
+
             <div className="absolute bottom-2 right-2">
               <div role="button">
                 <label
