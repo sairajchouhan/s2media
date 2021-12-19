@@ -41,6 +41,16 @@ const RightNav = () => {
             )}
           </main>
         </section>
+        <section className="mt-4">
+          <a
+            href="https://github.com/sairaj2119/s2media"
+            target="_blank"
+            rel="noreferrer"
+            className="block w-full py-3 text-center text-white bg-indigo-500 rounded-lg"
+          >
+            View code on Github
+          </a>
+        </section>
         <div className="p-4">
           <a href="#" className="mx-1 text-xs text-gray-500 hover:underline">
             Terms of Service{' '}

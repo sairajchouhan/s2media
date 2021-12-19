@@ -1,6 +1,5 @@
 import UnAuthenticatedLayout from '../components/layouts/UnAuthenticatedLayout'
 import Link from 'next/link'
-import { Footer } from '../components/molecules/Footer'
 
 const technologies = [
   {
@@ -73,6 +72,11 @@ const technologies = [
     title: 'Cloudinary',
     description: 'Cloudinary is a cloud image hosting service',
     img: '/icons/cloudinary.svg',
+  },
+  {
+    title: 'Github Actions',
+    description: 'Github Actions is a cloud-based continuous integration platform',
+    img: '/icons/actions.svg',
   },
 ]
 

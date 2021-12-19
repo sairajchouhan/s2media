@@ -40,6 +40,7 @@ of user interaction and to implement as many features possible including **real 
 
 - Firebase (auth)
 - Cloudinary
+- Github Actions
 
 ## Features
 
