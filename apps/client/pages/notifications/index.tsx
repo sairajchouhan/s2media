@@ -7,7 +7,6 @@ import { NotificationComp } from '../../components/molecules/Notification'
 
 const Notifications = () => {
   const notifications = useSocket()
-  console.log(notifications)
 
   return (
     <PageLayout>
