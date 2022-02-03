@@ -10,9 +10,10 @@ import Link from 'next/link'
 import { internet } from 'faker'
 
 const Signup = () => {
-  const { signup, oAuthLogin, loading: authLoading } = useAuth()
+  const { signup, oAuthLogin } = useAuth()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState({ isError: false, message: '' })
+  const [oAuthLoading, setOAuthLoading] = useState(false)
   const [data, setData] = useState({
     email: '',
     password: '',
@@ -43,11 +44,23 @@ const Signup = () => {
       console.error(err)
       setError({ isError: true, message: (err as any).message })
       setLoading(false)
+    } finally {
+      setLoading(false)
     }
   }
 
   const handleOAuthSignup = async (providerName: string) => {
-    await oAuthLogin(providerName)
+    try {
+      setOAuthLoading(true)
+      await oAuthLogin(providerName)
+    } catch (err: any) {
+      console.log(err)
+      if (err.code !== 'auth/popup-closed-by-user') {
+        setError({ isError: true, message: 'Something went wrong' })
+      }
+    } finally {
+      setOAuthLoading(false)
+    }
   }
 
   const generateRandomCredentials = () => {
@@ -105,14 +118,19 @@ const Signup = () => {
           <div className="mt-2"></div>
           <Button
             onClick={handleSignup}
-            loading={loading || authLoading}
+            loading={loading}
+            disabled={oAuthLoading || loading}
             className=""
             colorScheme="indigo"
           >
             Submit
           </Button>
           <div className="my-3"></div>
-          <Button onClick={() => handleOAuthSignup(providerNames.google)} variant="outline">
+          <Button
+            disabled={oAuthLoading || loading}
+            onClick={() => handleOAuthSignup(providerNames.google)}
+            variant="outline"
+          >
             <div className="flex items-center justify-center">
               <Image src="/google.svg" alt="Google" width="25" height="25" />
               <p className="ml-3">Signup With Google</p>

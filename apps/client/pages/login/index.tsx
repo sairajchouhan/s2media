@@ -11,6 +11,7 @@ import Link from 'next/link'
 const Login = () => {
   const { login, oAuthLogin } = useAuth()
   const [loading, setLoading] = useState(false)
+  const [oAuthLoading, setOAuthLoading] = useState(false)
   const [error, setError] = useState({ isError: false, message: '' })
   const [data, setData] = useState({
     email: '',
@@ -40,15 +41,22 @@ const Login = () => {
     } catch (err) {
       console.error(err)
       setError({ isError: true, message: (err as any).message })
+    } finally {
       setLoading(false)
     }
   }
 
   const handleOAuthLogin = async (providerName: string) => {
     try {
+      setOAuthLoading(true)
       await oAuthLogin(providerName)
-    } catch (err) {
+    } catch (err: any) {
       console.log(err)
+      if (err.code !== 'auth/popup-closed-by-user') {
+        setError({ isError: true, message: 'Something went wrong' })
+      }
+    } finally {
+      setOAuthLoading(false)
     }
   }
 
@@ -87,11 +95,21 @@ const Login = () => {
             />
           </div>
           <div className="mt-2"></div>
-          <Button onClick={handleLogin} loading={loading} variant="solid" colorScheme="indigo">
+          <Button
+            onClick={handleLogin}
+            loading={loading}
+            disabled={oAuthLoading || loading}
+            variant="solid"
+            colorScheme="indigo"
+          >
             Submit
           </Button>
           <div className="my-3"></div>
-          <Button onClick={() => handleOAuthLogin(providerNames.google)} variant="outline">
+          <Button
+            disabled={oAuthLoading || loading}
+            onClick={() => handleOAuthLogin(providerNames.google)}
+            variant="outline"
+          >
             <div className="flex items-center justify-center">
               <Image src="/google.svg" alt="Google" width="25" height="25" />
               <p className="ml-3">Login With Google</p>
