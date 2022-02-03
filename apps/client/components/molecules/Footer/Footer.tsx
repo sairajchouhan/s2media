@@ -1,8 +1,8 @@
 import React from 'react'
 
 const links = [
-  { title: 'Github', link: 'https://github.com/sairaj2119', icon: '/icons/github.svg' },
-  { title: 'Twitter', link: 'https://twitter.com/_sr_dev', icon: '/icons/twitter.svg' },
+  { title: 'Github', link: 'https://github.com/sairajchouhan', icon: '/icons/github.svg' },
+  { title: 'Twitter', link: 'https://twitter.com/sairajchouhan', icon: '/icons/twitter.svg' },
   {
     title: 'Instagram',
     link: 'https://www.instagram.com/sairaj.me/',
