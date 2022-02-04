@@ -20,7 +20,7 @@ export const Post = ({ post }: PostProps) => {
           </div>
         ) : null}
         {post.url ? (
-          <div className="mt-3 overflow-hidden rounded-md">
+          <div className="flex items-center justify-center mt-3 overflow-hidden rounded-md">
             <img src={post.url} alt={post.caption} />
           </div>
         ) : null}

@@ -48,6 +48,7 @@ export const allPosts = async (req: Request, res: Response) => {
           user: {
             select: {
               username: true,
+              avatar: true,
             },
           },
         },
