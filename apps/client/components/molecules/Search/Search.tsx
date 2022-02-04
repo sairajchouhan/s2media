@@ -8,15 +8,15 @@ import { useRouter } from 'next/router'
 export const Search = () => {
   const router = useRouter()
   const inputRef = useRef<null | HTMLInputElement>(null)
-  // const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   const [q, setQ] = useState('')
   const [results, setResults] = useState<any[]>([])
 
-  // useEffect(() => {
-  //   if (!isOpen) {
-  //     inputRef.current?.blur()
-  //   }
-  // }, [isOpen])
+  useEffect(() => {
+    if (!isOpen) {
+      inputRef.current?.blur()
+    }
+  }, [isOpen])
 
   useEffect(() => {
     if (q) {
@@ -31,16 +31,16 @@ export const Search = () => {
     }
   }, [q])
 
-  // const stateChanger = (arg: boolean) => {
-  //   setIsOpen(arg)
-  // }
+  const stateChanger = (arg: boolean) => {
+    setIsOpen(arg)
+  }
 
   return (
     <div className="w-full">
       <Popover className="relative">
-        {({ close }) => (
+        {({ close, open }) => (
           <>
-            {/* {open ? stateChanger(true) : stateChanger(false)} */}
+            {open ? stateChanger(true) : stateChanger(false)}
             <Popover.Button as="div">
               <div className="flex items-center w-full">
                 <input
