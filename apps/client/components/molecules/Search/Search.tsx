@@ -75,9 +75,9 @@ export const Search = () => {
                           className="flex items-center py-2"
                         >
                           <Avatar src={result.avatar ?? null} w="w-10" h="h-10" />
-                          <div className="flex flex-col ml-4">
-                            <div className="text-base font-bold ml-0.5 text-gray-800 cursor-pointer">
-                              {result?.profile.displayName}
+                          <div className="flex flex-col ml-4 cursor-pointer">
+                            <div className="text-base font-bold ml-0.5 text-gray-800 ">
+                              {result?.profile?.displayName}
                             </div>
                             <p className="text-base font-normal text-gray-500 ">
                               @{result?.username}

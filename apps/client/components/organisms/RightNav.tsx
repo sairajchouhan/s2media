@@ -37,7 +37,7 @@ const RightNav = () => {
             {isLoading ? (
               <CircleLoader />
             ) : (
-              data.users.slice(3).map((user: any) => <NewSignupCard user={user} key={user.uid} />)
+              data.users.map((user: any) => <NewSignupCard user={user} key={user.uid} />)
             )}
           </main>
         </section>
