@@ -10,7 +10,7 @@ const UserListModel = () => {
 
   return (
     <>
-      {open ? (
+      {/* {open ? (
         <Model open={open} toggleOpen={toggleOpen}>
           <Model.Head toggleOpen={toggleOpen} title={type} />
           <Model.Body>
@@ -44,7 +44,7 @@ const UserListModel = () => {
             )}
           </Model.Body>
         </Model>
-      ) : null}
+      ) : null} */}
     </>
   )
 }
