@@ -20,7 +20,6 @@ export const ProfileCard = ({ profileUser, canViewFullProfile }: ProfileCardProp
   return (
     <div className="flex flex-wrap px-2 py-2">
       <div className="flex-shrink block mx-auto ">
-        {/* <img src={profileUser.avatar as string} alt="" className="" /> */}
         <Avatar src={profileUser.avatar} w="w-36" h="h-36" />
       </div>
       <div className="flex-1 p-2 ml-5 space-y-2">

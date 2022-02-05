@@ -5,6 +5,7 @@ import { useAuth } from '../../../context/authContext'
 import { PostWithBaseUser } from '../../../types/post'
 import { IconButton } from '../../atoms/IconButton'
 import { CommentIcon, HeartIcon, SavedIcon } from '../../icons'
+import PostFootLikeCommentCount from './post-foot-like-comment-count'
 
 export interface PostFootInterface {
   post: PostWithBaseUser
@@ -21,19 +22,6 @@ export const PostFoot = ({ post }: PostFootInterface) => {
   const [userSaved, setUserSaved] = useState<boolean>(
     rqUser.save.some((save: any) => save.postId === post.id)
   )
-
-  // const memoLikeCount = useMemo(() => {
-  //   return post.like.length
-  // }, [post])
-
-  // const memoUserLiked = useMemo(() => {
-  //   return post.like.some((like: any) => like.userId === rqUser?.uid)
-  // }, [post, rqUser])
-
-  if (post.caption === 'asfd') {
-    // console.log(memoLikeCount)
-    // console.log(memoUserLiked)
-  }
 
   if (!rqUser) return null
 
@@ -64,6 +52,7 @@ export const PostFoot = ({ post }: PostFootInterface) => {
       console.error(err)
     }
   }
+
   const handleSavePost = async () => {
     const token = await getIdToken()
     if (userSaved) {
@@ -130,13 +119,18 @@ export const PostFoot = ({ post }: PostFootInterface) => {
         </div>
       </div>
       <div className="flex items-center">
-        <p className="text-sm text-gray-600">
-          <span>{likeCount} likes</span>
-        </p>
+        <PostFootLikeCommentCount
+          showModel={post.like.length > 0}
+          data={post.like}
+          type="likes"
+          count={likeCount}
+        />
         <span className="w-1 h-1 mx-2 mt-1 bg-gray-400 rounded-full"></span>
-        <p className="text-sm text-gray-600">
-          <span>{post._count?.comment + post._count?.reply}</span> comments
-        </p>
+        <PostFootLikeCommentCount
+          showModel={false}
+          type="comments"
+          count={post._count?.comment + post._count?.reply}
+        />
       </div>
     </div>
   )

@@ -1,50 +1,51 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Model } from '../molecules/Model'
-import { CircleLoader } from '../atoms/CircleLoader'
+import { useRouter } from 'next/router'
+import { Avatar } from '../atoms/Avatar'
 
-const UserListModel = () => {
-  const [open, setOpen] = useState(false)
-  const toggleOpen = () => {
-    setOpen((open) => !open)
-  }
+interface IUserListModel {
+  open: boolean
+  toggleOpen: () => void
+  title: string
+  data: Array<any>
+}
+
+const UserListModel = ({ open, toggleOpen, title, data }: IUserListModel) => {
+  const router = useRouter()
 
   return (
     <>
-      {/* {open ? (
+      {open ? (
         <Model open={open} toggleOpen={toggleOpen}>
-          <Model.Head toggleOpen={toggleOpen} title={type} />
+          <Model.Head toggleOpen={toggleOpen} title={title} />
           <Model.Body>
-            {isError ? (
-              <div>Something went wrong</div>
-            ) : isLoading ? (
-              <CircleLoader className="py-10" />
-            ) : data && data[type]?.length > 0 ? (
-              data[type].map((followerOrIng: any) => (
+            {data && data.length > 0 ? (
+              data.map((item) => (
                 <div
-                  key={followerOrIng.id}
+                  key={item.id}
                   className="px-3 py-2 rounded cursor-pointer hover:bg-gray-100"
                   onClick={() => {
                     toggleOpen()
-                    router.push(`/profile/${followerOrIng.username}`)
+                    router.push(`/profile/${item.user.username}`)
                   }}
                 >
                   <div className="flex items-center">
                     <Avatar
-                      src={followerOrIng.avatar}
+                      src={item.user.avatar}
                       w="w-10"
                       h="h-10"
-                      alt={`${profileUserUsername}'s profile image'`}
+                      alt={`${item.user.username}'s profile image'`}
                     />
-                    <p className="ml-4">{followerOrIng.username}</p>
+                    <p className="ml-4">{item.user.username}</p>
                   </div>
                 </div>
               ))
             ) : (
-              <div>No {type}</div>
+              <></>
             )}
           </Model.Body>
         </Model>
-      ) : null} */}
+      ) : null}
     </>
   )
 }

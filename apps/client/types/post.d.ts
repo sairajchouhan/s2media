@@ -6,6 +6,7 @@ export interface PostWithBaseUser {
   userId: string
   user: BaseUser
   like: Array<Record<any, any>>
+  comment: Array<Record<any, any>>
   save: Array<Record<any, any>>
   createdAt: string
   updatedAt: string
