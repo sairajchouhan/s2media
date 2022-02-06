@@ -1,7 +1,0 @@
-// this is temporary lint staged file
-{
-  "lint-staged": {
-    "**/*": ["prettier --write --ignore-unknown"],
-    "apps/**/*.tsx": ["yarn lint"]
-  }
-}
