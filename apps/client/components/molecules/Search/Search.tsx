@@ -1,35 +1,21 @@
 import { useEffect, useRef, useState } from 'react'
 import { Popover } from '@headlessui/react'
-import axios from 'axios'
 import { Avatar } from '../../atoms/Avatar'
-import { SEARCH_URL } from '../../../config/axios'
 import { useRouter } from 'next/router'
+import useSearch from '../../../hooks/useSearch'
 
 export const Search = () => {
   const router = useRouter()
   const inputRef = useRef<null | HTMLInputElement>(null)
   const [isOpen, setIsOpen] = useState(false)
   const [q, setQ] = useState('')
-  const [results, setResults] = useState<any[]>([])
+  const { results } = useSearch({ q })
 
   useEffect(() => {
     if (!isOpen) {
       inputRef.current?.blur()
     }
   }, [isOpen])
-
-  useEffect(() => {
-    if (q) {
-      axios
-        .post(`${SEARCH_URL}?q=${q}`)
-        .then((res) => {
-          setResults(res.data.result)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    }
-  }, [q])
 
   const stateChanger = (arg: boolean) => {
     setIsOpen(arg)

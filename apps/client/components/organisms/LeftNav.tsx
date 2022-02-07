@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import { axios } from '../../config/axios'
 import { useAuth } from '../../context/authContext'
 import { useSocket } from '../../context/socketContext'
+import { useTwWindowSize } from '../../hooks/useTwWindowSize'
 import { paths } from '../../utils/paths'
 import { LeftNavPostBtn } from '../atoms/LeftNavPostBtn/LeftNavPostBtn'
 import {
@@ -19,6 +20,7 @@ const LeftNav = () => {
   const { push, pathname } = useRouter()
   const { rqUser, logout, getIdToken } = useAuth()
   const notificationsData = useSocket()
+  const { screenSize } = useTwWindowSize()
 
   const handleLogout = async () => {
     const token = await getIdToken()
@@ -57,6 +59,16 @@ const LeftNav = () => {
         >
           Messages
         </LeftNavLink> */}
+        {screenSize === 'xl' || screenSize === '2xl' ? null : (
+          <LeftNavLink
+            active={pathname.split('/').includes('search')}
+            icon={HomeIcon}
+            onClick={() => push(paths.search)}
+          >
+            Search
+          </LeftNavLink>
+        )}
+
         <LeftNavLink
           active={pathname.split('/').includes('profile')}
           icon={ProfileIcon}
@@ -64,6 +76,7 @@ const LeftNav = () => {
         >
           Profile
         </LeftNavLink>
+
         <LeftNavLink
           active={pathname === '/notifications'}
           icon={NotificationIcon}
