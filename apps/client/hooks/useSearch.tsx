@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { axios, SEARCH_URL } from '../config/axios'
+import { axios, SOCKET_URL } from '../config/axios'
 
 interface IUseSearch {
   q: string
@@ -11,7 +11,7 @@ const useSearch = ({ q }: IUseSearch) => {
   useEffect(() => {
     if (q) {
       axios
-        .post(`${SEARCH_URL}?q=${q}`)
+        .post(`${SOCKET_URL}?q=${q}`)
         .then((res) => {
           setResults(res.data.result)
         })
