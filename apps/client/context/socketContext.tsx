@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import io from 'socket.io-client'
 import { useAuth } from './authContext'
-import { SOCKET_URL } from '../config/axios'
+import { SERVER_BASE_URL } from '../config/axios'
 
 const SocketContext = React.createContext<any>(null)
 
@@ -18,7 +18,7 @@ export function SocketProvider({ children }: ISocketContext) {
   const [notifications, setNotifications] = useState<any>(null)
 
   useEffect(() => {
-    const socket = io(SOCKET_URL, {})
+    const socket = io(SERVER_BASE_URL, {})
     socket.on('NOTIFICATION', (data) => {
       setNotifications(data)
     })

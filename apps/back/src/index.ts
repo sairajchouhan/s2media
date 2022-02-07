@@ -29,8 +29,8 @@ httpServer.on('request', async (req, res) => {
     return
   }
 
-  if (req.url === '/health' && req.method === 'GET') {
-    res.end('✅\n')
+  if (req.url === '/back/health' && req.method === 'GET') {
+    res.end('✅')
   }
 
   if (req.url?.startsWith('/back/search') && req.method === 'POST') {
