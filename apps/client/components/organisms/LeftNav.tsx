@@ -12,6 +12,7 @@ import {
   ProfileIcon,
   SettingsIcon,
   SavedIcon,
+  SearchIcon,
 } from '../icons'
 import { LeftNavBrand, LeftNavLink, LeftNavUser } from '../molecules/LeftNav'
 
@@ -52,17 +53,11 @@ const LeftNav = () => {
         <LeftNavLink active={isActive(paths.home)} icon={HomeIcon} onClick={() => push(paths.home)}>
           Home
         </LeftNavLink>
-        {/* <LeftNavLink
-          active={pathname === paths.messages}
-          icon={MessageIcon}
-          onClick={() => push(paths.messages)}
-        >
-          Messages
-        </LeftNavLink> */}
+
         {screenSize === 'xl' || screenSize === '2xl' ? null : (
           <LeftNavLink
-            active={pathname.split('/').includes('search')}
-            icon={HomeIcon}
+            active={pathname === '/search'}
+            icon={SearchIcon}
             onClick={() => push(paths.search)}
           >
             Search
