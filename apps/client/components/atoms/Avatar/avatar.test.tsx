@@ -7,4 +7,10 @@ describe('testing avatar', () => {
     const imageEle = screen.getByAltText('avatar')
     expect(imageEle).toBeInTheDocument()
   })
+
+  test('when src if null, should render a <svg>', () => {
+    render(<Avatar />)
+    const imageEle = screen.getByAltText('Deafult User Profile')
+    expect(imageEle).toBeInTheDocument()
+  })
 })
