@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { FormEvent, useRef } from 'react'
+import { FormEvent, useRef, useState } from 'react'
 import { useQuery } from 'react-query'
 import { axios } from '../../config/axios'
 import { useAuth } from '../../context/authContext'
@@ -10,8 +10,6 @@ import { Search } from '../molecules/Search'
 
 const RightNav = () => {
   const { getIdToken } = useAuth()
-  const toast = useToast()
-  const feedbackRef = useRef<any>()
 
   const { isLoading, data } = useQuery(
     ['recommendations', 'follow'],
@@ -28,26 +26,6 @@ const RightNav = () => {
       refetchOnWindowFocus: false,
     }
   )
-
-  const handleFeedbackSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const feedback = feedbackRef.current.value as string
-    if (!feedback || feedback.trim() === '') return
-    try {
-      await fetch('/api/feedback', {
-        method: 'POST',
-        body: JSON.stringify({ feedback }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      toast({ message: 'Thank you for your valuable feedback!', type: 'success' })
-      feedbackRef.current.value = ''
-    } catch (err: any) {
-      console.log(err.message)
-      toast({ message: 'Something went wrong', type: 'error' })
-    }
-  }
 
   return (
     <div className="">
@@ -66,22 +44,7 @@ const RightNav = () => {
           </main>
         </section>
         <section className="mt-4">
-          <form className="relative" onSubmit={handleFeedbackSubmit}>
-            <textarea
-              style={{ resize: 'none' }}
-              className="w-full text-sm rounded"
-              rows={5}
-              name="feedback"
-              id="feedback"
-              placeholder="Request for more features, file bug report, or just a friendly word?"
-              ref={feedbackRef}
-            ></textarea>
-            <div className="absolute flex justify-end right-2 bottom-3">
-              <button className="px-1 py-0.5 rounded text-xs text-white bg-violet-500">
-                Submit
-              </button>
-            </div>
-          </form>
+          <FeedBack />
         </section>
         <div className="p-4">
           <a href="#" className="mx-1 text-xs text-gray-500 hover:underline">
@@ -127,6 +90,60 @@ const NewSignupCard = ({ user }: any) => {
         </div>
       </div>
     </div>
+  )
+}
+
+const FeedBack = () => {
+  const toast = useToast()
+  const feedbackRef = useRef<any>()
+  const [loading, setLoading] = useState(false)
+
+  const handleFeedbackSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const feedback = feedbackRef.current.value as string
+    if (!feedback || feedback.trim() === '') return
+    try {
+      setLoading(true)
+      const res = await fetch('/api/feedback', {
+        method: 'POST',
+        body: JSON.stringify({ feedback }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      if (!res.ok) {
+        return toast({ message: 'Something went wrong, Try again', type: 'error' })
+      }
+      toast({ message: 'Thank you for your valuable feedback!', type: 'success' })
+      feedbackRef.current.value = ''
+    } catch (err: any) {
+      console.log(err.message)
+      toast({ message: 'Something went wrong', type: 'error' })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <form className="relative" onSubmit={handleFeedbackSubmit}>
+      <textarea
+        style={{ resize: 'none' }}
+        className="w-full text-sm rounded"
+        rows={5}
+        name="feedback"
+        id="feedback"
+        placeholder="Request for more features, file bug report, or just a friendly word?"
+        ref={feedbackRef}
+      ></textarea>
+      <div className="absolute flex justify-end right-2 bottom-3">
+        <button
+          disabled={loading}
+          className=" px-1 py-0.5 rounded text-xs text-white bg-violet-500"
+        >
+          {loading ? 'Submiting...' : 'Submit'}
+        </button>
+      </div>
+    </form>
   )
 }
 
