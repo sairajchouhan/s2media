@@ -17,9 +17,9 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
 
   return rqUser ? (
     <div className="w-full">
-      <div className="flex w-10/12 mx-auto ">
+      <div className="flex w-11/12 mx-auto lg:w-10/12 ">
         <header className="relative z-10 flex flex-col items-end flex-shrink mr-10 ">
-          <div className="relative flex flex-col items-end flex-shrink-0 w-64">
+          <div className="relative flex flex-col items-end flex-shrink-0 w-16 lg:w-64">
             <div className="fixed top-0 z-0 flex flex-col items-stretch flex-shrink-0 h-full">
               <LeftNav />
             </div>

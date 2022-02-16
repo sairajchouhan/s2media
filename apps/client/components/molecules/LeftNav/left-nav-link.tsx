@@ -21,19 +21,19 @@ export const LeftNavLink = ({
   return (
     <li
       onClick={onClick}
-      className="flex items-center justify-start w-full text-gray-600 cursor-pointer select-none group"
+      className="flex items-center justify-center w-full text-gray-600 cursor-pointer select-none lg:justify-start group"
     >
-      <button className="flex items-center px-6 py-2 rounded-full group-hover:bg-indigo-50 ">
+      <button className="flex items-center py-2 rounded-full lg:px-6 lg:group-hover:bg-indigo-50 ">
         <div className="relative">
           {countValue && isCountable && !active && countValue > 0 ? (
             <div className="absolute flex items-center justify-center w-4 h-4 text-xs text-white bg-indigo-500 rounded-full -top-1 left-3">
               <span className="block">{countValue}</span>
             </div>
           ) : null}
-          <Icon variant={active ? 'solid' : 'outline'} styling="text-indigo-600 mr-4" />
+          <Icon variant={active ? 'solid' : 'outline'} styling="text-indigo-600 lg:mr-4" />
         </div>
         <p
-          className={`text-lg font-bold group-hover:text-indigo-500 ${
+          className={`hidden lg:block text-lg font-bold group-hover:text-indigo-500 ${
             active ? 'text-indigo-600' : 'text-gray-600'
           }`}
         >

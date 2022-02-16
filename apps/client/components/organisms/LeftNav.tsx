@@ -42,7 +42,7 @@ const LeftNav = () => {
   if (!rqUser) return null
 
   return (
-    <nav className="flex flex-col w-64 h-screen max-h-screen">
+    <nav className="flex flex-col w-16 h-screen max-h-screen lg:w-64">
       <LeftNavBrand
         onClick={() => {
           if (rqUser) push(paths.home)

@@ -23,7 +23,7 @@ export const LeftNavBrand = ({ onClick, ...props }: LeftNavBrandProps) => {
           />
         </svg>
       </div>
-      <div className="ml-2">
+      <div className="hidden lg:block lg:ml-2">
         S<span className="border-b-4 border-indigo-600">2</span>Media
       </div>
     </div>
