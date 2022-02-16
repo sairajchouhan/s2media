@@ -1,13 +1,17 @@
 import { useRouter } from 'next/router'
+import { FormEvent, useRef } from 'react'
 import { useQuery } from 'react-query'
 import { axios } from '../../config/axios'
 import { useAuth } from '../../context/authContext'
+import { useToast } from '../../context/toastContext'
 import { Avatar } from '../atoms/Avatar'
 import { CircleLoader } from '../atoms/CircleLoader'
 import { Search } from '../molecules/Search'
 
 const RightNav = () => {
   const { getIdToken } = useAuth()
+  const toast = useToast()
+  const feedbackRef = useRef<any>()
 
   const { isLoading, data } = useQuery(
     ['recommendations', 'follow'],
@@ -25,6 +29,26 @@ const RightNav = () => {
     }
   )
 
+  const handleFeedbackSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const feedback = feedbackRef.current.value as string
+    if (!feedback || feedback.trim() === '') return
+    try {
+      await fetch('/api/feedback', {
+        method: 'POST',
+        body: JSON.stringify({ feedback }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      toast({ message: 'Thank you for your valuable feedback!', type: 'success' })
+      feedbackRef.current.value = ''
+    } catch (err: any) {
+      console.log(err.message)
+      toast({ message: 'Something went wrong', type: 'error' })
+    }
+  }
+
   return (
     <div className="">
       <div className="mt-4">
@@ -37,19 +61,27 @@ const RightNav = () => {
             {isLoading ? (
               <CircleLoader />
             ) : (
-              data.users.map((user: any) => <NewSignupCard user={user} key={user.uid} />)
+              data.users.slice(3).map((user: any) => <NewSignupCard user={user} key={user.uid} />)
             )}
           </main>
         </section>
         <section className="mt-4">
-          <a
-            href="https://github.com/sairaj2119/s2media"
-            target="_blank"
-            rel="noreferrer"
-            className="block w-full py-3 text-center text-white bg-indigo-500 rounded-lg"
-          >
-            View code on Github
-          </a>
+          <form className="relative" onSubmit={handleFeedbackSubmit}>
+            <textarea
+              style={{ resize: 'none' }}
+              className="w-full text-sm rounded"
+              rows={5}
+              name="feedback"
+              id="feedback"
+              placeholder="Request for more features, file bug report, or just a friendly word?"
+              ref={feedbackRef}
+            ></textarea>
+            <div className="absolute flex justify-end right-2 bottom-3">
+              <button className="px-1 py-0.5 rounded text-xs text-white bg-violet-500">
+                Submit
+              </button>
+            </div>
+          </form>
         </section>
         <div className="p-4">
           <a href="#" className="mx-1 text-xs text-gray-500 hover:underline">
