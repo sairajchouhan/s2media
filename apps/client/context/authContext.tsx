@@ -25,8 +25,6 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType>({} as AuthContextType)
 export const useAuth = () => useContext(AuthContext)
 
-const fromPaths = ['/login', '/signup']
-
 const formatUser = (user: BaseUser, idToken: string, isNewSignup: boolean): AuthUser => {
   return {
     ...user,
@@ -58,13 +56,13 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
               } = userResp
               setUser(formatUser(userFullDetials, idToken, isNewSignup))
             } catch (err) {
-              console.log(err)
+              console.error(err)
               setUser(null)
               setLoading(false)
             }
           })
           .catch((err) => {
-            console.log(err.message)
+            console.error(err.message)
             setUser(null)
             setLoading(false)
           })
@@ -91,10 +89,8 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
       onSuccess: () => {
         setLoading(false)
         if (user?.isNewSignup) {
-          console.log('redirecting to home from 1')
           router.push('/home')
         } else if (router.pathname === '/login') {
-          console.log('redirecting to home from 2')
           router.push('/home')
         } else {
         }
