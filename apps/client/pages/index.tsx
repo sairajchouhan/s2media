@@ -104,14 +104,23 @@ export default function Landing() {
           </Link>
         </div>
         <div className="flex-1 pt-8">
-          <img src="/landing-2.svg" className="block" alt="" />
+          <img
+            src="/landing-2.svg"
+            className="block"
+            alt="Image to show people are using mobiles"
+          />
         </div>
       </section>
       <section className="py-8">
         <h1 className="mb-24 font-bold text-center text-gray-800 text-7xl">Tech Stack Used</h1>
         <div className="grid grid-cols-2 gap-12">
           {technologies.map((tech) => (
-            <EachTech {...tech} key={tech.title} />
+            <EachTech
+              key={tech.title + tech.description + tech.img}
+              title={tech.title}
+              img={tech.img}
+              description={tech.description}
+            />
           ))}
         </div>
       </section>
