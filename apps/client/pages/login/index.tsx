@@ -70,7 +70,9 @@ const Login = () => {
 
         <div className="flex flex-col w-1/3">
           {error.isError ? (
-            <div className="p-3 my-3 text-sm text-white bg-red-500 rounded-md">{error.message}</div>
+            <div role="alert" className="p-3 my-3 text-sm text-white bg-red-500 rounded-md">
+              {error.message}
+            </div>
           ) : null}
           <div className="mb-5">
             <Input
