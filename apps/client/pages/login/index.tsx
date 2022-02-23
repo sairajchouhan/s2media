@@ -27,7 +27,7 @@ const Login = () => {
   }, [error.isError])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setData((data) => ({ ...data, [e.target.name]: e.target.value }))
+    setData({ ...data, [e.target.name]: e.target.value })
   }
 
   const handleLogin = async () => {
