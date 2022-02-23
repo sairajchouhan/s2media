@@ -12,5 +12,8 @@
     "**/CVS": true,
     "**/.DS_Store": true
     // "**/node_modules": true
+  },
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": "file:///home/sairaj/code/bigones/s2media/s2media/.github/workflows/deploy.yml"
   }
 }
