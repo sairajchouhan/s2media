@@ -89,7 +89,7 @@ the version numbers specified
 Clone the project
 
 ```bash
-  git clone https://github.com/sairaj2119/s2media.git
+  git clone https://github.com/sairajchouhan/s2media.git
 ```
 
 Go to the project directory
