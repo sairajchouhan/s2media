@@ -12,10 +12,10 @@ import { useToast } from './toastContext'
 
 type AuthContextType = {
   user: AuthUser | null
-  login: (email: string, password: string) => Promise<any>
-  signup: (email: string, password: string) => Promise<any>
+  login: (email: string, password: string) => Promise<firebase.auth.UserCredential>
+  signup: (email: string, password: string) => Promise<firebase.auth.UserCredential>
   logout: () => Promise<any>
-  oAuthLogin: (provider: string) => Promise<any>
+  oAuthLogin: (provider: string) => Promise<firebase.auth.UserCredential>
   getIdToken: () => Promise<string | undefined>
   rqUser: any
   refetchRqUser: any
@@ -33,6 +33,11 @@ const formatUser = (user: BaseUser, idToken: string, isNewSignup: boolean): Auth
   }
 }
 
+const auth = firebase.auth()
+if (process.env.NODE_ENV === 'test') {
+  auth.useEmulator('http://localhost:9099')
+}
+
 export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const toast = useToast()
   const [user, setUser] = useState<AuthUser | null>(null)
@@ -40,7 +45,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
   const router = useRouter()
 
   useEffect(() => {
-    const unsub = firebase.auth().onAuthStateChanged((user) => {
+    const unsub = auth.onAuthStateChanged((user) => {
       if (user) {
         user
           .getIdToken()
@@ -102,25 +107,25 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     }
   )
 
-  const login = (email: string, password: string) => {
-    return firebase.auth().signInWithEmailAndPassword(email, password)
+  const login = (email: string, password: string): Promise<firebase.auth.UserCredential> => {
+    return auth.signInWithEmailAndPassword(email, password)
   }
 
-  const signup = (email: string, password: string) => {
-    return firebase.auth().createUserWithEmailAndPassword(email, password)
+  const signup = (email: string, password: string): Promise<firebase.auth.UserCredential> => {
+    return auth.createUserWithEmailAndPassword(email, password)
   }
 
-  const oAuthLogin = (provider: string) => {
-    return firebase.auth().signInWithPopup(getProvider(provider))
+  const oAuthLogin = (provider: string): Promise<firebase.auth.UserCredential> => {
+    return auth.signInWithPopup(getProvider(provider))
   }
 
   const logout = async () => {
     setUser(null)
-    await firebase.auth().signOut()
+    await auth.signOut()
   }
 
   const getIdToken = async () => {
-    const idToken = await firebase.auth().currentUser?.getIdToken()
+    const idToken = await auth.currentUser?.getIdToken()
     return idToken
   }
 
