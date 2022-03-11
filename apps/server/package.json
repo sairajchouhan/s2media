@@ -5,7 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon",
-    "start": " yarn prisma:migrate:deploy && cross-env NODE_ENV=production node dist/src/server.js",
+    "start": "yarn prisma:migrate:deploy && cross-env NODE_ENV=production node dist/src/server.js",
     "build": "rimraf ./dist && tsc",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
