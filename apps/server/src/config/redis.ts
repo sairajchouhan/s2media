@@ -10,4 +10,4 @@ const config: RedisConfig = {
   host: process.env.REDIS_HOST!,
 }
 
-export const redis = new Redis(config)
+export const redis = {}

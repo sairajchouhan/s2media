@@ -19,8 +19,6 @@ services:
     depends_on:
       - db
       - redis
-    env_file:
-      - ./apps/server/.env
     volumes:
       - ./apps/server:/app
       - /app/node_modules

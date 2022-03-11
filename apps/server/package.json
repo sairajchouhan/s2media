@@ -31,6 +31,7 @@
     "cloudinary": "^1.26.2",
     "cors": "^2.8.5",
     "datauri": "^3.0.0",
+    "dotenv": "^16.0.0",
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
     "express-validator": "^6.12.0",
