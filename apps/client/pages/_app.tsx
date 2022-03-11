@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import AuthenticatedLayout from '../components/layouts/AuthenticatedLayout'
 import { AuthContextProvider } from '../context/authContext'
-import { SocketProvider } from '../context/socketContext'
+// import { SocketProvider } from '../context/socketContext'
 import { ToastProvider } from '../context/toastContext'
 import '../styles/globals.css'
 
@@ -29,11 +29,11 @@ function MyApp({ Component, pageProps }: AppProps) {
               <Component {...pageProps} />
             </>
           ) : (
-            <SocketProvider>
-              <AuthenticatedLayout>
-                <Component {...pageProps} />
-              </AuthenticatedLayout>
-            </SocketProvider>
+            // <SocketProvider>
+            <AuthenticatedLayout>
+              <Component {...pageProps} />
+            </AuthenticatedLayout>
+            // </SocketProvider>
           )}
         </AuthContextProvider>
       </ToastProvider>

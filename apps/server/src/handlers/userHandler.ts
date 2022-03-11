@@ -52,7 +52,6 @@ export const getAuthUserInfo = async (req: Request, res: Response) => {
   })
 
   if (user) {
-    console.log(400000)
     res.status(200).json({
       redirect: '/home',
       userFullDetials: user,
