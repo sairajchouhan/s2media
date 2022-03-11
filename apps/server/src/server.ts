@@ -1,4 +1,4 @@
-import 'dotenv/config'
+import './config/dotenv'
 import cors from 'cors'
 import express from 'express'
 import morgan from 'morgan'
@@ -23,7 +23,7 @@ import { init } from './utils/initialize'
   )
 
   // Routes
-  app.get('/health', async (_req, res) => {
+  app.get('/health', async (_, res) => {
     res.send('OK ✅\n')
   })
 

@@ -1,35 +1,11 @@
 version: '3.9'
 services:
-  nginx:
-    container_name: s2media_nginx_dev
-    depends_on:
-      - api
-      - back
-    restart: always
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./apps/nginx
-    ports:
-      - 5000:80
-  api:
-    container_name: s2media_api_dev
-    build:
-      context: ./apps/server
-      dockerfile: ./Dockerfile.dev
-    depends_on:
-      - db
-      - redis
-    volumes:
-      - ./apps/server:/app
-      - /app/node_modules
-    environment:
-      - DATABASE_URL=postgresql://postgres:password@db:5432/s2media?schema=public&connection_limit=5&pool_timeout=0
-      - REDIS_HOST=redis
-
   db:
     image: postgres:latest
     container_name: s2media_postgres_dev
     restart: always
+    ports:
+      - 5432:5432
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
@@ -40,19 +16,21 @@ services:
   redis:
     image: redis:latest
     container_name: s2media_redis_dev
+    ports:
+      - 6379:6379
     volumes:
       - redis-data:/data
 
-  back:
-    container_name: s2media_back_dev
-    build:
-      context: ./apps/back
-      dockerfile: ./Dockerfile.dev
-    volumes:
-      - ./apps/back:/app
-      - /app/node_modules
-    environment:
-      - REDIS_HOST=redis
+  # back:
+  #   container_name: s2media_back_dev
+  #   build:
+  #     context: ./apps/back
+  #     dockerfile: ./Dockerfile.dev
+  #   volumes:
+  #     - ./apps/back:/app
+  #     - /app/node_modules
+  #   environment:
+  #     - REDIS_HOST=redis
 
 volumes:
   postgres-data:

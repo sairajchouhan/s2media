@@ -8,6 +8,7 @@ interface RedisConfig {
 
 const config: RedisConfig = {
   host: process.env.REDIS_HOST!,
+  port: +process.env.REDIS_PORT!,
 }
 
-export const redis = {}
+export const redis = new Redis(config)
