@@ -148,7 +148,6 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
           <div className="text-indigo-600" style={{ fontSize: '6rem' }}>
             S2Media
           </div>
-          <p>Loading...Just a sec</p>
         </div>
       ) : (
         <>{children}</>
