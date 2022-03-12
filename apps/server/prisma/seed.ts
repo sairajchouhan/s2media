@@ -1,5 +1,5 @@
 import fbAdmin from 'firebase-admin'
-import { initAdmin } from '../src/config/firebase-admin'
+// import { initAdmin } from '../src/config/firebase-admin'
 import { v4 as uuid } from 'uuid'
 import { internet, lorem } from 'faker'
 import { get4RandomChars } from '../src/utils/index'
@@ -32,7 +32,7 @@ const addUsers = async () => {
     return
   }
 
-  initAdmin()
+  // initAdmin()
   const prisma = prismaConnect()
 
   const auth = fbAdmin.auth()
@@ -76,7 +76,7 @@ const addUsers = async () => {
 addUsers
 
 const deleteUsersFromFirebase = async () => {
-  initAdmin()
+  // initAdmin()
   const users = await fbAdmin.auth().listUsers()
   const uids = users.users.map((user) => user.uid)
   await fbAdmin.auth().deleteUsers(uids)
@@ -88,7 +88,7 @@ const addPosts = async () => {
     return
   }
 
-  initAdmin()
+  // initAdmin()
   const prisma = prismaConnect()
   const users = await fbAdmin.auth().listUsers()
   const uids = users.users.map((user) => user.uid)
