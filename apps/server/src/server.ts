@@ -4,6 +4,7 @@ import express from 'express'
 import morgan from 'morgan'
 
 import errorMiddleware from './middlewares/error'
+import compression from 'compression'
 import routes from './routes'
 import { init } from './utils/initialize'
 
@@ -13,6 +14,7 @@ import { init } from './utils/initialize'
   init()
 
   // middlewares
+  app.use(compression({}))
   app.use(morgan('dev'))
   app.use(express.urlencoded({ extended: true }))
   app.use(express.json())
