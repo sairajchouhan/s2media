@@ -17,17 +17,14 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Navigate to server
-        run: cd ./apps/server
-
       - name: Install packages in server
-        run: yarn install --frozen-lockfile
+        run: yarn install:server
 
       - name: Lint
-        run: yarn lint
+        run: yarn lint:server
 
       - name: Build project
-        run: yarn build
+        run: yarn build:server
 
       - name: Install Railway
         run: npm i -g @railway/cli

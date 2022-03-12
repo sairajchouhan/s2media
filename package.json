@@ -20,6 +20,7 @@
   },
   "scripts": {
     "boot": "lerna bootstrap",
+    "install:server": "cd ./apps/server && yarn install --frozen-lockfile",
     "dev:client": "lerna run --scope @s2media/client --stream dev",
     "dev:server": "lerna run --scope @s2media/server --stream dev",
     "dev": "npm-run-all --parallel dev:client up",
