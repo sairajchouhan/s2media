@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
-import fbadmin from 'firebase-admin'
 import { DecodedIdToken } from '../types/index'
+import { auth } from '../config/firebase-admin'
 
 export default async (req: Request, res: Response, next: NextFunction) => {
   const authorization = req.header('Authorization')
@@ -20,7 +20,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   }
 
   try {
-    const decodedToken = await fbadmin.auth().verifyIdToken(idToken)
+    const decodedToken = await auth.verifyIdToken(idToken)
     req.user = decodedToken as DecodedIdToken
     return next()
   } catch (err) {

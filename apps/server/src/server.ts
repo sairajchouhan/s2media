@@ -6,12 +6,10 @@ import morgan from 'morgan'
 import errorMiddleware from './middlewares/error'
 import compression from 'compression'
 import routes from './routes'
-import { init } from './utils/initialize'
 
 //
 ;(() => {
   const app = express()
-  init()
 
   // middlewares
   app.use(compression({}))

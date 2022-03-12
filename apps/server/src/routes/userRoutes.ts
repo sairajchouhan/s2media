@@ -21,7 +21,14 @@ const router = Router()
 router.get('/me', auth, ash(getAuthUserInfo))
 router.delete('/me', auth, ash(deleteAuthUserCache))
 router.get('/all', ash(getAllUsers))
-router.get('/:username', auth, [param('username').exists().trim().escape()], validate, follow, ash(getUserInfo))
+router.get(
+  '/:username',
+  auth,
+  [param('username').exists().trim().escape()],
+  validate,
+  follow,
+  ash(getUserInfo)
+)
 router.get(
   '/:username/post',
   auth,
