@@ -17,6 +17,9 @@ jobs:
         with:
           node-version: '14'
 
+      - name: Install root packages
+        run: yarn install:server
+
       - name: Install packages in server
         run: yarn install:server
 
