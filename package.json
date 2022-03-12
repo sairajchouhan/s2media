@@ -18,6 +18,9 @@
     "yarn": ">=1.22.0",
     "npm": "use-yarn-instead"
   },
+  "workspaces": [
+    "apps/*"
+  ],
   "scripts": {
     "boot": "lerna bootstrap",
     "dev:client": "lerna run --scope @s2media/client --stream dev",
@@ -36,7 +39,8 @@
     "prettier": "prettier --write ./apps --ignore-unknown",
     "prepare": "husky install",
     "dev:up": "docker compose up",
-    "dev:down": "docker compose down"
+    "dev:down": "docker compose down",
+    "start:server": "lerna run --scope @s2media/server --stream start"
   },
   "devDependencies": {
     "husky": "^7.0.4",
