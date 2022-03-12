@@ -8,6 +8,13 @@ import validate from '../middlewares/validate'
 
 const router = Router()
 
-router.post('/:postId', auth, [param('postId').not().isEmpty()], follow, validate, ash(saveAndUnsavePost))
+router.post(
+  '/:postId',
+  auth,
+  [param('postId').not().isEmpty()],
+  follow,
+  validate,
+  ash(saveAndUnsavePost)
+)
 
 export default router

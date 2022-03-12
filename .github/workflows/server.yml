@@ -20,8 +20,11 @@ jobs:
       - name: Install packages
         run: yarn install --frozen-lockfile
 
+      - name: Lint
+        run: yarn lint:server
+
       - name: Build project
-        run: yarn build
+        run: yarn build:server
 
       - name: Install Railway
         run: npm i -g @railway/cli

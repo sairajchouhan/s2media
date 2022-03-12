@@ -1,7 +1,12 @@
 import { Router } from 'express'
 import ash from 'express-async-handler'
 import { body, param, query } from 'express-validator'
-import { createReplyToComment, deleteReply, editReply, getReplyForComment } from '../handlers/replyHandlers'
+import {
+  createReplyToComment,
+  deleteReply,
+  editReply,
+  getReplyForComment,
+} from '../handlers/replyHandlers'
 import auth from '../middlewares/auth'
 import follow from '../middlewares/follow'
 import validate from '../middlewares/validate'

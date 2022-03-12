@@ -11,7 +11,10 @@ export const cloudinaryPostImageUpload = (file: string, folder: string = 's2medi
     folder,
   })
 
-export const cloudinaryUserProfileImageUpload = (file: string, folder: string = 's2media/user_profile_images') =>
+export const cloudinaryUserProfileImageUpload = (
+  file: string,
+  folder: string = 's2media/user_profile_images'
+) =>
   cloudinary.uploader.upload(file, {
     folder,
   })
