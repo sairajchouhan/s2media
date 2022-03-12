@@ -30,7 +30,7 @@ jobs:
         run: yarn build:server
 
       - name: Install Railway
-        run: npm i -g @railway/cli
+        run: curl -fsSL https://railway.app/install.sh | sh
 
       - name: Deploy
         run: railway up
