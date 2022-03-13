@@ -1,6 +1,7 @@
 import { redis } from '../config/redis'
 import { v4 as uuid } from 'uuid'
 import { Notification } from '../types'
+import type { Socket } from 'socket.io'
 
 export const createNotification = async (notificationObject: Notification) => {
   const res = await redis.publish(
@@ -27,4 +28,27 @@ export const storeAllCombinationsOfUsername = async (username: string) => {
       await redis.zadd('users', ...terms)
     })()
   }
+}
+
+export const channels = ['NOTIFICATION', 'REFETCH_NOTIFICATIONS']
+
+export const getNotificationDataFromRedis = async (userIdWhoReceivesNotification: string) => {
+  const notifications = await redis.lrange(
+    `user:notification:${userIdWhoReceivesNotification}`,
+    0,
+    -1
+  )
+  const parsedNotifications: Notification[] = notifications.map((notification) =>
+    JSON.parse(notification)
+  )
+  const notificationData = {
+    notifications: notifications.map((notification) => JSON.parse(notification)),
+    newNotificationNumber: parsedNotifications.filter((noti) => !noti.isRead).length,
+  }
+  return notificationData
+}
+
+export const emitNotification = async (socket: Socket, data: any) => {
+  const notificationData = await getNotificationDataFromRedis(data.userId)
+  socket.emit('NOTIFICATION', notificationData)
 }

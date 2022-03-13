@@ -1,14 +1,14 @@
 import { useRouter } from 'next/router'
 import { axios } from '../../config/axios'
 import { useAuth } from '../../context/authContext'
-// import { useSocket } from '../../context/socketContext'
+import { useSocket } from '../../context/socketContext'
 import { useTwWindowSize } from '../../hooks/useTwWindowSize'
 import { paths } from '../../utils/paths'
 import { LeftNavPostBtn } from '../atoms/LeftNavPostBtn/LeftNavPostBtn'
 import {
   HomeIcon,
   LogoutIcon,
-  // NotificationIcon,
+  NotificationIcon,
   ProfileIcon,
   SettingsIcon,
   SavedIcon,
@@ -20,13 +20,12 @@ const LeftNav = () => {
   const router = useRouter()
   const { push, pathname } = useRouter()
   const { rqUser, logout, getIdToken } = useAuth()
-  // const notificationsData = useSocket()
+  const notificationsData = useSocket()
   const { screenSize } = useTwWindowSize()
 
   const handleLogout = async () => {
     const token = await getIdToken()
     await logout()
-    // nookies.destroy(undefined, 'idk')
     router.push('/login')
     await axios.delete('/user/me', {
       headers: {
@@ -72,7 +71,7 @@ const LeftNav = () => {
           Profile
         </LeftNavLink>
 
-        {/* <LeftNavLink
+        <LeftNavLink
           active={pathname === '/notifications'}
           icon={NotificationIcon}
           onClick={() => push(paths.notifications)}
@@ -80,7 +79,7 @@ const LeftNav = () => {
           countValue={notificationsData?.newNotificationNumber}
         >
           Notifications
-        </LeftNavLink> */}
+        </LeftNavLink>
 
         <LeftNavLink
           active={pathname === paths.saved}

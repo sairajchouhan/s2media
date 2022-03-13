@@ -13,3 +13,4 @@ const config: RedisConfig = {
 }
 
 export const redis = new Redis(config)
+export const redisSubscriber = redis.duplicate()

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import io from 'socket.io-client'
+import { io } from 'socket.io-client'
 import { useAuth } from './authContext'
 import { SERVER_BASE_URL } from '../config/axios'
 

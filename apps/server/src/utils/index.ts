@@ -11,3 +11,9 @@ export const get4RandomChars = () => {
 export const getRandomNumberInRange = (min: number, max: number) => {
   return Math.random() * (max - min) + min
 }
+
+export const getCorsOrigin = () => {
+  return process.env.NODE_ENV === 'production'
+    ? 'https://s2media.sairaj.rocks'
+    : 'http://localhost:3000'
+}
