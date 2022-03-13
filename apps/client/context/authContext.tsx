@@ -3,19 +3,27 @@ import { useRouter } from 'next/router'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { axios } from '../config/axios'
-import firebase from '../config/firebase'
 import { AuthUser } from '../types'
 import { BaseUser } from '../types/user'
-import { getProvider } from '../utils/oAuthProviders'
+import { googleOAuthProvider } from '../utils/oAuthProviders'
 import { GET_PROFILE_USER } from '../utils/querykeysAndPaths'
 import { useToast } from './toastContext'
+import { auth } from '../config/firebase'
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  connectAuthEmulator,
+  onAuthStateChanged,
+} from 'firebase/auth'
+import type { UserCredential } from 'firebase/auth'
 
 type AuthContextType = {
   user: AuthUser | null
-  login: (email: string, password: string) => Promise<firebase.auth.UserCredential>
-  signup: (email: string, password: string) => Promise<firebase.auth.UserCredential>
+  login: (email: string, password: string) => Promise<UserCredential>
+  signup: (email: string, password: string) => Promise<UserCredential>
   logout: () => Promise<any>
-  oAuthLogin: (provider: string) => Promise<firebase.auth.UserCredential>
+  oAuthLogin: () => Promise<UserCredential>
   getIdToken: () => Promise<string | undefined>
   rqUser: any
   refetchRqUser: any
@@ -33,9 +41,8 @@ const formatUser = (user: BaseUser, idToken: string, isNewSignup: boolean): Auth
   }
 }
 
-const auth = firebase.auth()
 if (process.env.NODE_ENV === 'test') {
-  auth.useEmulator('http://localhost:9099')
+  connectAuthEmulator(auth, 'http://localhost:9099')
 }
 
 export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
@@ -45,7 +52,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
   const router = useRouter()
 
   useEffect(() => {
-    const unsub = auth.onAuthStateChanged((user) => {
+    const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
         user
           .getIdToken()
@@ -107,16 +114,16 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     }
   )
 
-  const login = (email: string, password: string): Promise<firebase.auth.UserCredential> => {
-    return auth.signInWithEmailAndPassword(email, password)
+  const login = (email: string, password: string): Promise<UserCredential> => {
+    return signInWithEmailAndPassword(auth, email, password)
   }
 
-  const signup = (email: string, password: string): Promise<firebase.auth.UserCredential> => {
-    return auth.createUserWithEmailAndPassword(email, password)
+  const signup = (email: string, password: string): Promise<UserCredential> => {
+    return createUserWithEmailAndPassword(auth, email, password)
   }
 
-  const oAuthLogin = (provider: string): Promise<firebase.auth.UserCredential> => {
-    return auth.signInWithPopup(getProvider(provider))
+  const oAuthLogin = (): Promise<UserCredential> => {
+    return signInWithPopup(auth, googleOAuthProvider)
   }
 
   const logout = async () => {

@@ -1,11 +1,3 @@
-import firebase from '../config/firebase'
+import { GoogleAuthProvider } from 'firebase/auth'
 
-export const providerNames = {
-  google: 'google',
-}
-const providers = {
-  [providerNames.google]: new firebase.auth.GoogleAuthProvider(),
-}
-export const getProvider = (provider: string) => {
-  return providers[provider]
-}
+export const googleOAuthProvider = new GoogleAuthProvider()
