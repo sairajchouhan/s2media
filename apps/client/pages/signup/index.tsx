@@ -5,7 +5,6 @@ import { Button } from '../../components/atoms/Button'
 import { Input } from '../../components/atoms/Input/Input'
 import UnAuthenticatedLayout from '../../components/layouts/UnAuthenticatedLayout'
 import { useAuth } from '../../context/authContext'
-import { providerNames } from '../../utils/oAuthProviders'
 import Link from 'next/link'
 import { internet } from 'faker'
 
@@ -49,10 +48,10 @@ const Signup = () => {
     }
   }
 
-  const handleOAuthSignup = async (providerName: string) => {
+  const handleOAuthSignup = async () => {
     try {
       setOAuthLoading(true)
-      await oAuthLogin(providerName)
+      await oAuthLogin()
     } catch (err: any) {
       console.log(err)
       if (err.code !== 'auth/popup-closed-by-user') {
@@ -128,7 +127,7 @@ const Signup = () => {
           <div className="my-3"></div>
           <Button
             disabled={oAuthLoading || loading}
-            onClick={() => handleOAuthSignup(providerNames.google)}
+            onClick={() => handleOAuthSignup()}
             variant="outline"
           >
             <div className="flex items-center justify-center">
