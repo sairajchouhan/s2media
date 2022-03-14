@@ -24,6 +24,8 @@ const RightNav = () => {
     },
     {
       refetchOnWindowFocus: false,
+      retry: false,
+      cacheTime: 1000 * 60 * 60 * 24,
     }
   )
 
