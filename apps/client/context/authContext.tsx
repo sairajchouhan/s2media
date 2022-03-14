@@ -152,8 +152,14 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     <AuthContext.Provider value={returnObj}>
       {loading ? (
         <div className="flex items-center justify-center w-full h-screen bg-gray-100">
-          <div className="text-indigo-600" style={{ fontSize: '6rem' }}>
-            S2Media
+          <div className="flex flex-col items-center">
+            <div className="text-indigo-600" style={{ fontSize: '6rem' }}>
+              S2Media
+            </div>
+            <p className="text-xl text-slate-700">
+              <span className="text-indigo-600 font-medium">Fun fact</span> free tiers are slow,
+              Loading...
+            </p>
           </div>
         </div>
       ) : (
