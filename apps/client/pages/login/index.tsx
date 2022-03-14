@@ -6,6 +6,7 @@ import { Input } from '../../components/atoms/Input'
 import UnAuthenticatedLayout from '../../components/layouts/UnAuthenticatedLayout'
 import { useAuth } from '../../context/authContext'
 import Link from 'next/link'
+import { CircleLoader } from '../../components/atoms/CircleLoader'
 
 const Login = () => {
   const { login, oAuthLogin } = useAuth()
@@ -54,7 +55,6 @@ const Login = () => {
       if (err.code !== 'auth/popup-closed-by-user') {
         setError({ isError: true, message: 'Something went wrong' })
       }
-    } finally {
       setOAuthLoading(false)
     }
   }
@@ -112,8 +112,14 @@ const Login = () => {
             variant="outline"
           >
             <div className="flex items-center justify-center">
-              <Image src="/google.svg" alt="Google" width="25" height="25" />
-              <p className="ml-3">Login With Google</p>
+              {oAuthLoading ? (
+                <CircleLoader />
+              ) : (
+                <>
+                  <Image src="/google.svg" alt="Google" width="25" height="25" />
+                  <p className="ml-3">Login With Google</p>
+                </>
+              )}
             </div>
           </Button>
           <div className="flex justify-center mt-4 text-sm text-gray-500">

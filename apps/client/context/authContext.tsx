@@ -58,6 +58,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
           .getIdToken()
           .then(async (idToken) => {
             try {
+              await new Promise((res) => setTimeout(res, 2000))
               const userResp = await axios.get('/user/me', {
                 headers: {
                   Authorization: `Bearer ${idToken}`,

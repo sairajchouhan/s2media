@@ -7,6 +7,7 @@ import UnAuthenticatedLayout from '../../components/layouts/UnAuthenticatedLayou
 import { useAuth } from '../../context/authContext'
 import Link from 'next/link'
 import { internet } from 'faker'
+import { CircleLoader } from '../../components/atoms/CircleLoader'
 
 const Signup = () => {
   const { signup, oAuthLogin } = useAuth()
@@ -42,8 +43,6 @@ const Signup = () => {
     } catch (err) {
       console.error(err)
       setError({ isError: true, message: (err as any).message })
-      setLoading(false)
-    } finally {
       setLoading(false)
     }
   }
@@ -131,8 +130,14 @@ const Signup = () => {
             variant="outline"
           >
             <div className="flex items-center justify-center">
-              <Image src="/google.svg" alt="Google" width="25" height="25" />
-              <p className="ml-3">Signup With Google</p>
+              {oAuthLoading ? (
+                <CircleLoader />
+              ) : (
+                <>
+                  <Image src="/google.svg" alt="Google" width="25" height="25" />
+                  <p className="ml-3">Signup With Google</p>
+                </>
+              )}
             </div>
           </Button>
           <div className="flex justify-center mt-4 text-sm text-gray-500">
