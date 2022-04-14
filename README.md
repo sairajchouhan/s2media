@@ -165,7 +165,7 @@ Now that all requirements are in place lets start our servers
 - Run `yarn dev:up` to start our server (nginx) which listens for
   requests on port `5000`
 
-🥳🎈 Hurray! you made it, go ahead to `localhost:3000` to see the
+🥳 Hurray! you made it, go ahead to `localhost:3000` to see the
 project in action
 
 ## License
