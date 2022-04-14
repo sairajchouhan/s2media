@@ -134,7 +134,7 @@ const FeedBack = () => {
         rows={5}
         name="feedback"
         id="feedback"
-        placeholder="Request for more features, file bug report, or just a friendly word?"
+        placeholder="Your feedback is really appreciated"
         ref={feedbackRef}
       ></textarea>
       <div className="absolute flex justify-end right-2 bottom-3">
