@@ -1,5 +1,6 @@
 # S2Media
 
+
 S2Media which stands for Simple Social Media is a social media
 site which is inspired from the best features of popular applications
 like Facebook, Twitter, Instagram and Linkedin
