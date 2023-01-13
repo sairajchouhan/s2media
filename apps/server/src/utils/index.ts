@@ -14,6 +14,6 @@ export const getRandomNumberInRange = (min: number, max: number) => {
 
 export const getCorsOrigin = () => {
   return process.env.NODE_ENV === 'production'
-    ? 'https://s2media.sairaj.rocks'
+    ? 'https://s2media.vercel.app/'
     : 'http://localhost:3000'
 }
