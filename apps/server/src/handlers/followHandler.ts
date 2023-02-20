@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import createError from 'http-errors'
 import { createNotification } from '../utils/redis'
 import prisma from '../../prisma'
+import { Follow } from '@prisma/client'
 
 export const followUser = async (req: Request, res: Response) => {
   const userId = req.params.userId
@@ -33,7 +34,7 @@ export const followUser = async (req: Request, res: Response) => {
   if (!authUser) throw createError(400, 'User does not exist')
   if (!otherUser) throw createError(400, 'User does not exist')
 
-  const userFollowing = authUser.following.filter((unit) => userId === unit.followedId)
+  const userFollowing = authUser.following.filter((unit: Follow) => userId === unit.followedId)
 
   if (userFollowing.length === 0) {
     await prisma.follow.create({

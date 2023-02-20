@@ -1,3 +1,4 @@
+import { Save } from '@prisma/client'
 import { Request, Response } from 'express'
 import { validationResult } from 'express-validator'
 import createError from 'http-errors'
@@ -26,7 +27,7 @@ export const saveAndUnsavePost = async (req: Request, res: Response) => {
 
   if (!post) throw createError(404, 'post not found')
 
-  const saved: boolean = post.save.filter((save) => save.userId === userId).length > 0
+  const saved: boolean = post.save.filter((save: Save) => save.userId === userId).length > 0
 
   if (!saved) {
     await prisma.save.create({
@@ -53,7 +54,7 @@ export const saveAndUnsavePost = async (req: Request, res: Response) => {
     res.json(resp)
     return
   } else {
-    const saveId = post.save.filter((save) => save.userId === userId)[0].id
+    const saveId = post.save.filter((save: Save) => save.userId === userId)[0].id
 
     await prisma.save.delete({
       where: {

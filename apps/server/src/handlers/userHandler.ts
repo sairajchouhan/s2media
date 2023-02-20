@@ -328,7 +328,9 @@ export const getFollowersOfUser = async (req: Request, res: Response) => {
     return
   }
 
-  const followers = data.followers.map((follower) => follower.follower)
+  type Follower = typeof data.followers[number]
+
+  const followers = data.followers.map((follower: Follower) => follower.follower)
 
   res.json({ followers })
 }
@@ -369,7 +371,9 @@ export const getFollowingOfUser = async (req: Request, res: Response) => {
     return
   }
 
-  const following = data.following.map((following) => following.followed)
+  type Following = typeof data.following[number]
+
+  const following = data.following.map((following: Following) => following.followed)
 
   res.json({ following })
   return
